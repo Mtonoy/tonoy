@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<!--
+   Developer:Md.Mahamudul Hasan Tonoy
+   Email:Tonoy300@gmail.com
+-->
+<html>
+    <head>
+        <title>Js and Jquery Project</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="css/bootstrap.css" rel="stylesheet" type="text/css"/>
+        <link href="css/font-awesome.css" rel="stylesheet" type="text/css"/>
+        <link href="css/style.css" rel="stylesheet" type="text/css"/>
+        <link href='https://fonts.googleapis.com/css?family=Black+Ops+One' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.1/animate.min.css">
+
+    </head>
+    <body>
+        <!--Start Header -->
+        <div class="container-fluid navigation">
+            <div class="col-sm-2 nav1">
+                <h1 class="h animated infinite pulse">designs</h1>
+            </div>
+            <div class="col-sm-8">
+                <ul class="list-unstyled list-inline nav nav-pills">
+                    <li><a href="#"><b class="text-uppercase">home</b></a></li>
+                    <li><a href="#"><b class="text-uppercase">portfolio</b></a></li>
+                    <li><a href="#"><b class="text-uppercase">about us</b></a></li>
+                    <li><a href="#"><b class="text-uppercase">services</b></a></li>
+                    <li><a href="#"><b class="text-uppercase">drawing web design</b></a></li>
+                    <li><a data-target=".tonoy" data-toggle="modal"><b class="text-uppercase">contact us</b></a></li>
+                </ul>
+            </div>
+            <a href="https://www.facebook.com"><i class="fa fa-facebook-square fa-2x animated  bounce"></i></a>
+            <a href="https://plus.google.com"><i class="fa fa-google-plus-square fa-2x animated  bounce"></i></a>
+            <a href="https://www.pinterest.com"><i class="fa fa-pinterest-square fa-2x animated  bounce"></i></a>
+        </div>
+
+        <!--Modal Header -->
+
+
+        <div class="col-sm-12">
+            <div class="modal tonoy" >
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <div class="modal-header">
+                                <button class="close" data-dismiss="modal">&times;</button>
+
+                                <div class="col-sm-7">
+                                    <form >
+                                        <div class="form-group">
+                                            <label for="email"> Email Address </label>
+                                            <input  type="text" placeholder="Enter your Email Address" name="email" class="form-control">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="massege"> Password </label>
+                                            <input  type="password" placeholder="Enter your Password" name="message" class="form-control">
+                                        </div>
+                                        <div class="form-group" >
+                                            <label for="message"> Message </label>
+                                            <textarea rows="5" class="form-control" name="message" placeholder="Type your query"></textarea>
+                                        </div>
+                                        <div class="form-group">
+                                            <button type="button" class="btn btn-danger btn-block"> Send </button>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="col-sm-5">
+                                    <label for="Address"> Address </label>
+                                    <p><i class="fa fa-map-marker"></i>  6,Circular Road,Dhanmondi,Dhaka-1205.</p>
+                                    <p><i class="fa fa-mobile"></i>  +08801673282415</p>
+                                    <p><i class="fa fa-envelope-o"></i> Tonoy300@gmail.com</p>
+
+                                </div>
+                                <div class="col-sm-12 thumbnail">
+                                    <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d116834.13673771221!2d90.41932575!3d23.780636450000003!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sbd!4v1453611179608" width="830" height="130" frameborder="0" style="border:0" allowfullscreen></iframe>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--End Header -->
+
+        <!--Start Slider -->
+
+        <div class="stage">
+
+            <div id="SLDR-ONE" class="sldr">
+                <ul class="wrp animate">
+                    <li class="elmnt-one"><div class="skew"><div class="wrap"><img src="img/Lake.jpg" width="1500" height="563"></div></div></li>
+                    <li class="elmnt-two"><div class="skew"><div class="wrap"><img src="img/Mountain-Range.jpg" width="1500" height="563"></div></div></li>
+                    <li class="elmnt-three"><div class="skew"><div class="wrap"><img src="img/Mt-Fuji.jpg" width="1500" height="563"></div></div></li>
+                    <li class="elmnt-four"><div class="skew"><div class="wrap"><img src="img/Pink-Forest.jpg" width="1500" height="563"></div></div></li>
+                </ul>
+            </div>
+
+            <ol class="selectors">
+                <li class="focalPoint"><a href=""><i class="fa fa-circle-o"></i></a></li>
+                <li><a href=""><i class="fa fa-circle-o"></i></a></li>
+                <li><a href=""><i class="fa fa-circle-o"></i></a></li>
+                <li><a href=""><i class="fa fa-circle-o"></i></a></li>
+            </ol>
+        </div>
+
+        <!--End Slider -->
+
+        <!--Start Service -->
+        <div class="container-fluid service">
+            <div class="col-sm-12">
+                <div class="col-sm-4">
+                    <div class="thumbnail serv1">
+                        <img src="img/calender.png" alt="Event" class="img-responsive">
+                        <p>Event Organizers</p>
+                    </div>
+
+                </div>
+                <div class="col-sm-4">
+                    <div class="thumbnail serv11">
+                        <img src="img/human.png" alt="Leisure, Hospitality & Creative" class="img-responsive">
+                        <p>Leisure, Hospitality & Creative</p>
+                    </div> 
+                </div>
+                <div class="col-sm-4">
+                    <div class="thumbnail serv11">
+                        <img src="img/level.png" alt="Local online Marketing" class="img-responsive">
+                        <p>Local online Marketing</p>
+                    </div> 
+                </div>
+
+            </div>
+
+        </div>
+
+        <!--End Service -->
+
+        <!--Start portfolio -->
+        <div class="container-fluid port">
+            <div class="col-sm-12">
+                <div class="col-sm-4">
+                    <div class="thumbnail">
+                        <h3 class="text-primary text-center"><b>Portfolio</b></h3>
+                        <hr>
+                        <img src="img/billgets.jpeg" alt="billgets" class="img-responsive img-circle animated infinite pulse">
+                        <p class="text-center">He is <a href="https://en.wikipedia.org/wiki/Bill_Gates">Bill Gets</a>.And His full name is William Henry "Bill" Gates.He is Owner of Microsoft...</p>
+                    </div>
+
+                </div>
+                <div class="col-sm-4">
+                    <div class="thumbnail">
+                        <h3 class="text-primary text-center"><b>Portfolio</b></h3>
+                        <hr>
+                        <img src="img/mark.jpg" alt="mark zuckerberg" class="img-responsive img-circle animated infinite pulse">
+                        <p class="text-center">He is <a href="https://en.wikipedia.org/wiki/Mark_Zuckerberg">Mark Zuckerberg</a>.And His full name is Mark Elliot Zuckerberg.He is co-founder of the Facebook..</p>
+                    </div> 
+                </div>
+                <div class="col-sm-4">
+                    <div class="thumbnail">
+                        <h3 class="text-primary text-center"><b>Portfolio</b></h3>
+                        <hr>
+                        <img src="img/Larry_Page.jpg" alt="Larry_Page" class="img-responsive img-circle animated infinite pulse">
+                        <p class="text-center">He is <a href="https://en.wikipedia.org/wiki/Larry_Page">Larry Page</a>.And His full name is Lawrence "Larry" Page.He is co-founder of Google Inc..</p>
+
+                    </div> 
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!--End portfolio -->
+
+        <!--Start Company part -->
+        <div class="container-fluid company">
+            <div class="container">
+                <div class="col-sm-7">
+                    <h2>The Company</h2>
+                    <b>We at Utd Sports love Textlocal, as it is so easy to navigate and set up plus it is very reasonab...</b><br><br>
+
+                    <p class="text-justify">Our best result from SMS, that's easy. We had a school mid term holiday camp coming up. With Textlocal
+                        we instantly contacted 600+ parents to let them know. Day 1 of the holiday camp we turned up to 150
+                        children waiting to take part. Thanks Textlocal<br><br>
+
+                        Our best result from SMS, that's easy. We had a school mid term holiday camp coming up. With Textlocal
+                        we instantly contacted 600+ parents to let them know. Day 1 of the holiday camp we turned up to 150
+                        children waiting to take part. Thanks Textlocal
+
+                    </p><br><br>
+                    <div>
+                        <button class="btn btn-danger">Know More</button>
+                        <button class="btn btn-danger">Get Free Quote</button>
+                    </div>
+                </div>
+                <div class="col-sm-4 col-sm-offset-1 animated wow bounceInLeft">
+                    <h2>Our Expertise</h2>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <img src="img/html.png" class="img-responsive ">
+                        </div>
+                        <div class="col-sm-4">
+                            <img src="img/logo-javascript.png" class="img-responsive ">
+                        </div>
+                        <div class="col-sm-4">
+                            <img src="img/PHP-Mysql.png" class="img-responsive ">
+                        </div>
+                    </div>
+                    <div class="row">
+
+                        <div class="col-sm-4">
+                            <img src="img/html.png" class="img-responsive ">
+                        </div>
+                        <div class="col-sm-4">
+                            <img src="img/logo-javascript.png" class="img-responsive ">
+                        </div>
+                        <div class="col-sm-4">
+                            <img src="img/PHP-Mysql.png" class="img-responsive ">
+                        </div>
+                    </div>
+                    <div class="row">
+
+                        <div class="col-sm-4">
+                            <img src="img/html.png" class="img-responsive">
+                        </div>
+                        <div class="col-sm-4">
+                            <img src="img/logo-javascript.png" class="img-responsive">
+                        </div>
+                        <div class="col-sm-4">
+                            <img src="img/PHP-Mysql.png" class="img-responsive">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!--End Company part -->
+        <!--Start Testimonials part -->
+
+        <div id="testimonial-sec">
+
+
+            <div class="container">
+                <div class="row ">
+                    <div class="col-md-12">
+                        <div id="carousel-example" class="carousel slide" data-ride="carousel">
+
+                            <ol class="carousel-indicators">
+                                <li data-target="#carousel-example" data-slide-to="0" class="active"></li>
+                                <li data-target="#carousel-example" data-slide-to="1"></li>
+                                <li data-target="#carousel-example" data-slide-to="2"></li>
+                            </ol>
+
+                            <div class="carousel-inner">
+                                <div class="item active">
+                                    <div class="container center">
+                                        <div class="col-md-6 col-md-offset-3 slide-custom">
+
+                                            <h4><i class="fa fa-quote-left"></i> He is <a href="https://en.wikipedia.org/wiki/Bill_Gates">Bill Gets</a>.And His full name is William Henry "Bill" Gates.He is Owner of Microsoft... <i class="fa fa-quote-right"></i></h4>
+                                            <div class="user-img pull-right">
+                                                <img src="img/billgets.jpeg" alt="Bill Gets" title="Bill Gets" class="img-u img-responsive"  />
+                                            </div>
+                                            <h5 class="pull-right"><strong class="c-black">Bill Gets</strong></h5>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="item">
+                                    <div class="container center">
+                                        <div class="col-md-6 col-md-offset-3 slide-custom">
+                                            <h4> <i class="fa fa-quote-left"></i> He is <a href="https://en.wikipedia.org/wiki/Mark_Zuckerberg">Mark Zuckerberg</a>.And His full name is Mark Elliot Zuckerberg.He is co-founder of the Facebook.. <i class="fa fa-quote-right"></i></h4>
+                                            <div class="user-img pull-right">
+                                                <img src="img/mark.jpg" alt="Mark Zuckerberg" title="Mark Zuckerberg" class="img-u image-responsive"  />
+                                            </div>
+                                            <h5 class="pull-right"><strong class="c-black">Mark Zuckerberg</strong></h5>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="item">
+                                    <div class="container center">
+                                        <div class="col-md-6 col-md-offset-3 slide-custom">
+                                            <h4><i class="fa fa-quote-left"></i>He is <a href="https://en.wikipedia.org/wiki/Larry_Page">Larry Page</a>.And His full name is Lawrence "Larry" Page.He is co-founder of Google Inc.. <i class="fa fa-quote-right"></i></h4>
+                                            <div class="user-img pull-right">
+                                                <img src="img/Larry_Page.jpg" alt="Larry Page" title="Larry Page" class="img-u image-responsive"  />
+                                            </div>
+                                            <h5 class="pull-right"><strong class="c-black">Larry Page</strong></h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+        <!--End Testimonials part -->
+
+        <!--Start Footer part -->
+        <div class="container-fluid footer">
+            <div class="container">
+                <div class="col-sm-3">
+                    <h3>Facebook Plugin</h3>
+                    <p>See what your Facebook friends liked, shared, or commented on across the Web.</p>
+                    <ul>
+                        <li><a href="#">Like, Share & Send Button</a></li>
+                        <li><a href="#">Embedded Posts & Video Player</a></li>
+                        <li><a href="#">Page Plugin</a></li>
+                        <li><a href="#"> Comments</a></li>
+                        <li><a href="#"> Follow Button</a></li>
+                    </ul>
+                </div>
+                <div class="col-sm-3">
+                    <h3>Our Services</h3>
+                    <p>See what your Facebook friends liked, shared, or commented on across the Web</p><br>
+                    <p>See what your Facebook friends liked, shared, or commented on across the Web</p><br>
+                    <p>See what your Facebook friends liked, shared, or commented on across the Web</p>
+                </div>
+                <div class="col-sm-3">
+                    <h3>Get Free Quote</h3>
+                    <form class="form-group">
+                        <div class="form1">
+                            <input class="form-control" placeholder="Name">
+                        </div>
+                        <div class="form1">
+                            <input class="form-control" placeholder="Email">
+                        </div>
+                        <div class="form1">
+                            <input class="form-control" placeholder="Contect Number">
+                        </div>
+                        <div class="form1">
+                            <select class="form-control">
+                                <option class="active">Select</option>
+                                <option>HTML & CSS</option>
+                                <option>JavaScript & JQUERY</option>
+                                <option>PHP & MYSQL</option>
+                            </select>
+                        </div>
+                        <div class="form1">
+                            <textarea rows="3" class="form-control"></textarea>
+                        </div>
+                        <div class="form1">
+                            <button>Submit</button>
+                        </div>
+
+                    </form>
+                </div>
+                <div class="col-sm-3">
+                    <h3>Get In Touch</h3>
+
+                    <a href="https://www.facebook.com"><i class="fa fa-facebook-square fa-2x animated infinite pulse"></i></a>
+                    <a href="https://plus.google.com"><i class="fa fa-google-plus-square fa-2x animated infinite pulse"></i></a>
+                    <a href="https://www.pinterest.com"><i class="fa fa-pinterest-square fa-2x animated infinite pulse"></i></a>
+                    <a href="https://www.youtube.com/"><i class="fa fa-youtube-square fa-2x animated infinite pulse"></i></a>
+
+
+                </div>
+            </div>
+        </div>
+
+        <div class="container-fluid">
+            <div class="col-sm-12">
+                <div class="col-sm-offset-3 col-sm-8">
+                    <ul class="list-unstyled list-inline nav nav-pills">
+                        <li><a href="#"><b class="text-uppercase">home</b></a></li>
+                        <li><a href="#"><b class="text-uppercase">portfolio</b></a></li>
+                        <li><a href="#"><b class="text-uppercase">about us</b></a></li>
+                        <li><a href="#"><b class="text-uppercase">services</b></a></li>
+                        <li><a href="#"><b class="text-uppercase">drawing web design</b></a></li>
+                        <li><a data-target=".tonoy" data-toggle="modal"><b class="text-uppercase">contact us</b></a></li>
+                    </ul>
+                </div>
+                <div class="col-sm-1">
+                    <a title="Top" class="back-to-to" href=""><i class="fa fa-chevron-circle-up fa-3x animated infinite pulse"></i></a>
+                </div>
+
+            </div>
+        </div>   
+
+        <!--End Foote part -->
+
+        <script src="js/jquery-1.11.1.js" type="text/javascript"></script>
+        <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+        <script src=" https://cdnjs.cloudflare.com/ajax/libs/wow/1.1.2/wow.min.js"></script>
+        <script src="js/jquery.sldr.js" type="text/javascript"></script>
+        <script src="js/custom.js" type="text/javascript"></script>
+        <script src="js/myjs.js" type="text/javascript"></script>
+        <script src="js/bootstrap.js" type="text/javascript"></script>
+    </body>
+</html>

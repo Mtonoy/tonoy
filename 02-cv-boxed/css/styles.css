@@ -1,0 +1,38 @@
+	
+/* ---------------------------------
+7. EDUCATION SECTION
+--------------------------------- */
+p{
+        color: #333;
+}
+.heading{ margin-bottom: 60px; }
+
+.heading:before{ content:''; height: 10px; width: 50px; border-radius: 5px;
+	margin-bottom: 20px; display: block; background: #FFA804; }
+
+.education-wrapper{ position: relative; }
+
+.education-wrapper:after{ content:''; position: absolute; top: 8px; bottom: 0; left: -51px;
+	width: 2px; background: #ccc; }
+
+.education-wrapper .education{ position: relative; }
+
+.education-wrapper .education:after{ content:''; position: absolute; top: 8px; left: -58px; width: 16px; 
+	height: 16px; border-radius: 10px; z-index: 1;
+	box-shadow: 0 0 0 8px rgba(255,171,0, .4); background: #FFAB00; }
+
+.margin-t-10{ margin-top: 10px; }
+
+.margin-b-30{ margin-bottom: 30px; }
+.margin-b-50{ margin-bottom: 50px; }
+
+.margin-tb-30{ margin-top: 30px; margin-bottom: 30px; }
+
+.font-yellow{ color: #FFA600; }
+
+.font-semi-white{ color: #ddd; }
+
+.font-lite-black{ color: #999; }
+	
+	
+
