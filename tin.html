@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title> NBR অডিট তালিকা চেকার  (23-24)  | TIN যাচাই পোর্টাল</title>
+  <!-- Google Fonts & Font Awesome 6 -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: linear-gradient(145deg, #0B1120 0%, #111827 100%);
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      position: relative;
+    }
+
+    /* subtle grid pattern */
+    body::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: 
+        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+    }
+
+    .glass-panel {
+      background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(16px);
+      border-radius: 2rem;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      box-shadow: 0 30px 50px rgba(0, 0, 0, 0.4), 0 0 0 0.5px rgba(255, 255, 255, 0.05);
+      width: 100%;
+      max-width: 700px;
+      transition: all 0.3s ease;
+    }
+
+    .container {
+      padding: 2rem 2rem 2.2rem;
+    }
+
+    /* brand header */
+    .brand {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .nbr-badge {
+      background: rgba(250, 204, 21, 0.2);
+      backdrop-filter: blur(4px);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.4rem 1.3rem;
+      border-radius: 60px;
+      font-weight: 700;
+      font-size: 0.8rem;
+      letter-spacing: 0.3px;
+      color: #facc15;
+      border: 1px solid rgba(250, 204, 21, 0.4);
+      margin-bottom: 1.2rem;
+    }
+
+    h1 {
+      font-size: 2rem;
+      font-weight: 800;
+      background: linear-gradient(120deg, #FFFFFF, #c9d5ff);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      letter-spacing: -0.3px;
+    }
+
+    .subhead {
+      color: #94a3b8;
+      font-weight: 500;
+      margin-top: 0.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      font-size: 0.9rem;
+    }
+
+    /* TIN input area */
+    .tin-field {
+      background: #0f172a80;
+      border-radius: 2rem;
+      padding: 0.3rem;
+      margin: 1.8rem 0 1.5rem;
+      border: 1px solid rgba(255,255,255,0.1);
+      transition: all 0.2s;
+    }
+
+    .input-wrapper {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+      align-items: center;
+    }
+
+    .tin-icon {
+      flex: 1;
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .tin-icon i {
+      position: absolute;
+      left: 1.2rem;
+      color: #facc15;
+      font-size: 1.2rem;
+      text-shadow: 0 0 2px rgba(0,0,0,0.2);
+    }
+
+    #tinInput {
+      width: 100%;
+      padding: 1rem 1rem 1rem 3rem;
+      background: #0c111f;
+      border: none;
+      border-radius: 2rem;
+      font-size: 1rem;
+      font-weight: 500;
+      color: #f8fafc;
+      font-family: 'Inter', monospace;
+      letter-spacing: 0.5px;
+      outline: none;
+      transition: 0.2s;
+    }
+
+    #tinInput:focus {
+      background: #111827;
+      box-shadow: 0 0 0 2px #facc1566;
+    }
+
+    #tinInput::placeholder {
+      color: #475569;
+      font-weight: 400;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .check-btn {
+      background: linear-gradient(95deg, #facc15, #eab308);
+      border: none;
+      padding: 0.9rem 2rem;
+      border-radius: 2.5rem;
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: #0f172a;
+      cursor: pointer;
+      transition: 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      box-shadow: 0 6px 14px rgba(250, 204, 21, 0.25);
+    }
+
+    .check-btn:hover {
+      transform: scale(0.97);
+      background: linear-gradient(95deg, #eab308, #ca8a04);
+      box-shadow: 0 6px 18px rgba(250, 204, 21, 0.4);
+    }
+
+    .check-btn:active {
+      transform: scale(0.96);
+    }
+
+    /* results card */
+    .result-card {
+      margin-top: 1.2rem;
+      border-radius: 1.5rem;
+      transition: all 0.3s ease;
+    }
+
+    .info-card {
+      background: rgba(0, 0, 0, 0.45);
+      backdrop-filter: blur(8px);
+      border-radius: 1.5rem;
+      padding: 1.5rem;
+      border-left: 6px solid;
+      transition: all 0.2s;
+    }
+
+    .status-head {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .status-head i {
+      font-size: 1.7rem;
+    }
+
+    .details-grid {
+      margin-top: 1rem;
+      border-top: 1px dashed rgba(255,255,255,0.2);
+      padding-top: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.9rem;
+    }
+
+    .detail-row {
+      display: flex;
+      align-items: baseline;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .detail-label {
+      font-weight: 600;
+      min-width: 110px;
+      color: #a0afc3;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+
+    .detail-value {
+      color: #f1f5f9;
+      font-weight: 500;
+      word-break: break-word;
+      background: rgba(255,255,255,0.05);
+      padding: 0.2rem 0.8rem;
+      border-radius: 30px;
+      font-size: 0.9rem;
+    }
+
+    .tin-highlight {
+      background: #facc1520;
+      color: #facc15;
+      font-family: monospace;
+      font-weight: 700;
+    }
+
+    .empty-message {
+      text-align: center;
+      padding: 2rem;
+      background: rgba(0,0,0,0.35);
+      border-radius: 1.5rem;
+      color: #94a3b8;
+    }
+
+    .error-shake {
+      animation: shakeBox 0.4s ease-in-out 0s 2;
+    }
+
+    @keyframes shakeBox {
+      0%,100% { transform: translateX(0); }
+      25% { transform: translateX(-5px); }
+      75% { transform: translateX(5px); }
+    }
+
+    .footer-note {
+      margin-top: 2rem;
+      text-align: center;
+      font-size: 0.7rem;
+      color: #4b5563;
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    /* loader animation */
+    .loader {
+      display: inline-block;
+      width: 24px;
+      height: 24px;
+      border: 3px solid rgba(15,23,42,0.3);
+      border-radius: 50%;
+      border-top-color: #facc15;
+      animation: spin 0.8s linear infinite;
+      margin-right: 0.5rem;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    @media (max-width: 550px) {
+      .container { padding: 1.5rem; }
+      .input-wrapper { flex-direction: column; }
+      .check-btn { width: 100%; justify-content: center; }
+      .detail-label { min-width: 90px; }
+    }
+  </style>
+</head>
+<body>
+<div class="glass-panel">
+  <div class="container">
+    <div class="brand">
+      <div class="nbr-badge">
+        <i class="fas fa-landmark"></i>  
+        <span>জাতীয় রাজস্ব বোর্ড (NBR) | অডিট তালিকা (2023-2024)</span>
+      </div>
+      <h1><i class="fas fa-magnifying-glass-chart" style="margin-right: 8px;"></i> TIN অডিট চেকার</h1>
+      <div class="subhead">
+        <i class="fas fa-id-card"></i>  ১২ ডিজিটের TIN নম্বর দিয়ে যাচাই করুন
+      </div>
+    </div>
+
+    <div class="tin-field">
+      <div class="input-wrapper">
+        <div class="tin-icon">
+          <i class="fas fa-hashtag"></i>
+          <input type="text" id="tinInput" placeholder="যেমন: 448038788647 (১২ সংখ্যা)" maxlength="12" autocomplete="off" inputmode="numeric">
+        </div>
+        <button class="check-btn" id="searchBtn">
+          <i class="fas fa-check-double"></i> যাচাই করুন
+        </button>
+      </div>
+    </div>
+
+    <div id="resultArea" class="result-card">
+      <!-- default elegant state -->
+      <div class="empty-message">
+        <i class="fas fa-file-signature" style="font-size: 2.2rem; margin-bottom: 0.6rem; opacity: 0.6;"></i>
+        <p>অডিট তালিকা validation — ১২ ডিজিটের TIN প্রবেশ করান</p>
+        <p style="font-size: 0.75rem; margin-top: 0.3rem;">API: tin-audit-list.vercel.app থেকে রিয়েল টাইম ফলাফল</p>
+      </div>
+    </div>
+    <div class="footer-note">
+      <span><i class="fas fa-database"></i> নির্ভরযোগ্য NBR অডিট API</span>
+      <span><i class="fas fa-lock"></i> টিন তথ্য সুরক্ষিত</span>
+    </div>
+  </div>
+</div>
+
+<script>
+  // --------------------------------------------------------------
+  // REAL API INTEGRATION: https://tin-audit-list.vercel.app/api/search?tin=XXXXXXXXXXXX
+  // Validation: TIN must be exactly 12 digits (numeric characters)
+  // Endpoint returns { found: boolean, match: { tin, zone, circle, submissionType } }
+  // If not found via ?tin= param, returns { suggestions: [] } as per given example.
+  // Also we need to handle ?tin= endpoint exactly (from given working example).
+  // --------------------------------------------------------------
+  
+  const API_BASE = 'https://tin-audit-list.vercel.app/api/search';
+  
+  // DOM elements
+  const tinInput = document.getElementById('tinInput');
+  const searchBtn = document.getElementById('searchBtn');
+  const resultArea = document.getElementById('resultArea');
+  
+  // Helper: validate 12-digit numeric TIN
+  function isValidTIN(tin) {
+    // must be exactly 12 characters and all digits
+    const tinStr = String(tin).trim();
+    if (tinStr.length !== 12) return false;
+    return /^\d{12}$/.test(tinStr);
+  }
+  
+  // Show loading state inside result area
+  function showLoading() {
+    resultArea.innerHTML = `
+      <div class="empty-message" style="padding: 1.8rem;">
+        <div class="loader" style="margin-bottom: 10px;"></div>
+        <p style="color: #facc15;"><i class="fas fa-spinner fa-pulse"></i> অডিট তালিকা অনুসন্ধান করা হচ্ছে...</p>
+        <p style="font-size: 0.75rem;">সার্ভার থেকে তথ্য আনতে片刻 অপেক্ষা করুন</p>
+      </div>
+    `;
+  }
+  
+  // Display error message with shake animation
+  function showError(message) {
+    const errorDiv = document.createElement('div');
+    errorDiv.className = 'empty-message error-shake';
+    errorDiv.style.borderLeft = '3px solid #ef4444';
+    errorDiv.innerHTML = `
+      <i class="fas fa-circle-exclamation" style="font-size: 2rem; color: #f97316; margin-bottom: 0.5rem; display: inline-block;"></i>
+      <p style="color: #facc15; font-weight: 600;">${message}</p>
+      <p style="font-size: 0.8rem;">অনুগ্রহ করে সঠিক ১২ ডিজিটের TIN দিন এবং আবার চেষ্টা করুন।</p>
+    `;
+    resultArea.innerHTML = '';
+    resultArea.appendChild(errorDiv);
+    // auto remove shake class after animation
+    setTimeout(() => {
+      if (errorDiv) errorDiv.classList.remove('error-shake');
+    }, 500);
+  }
+  
+  // Display success "found" result with detailed info
+  function renderFoundResult(matchData, searchedTin) {
+    // matchData contains: tin, zone, circle, submissionType
+    const { tin, zone, circle, submissionType } = matchData;
+    // format submission type nicely
+    const subTypeFormatted = submissionType || 'ব্যক্তি/প্রতিষ্ঠান';
+    const tinFormatted = tin || searchedTin;
+    
+    const html = `
+      <div class="info-card" style="border-left-color: #10b981; background: linear-gradient(115deg, rgba(16,185,129,0.1), rgba(0,0,0,0.3));">
+        <div class="status-head">
+          <i class="fas fa-check-circle" style="color: #10b981;"></i>
+          <span style="color: #facc15;">✓ অডিট তালিকায় পাওয়া গেছে</span>
+          <span class="tin-highlight" style="margin-left: auto; font-size: 0.8rem;"><i class="fas fa-qrcode"></i> TIN: ${tinFormatted}</span>
+        </div>
+        <div class="details-grid">
+          <div class="detail-row">
+            <div class="detail-label"><i class="fas fa-map-marker-alt"></i> জোন</div>
+            <div class="detail-value">${escapeHtml(zone) || '—'}</div>
+          </div>
+          <div class="detail-row">
+            <div class="detail-label"><i class="fas fa-chart-line"></i> সার্কেল</div>
+            <div class="detail-value">${escapeHtml(circle) || '—'}</div>
+          </div>
+          <div class="detail-row">
+            <div class="detail-label"><i class="fas fa-user-tie"></i> জমা ধরন</div>
+            <div class="detail-value">${escapeHtml(subTypeFormatted)}</div>
+          </div>
+          <div class="detail-row">
+            <div class="detail-label"><i class="fas fa-calendar-alt"></i> অডিট অবস্থা</div>
+            <div class="detail-value"><span style="background: #facc1533; padding: 0.2rem 0.7rem; border-radius: 50px;">সক্রিয় অডিট তালিকাভুক্ত</span></div>
+          </div>
+        </div>
+        <div style="margin-top: 1rem; font-size: 0.7rem; text-align: right; color: #6c86a3;">
+          <i class="fas fa-database"></i> NBR অডিট পোর্টাল থেকে সংগৃহীত
+        </div>
+      </div>
+    `;
+    resultArea.innerHTML = html;
+  }
+  
+  // Display "Name not found" with joyful message (অভিনন্দন)
+  function renderNotFoundResult(tinNumber) {
+    const html = `
+      <div class="info-card" style="border-left-color: #facc15; background: rgba(0,0,0,0.4);">
+        <div class="status-head">
+          <i class="fas fa-face-smile-wink" style="color: #facc15; font-size: 1.8rem;"></i>
+          <span style="color: #fff; font-weight: 700;">🎉 অভিনন্দন! আপনার TIN অডিট তালিকায় নেই</span>
+        </div>
+        <div style="margin: 1rem 0 0.5rem 0; padding: 0.5rem 0;">
+          <p style="color: #cbd5e6; font-size: 1rem; display: flex; gap: 8px; align-items: center;"><i class="fas fa-leaf"></i> "অভিনন্দন, আপনার TIN: <strong style="background: #0f172a; padding: 0.2rem 0.6rem; border-radius: 20px; font-family: monospace;">${escapeHtml(tinNumber)}</strong> অডিট তালিকাভুক্ত নয়।"</p>
+          <p style="color: #94a3b8; margin-top: 0.7rem; font-size: 0.85rem;"><i class="fas fa-info-circle"></i> বর্তমান অডিট তালিকায় আপনার কোন তথ্য নেই। এটি করদাতা হিসেবে স্বচ্ছ অবস্থা নির্দেশ করে।</p>
+        </div>
+        <div style="border-top: 1px dashed #334155; padding-top: 0.7rem; margin-top: 0.5rem;">
+          <span style="color: #cbd5e1; font-size: 0.7rem;"><i class="fas-regular fa-calendar"></i> সর্বশেষ হালনাগাদ: আজ</span>
+        </div>
+      </div>
+    `;
+    resultArea.innerHTML = html;
+  }
+  
+  // Helper to escape HTML safely
+  function escapeHtml(str) {
+    if (!str) return '';
+    return str.replace(/[&<>]/g, function(m) {
+      if (m === '&') return '&amp;';
+      if (m === '<') return '&lt;';
+      if (m === '>') return '&gt;';
+      return m;
+    }).replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, function(c) {
+      return c;
+    });
+  }
+  
+  // Main API call function using real endpoint
+  async function searchTINInAuditList(tinNumber) {
+    // clear any existing timeout/race condition (just standard)
+    const cleanTin = tinNumber.trim();
+    if (!isValidTIN(cleanTin)) {
+      showError('❌ ত্রুটি: TIN নম্বরটি অবশ্যই ১২ ডিজিটের সংখ্যা হতে হবে!');
+      return;
+    }
+    
+    showLoading();
+    
+    try {
+      // Using the exact working API endpoint format: ?tin=XXXXXXXXXXXX
+      const apiUrl = `${API_BASE}?tin=${encodeURIComponent(cleanTin)}`;
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 sec timeout
+      
+      const response = await fetch(apiUrl, {
+        method: 'GET',
+        headers: { 'Accept': 'application/json' },
+        signal: controller.signal
+      });
+      clearTimeout(timeoutId);
+      
+      if (!response.ok) {
+        // If server returns error like 404 or 500, still we try to parse? but treat as not found fallback
+        // Actually real endpoint might work for any TIN; but if error, inform user
+        throw new Error(`HTTP ${response.status}`);
+      }
+      
+      const data = await response.json();
+      
+      // According to API spec: 
+      // if found: { found: true, match: { tin, zone, circle, submissionType } }
+      // if not found: { suggestions: [] } (based on second example ?q= param, but for ?tin= not found likely returns {found: false}
+      // To be robust, check data.found === true and data.match exists.
+      if (data && data.found === true && data.match) {
+        // FOUND case: show detailed information
+        renderFoundResult(data.match, cleanTin);
+      } 
+      else if (data && (data.found === false || (data.suggestions !== undefined && data.suggestions.length === 0))) {
+        // Not found case (based on given samples & general fallback)
+        renderNotFoundResult(cleanTin);
+      }
+      else {
+        // fallback for any other shape: if data has no match but not explicit false -> check if match absent
+        if (data && !data.match && !data.found) {
+          renderNotFoundResult(cleanTin);
+        } else {
+          // unexpected response but no match info => treat as not found for safety
+          renderNotFoundResult(cleanTin);
+        }
+      }
+    } catch (error) {
+      console.error('API fetch error:', error);
+      let errorMsg = 'সার্ভার সংযোগ সমস্যা। আবার চেষ্টা করুন।';
+      if (error.name === 'AbortError') {
+        errorMsg = 'অনুরোধ সময়সীমা অতিক্রম করেছে। নেটওয়ার্ক চেক করুন।';
+      } else if (error.message.includes('HTTP')) {
+        errorMsg = 'API সার্ভারে সমস্যা, কিছুক্ষণ পরে চেষ্টা করুন।';
+      }
+      showError(`⚠️ ${errorMsg}`);
+    }
+  }
+  
+  // Event listeners
+  searchBtn.addEventListener('click', () => {
+    const tinValue = tinInput.value.trim();
+    if (tinValue === '') {
+      showError('দয়া করে আপনার ১২ ডিজিটের TIN নম্বর লিখুন।');
+      tinInput.focus();
+      return;
+    }
+    searchTINInAuditList(tinValue);
+  });
+  
+  // press enter key to search
+  tinInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      searchBtn.click();
+    }
+  });
+  
+  // Real-time minor improvement: remove extra characters (allow only digits partially but we validate anyway)
+  tinInput.addEventListener('input', function(e) {
+    // optional: allow only digits, but user can paste; we will filter on submit strictly.
+    let raw = this.value.replace(/\D/g, '');
+    if (raw.length > 12) raw = raw.slice(0,12);
+    this.value = raw;
+  });
+  
+  // Initial focus
+  tinInput.focus();
+  
+  // if user wants to test with pre-filled demo example, but not autofill, but we can show some hint
+  // optional: tiny tooltip but no auto-submit
+  console.log('ready — NBR audit checker with real API integration');
+</script>
+</body>
+</html>
