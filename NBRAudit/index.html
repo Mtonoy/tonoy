@@ -273,6 +273,35 @@
       flex-wrap: wrap;
     }
 
+      /* Developer Credit Style */
+      .developer-credit {
+      margin-top: 1.5rem;
+      padding-top: 1rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      text-align: center;
+      font-size: 0.75rem;
+    }
+
+    .developer-credit a {
+      color: #facc15;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .developer-credit a:hover {
+      color: #eab308;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    .developer-credit i {
+      font-size: 0.85rem;
+    }
+
     @media (max-width: 550px) {
       .container { padding: 1.5rem; }
       .input-wrapper { flex-direction: column; }
@@ -327,7 +356,7 @@
     <div class="developer-credit">
       <a href="https://mtonoy.github.io/tonoy/" target="_blank" rel="noopener noreferrer">
         <i class="fas fa-code"></i> Design and Developed by Md Mahamudul Hasan Tonoy
-        <i class="fas fa-external-link-alt" style="font-size: 0.65rem;"></i>
+        <i class="fas fa-external-link-alt" style="font-size: 0.35rem;"></i>
       </a>
     </div>
 
