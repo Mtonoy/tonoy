@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>GZIP Base64 → JSON Decoder | Download JSON</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(145deg, #0b1120 0%, #111827 100%);
+            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, sans-serif;
+            padding: 2rem 1.5rem;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* main card */
+        .tool-card {
+            max-width: 1440px;
+            width: 100%;
+            background: rgba(17, 24, 39, 0.75);
+            backdrop-filter: blur(12px);
+            border-radius: 2rem;
+            border: 1px solid rgba(71, 85, 105, 0.5);
+            box-shadow: 0 25px 40px -12px rgba(0, 0, 0, 0.6);
+            overflow: hidden;
+            transition: all 0.2s;
+        }
+
+        /* header area */
+        .header-area {
+            padding: 1.6rem 2rem;
+            background: rgba(15, 23, 42, 0.6);
+            border-bottom: 1px solid rgba(51, 65, 85, 0.6);
+        }
+
+        .header-area h1 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            background: linear-gradient(135deg, #c084fc, #60a5fa, #34d399);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            letter-spacing: -0.3px;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .sub {
+            color: #9ca3af;
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .badge {
+            background: #1e293b;
+            font-family: 'Menlo', monospace;
+            font-size: 0.7rem;
+            padding: 0.25rem 0.7rem;
+            border-radius: 30px;
+            color: #a5f3fc;
+            border: 1px solid #334155;
+        }
+
+        /* two column layout */
+        .two-columns {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            padding: 2rem;
+        }
+
+        .panel {
+            flex: 1;
+            min-width: 280px;
+            background: #0f172ad9;
+            border-radius: 1.25rem;
+            border: 1px solid #2d3a4e;
+            overflow: hidden;
+            transition: box-shadow 0.2s;
+        }
+
+        .panel-header {
+            background: #1e293b;
+            padding: 1rem 1.2rem;
+            border-bottom: 1px solid #334155;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+
+        .panel-title {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 500;
+            color: #e2e8f0;
+            font-size: 1rem;
+        }
+
+        /* BUTTON GROUP — ENHANCED DESIGN (modern, rounded, distinct actions) */
+        .action-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        /* Base button style */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 0.5rem 1rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+            font-family: inherit;
+            border-radius: 40px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+            background: #2d3a4e;
+            color: #e2e8f0;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+        }
+
+        .btn i { font-style: normal; font-weight: 600; letter-spacing: 0.3px; }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            filter: brightness(1.08);
+            box-shadow: 0 6px 12px -6px rgba(0,0,0,0.4);
+        }
+        
+        .btn:active { transform: translateY(1px); }
+
+        /* Clear button (neutral) */
+        .btn-clear {
+            background: #334155;
+            color: #f1f5f9;
+            border: 1px solid #475569;
+        }
+        .btn-clear:hover { background: #3b4a62; }
+
+        /* Example button (secondary) */
+        .btn-example {
+            background: #2d3a4e;
+            border: 1px solid #5b6e8c;
+            color: #b9d0f0;
+        }
+        .btn-example:hover { background: #3e556e; color: white; }
+
+        /* Primary decode button (blue gradient) */
+        .btn-decode {
+            background: linear-gradient(95deg, #2563eb, #3b82f6);
+            color: white;
+            box-shadow: 0 2px 8px rgba(37,99,235,0.3);
+            border: none;
+        }
+        .btn-decode:hover { background: linear-gradient(95deg, #1d4ed8, #2563eb); box-shadow: 0 4px 12px rgba(37,99,235,0.4); }
+
+        /* Copy button (slate/teal) */
+        .btn-copy {
+            background: #2a3a4f;
+            border: 1px solid #4b6b8f;
+            color: #cbd5e6;
+        }
+        .btn-copy:hover { background: #3b5a78; color: white; }
+
+        /* Download button (success green) */
+        .btn-download {
+            background: linear-gradient(100deg, #0d9488, #14b8a6);
+            color: white;
+            font-weight: 600;
+            box-shadow: 0 2px 8px rgba(13,148,136,0.3);
+        }
+        .btn-download:hover { background: linear-gradient(100deg, #0f766e, #0d9488); box-shadow: 0 4px 12px rgba(13,148,136,0.4); }
+
+        /* textarea & json viewer */
+        textarea, .json-viewer {
+            width: 100%;
+            font-family: 'JetBrains Mono', 'Fira Code', 'Menlo', monospace;
+            font-size: 0.8rem;
+            line-height: 1.5;
+            background: #0a0f1a;
+            border: none;
+            color: #e2e8f0;
+            resize: vertical;
+            padding: 1.2rem;
+            outline: none;
+        }
+
+        textarea {
+            min-height: 320px;
+        }
+
+        .json-viewer {
+            min-height: 320px;
+            max-height: 65vh;
+            overflow: auto;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
+        /* stats footer */
+        .stats-footer {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.6rem 1.2rem;
+            background: #020617b3;
+            font-size: 0.7rem;
+            font-family: monospace;
+            color: #6b7280;
+            border-top: 1px solid #1e293b;
+        }
+
+        /* message area */
+        .msg-area {
+            margin: 0 2rem 1.5rem 2rem;
+        }
+
+        .toast-msg {
+            background: #064e3bdd;
+            backdrop-filter: blur(8px);
+            border-left: 4px solid #10b981;
+            padding: 0.75rem 1.2rem;
+            border-radius: 1rem;
+            color: #ccf0e6;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .toast-error {
+            background: #7f1a1add;
+            border-left-color: #ef4444;
+            color: #fee2e2;
+        }
+
+        .footer-note {
+            text-align: center;
+            font-size: 0.7rem;
+            color: #475569;
+            padding: 1rem;
+            border-top: 1px solid #1e293b;
+        }
+
+        @media (max-width: 780px) {
+            body { padding: 1rem; }
+            .two-columns { padding: 1rem; gap: 1rem; }
+            .btn { padding: 0.4rem 0.8rem; font-size: 0.7rem; }
+        }
+    </style>
+    <!-- pako for gzip decompression fallback -->
+    <script src="https://cdn.jsdelivr.net/npm/pako@2.1.0/dist/pako.min.js"></script>
+</head>
+<body>
+<div class="tool-card">
+    <div class="header-area">
+        <h1>🔓 GZIP + Base64 → JSON Hub</h1>
+        <div class="sub">
+            <span>📥 Paste encoded string (<span class="badge">H4sIAAAA...</span>) → decompress → preview → download JSON</span>
+        </div>
+    </div>
+
+    <div class="two-columns">
+        <!-- LEFT: INPUT SECTION -->
+        <div class="panel">
+            <div class="panel-header">
+                <div class="panel-title">
+                    <span>📦 1. Base64‑GZIP Input</span>
+                </div>
+                <div class="action-group">
+                    <button id="clearBtn" class="btn btn-clear" title="Clear all">🗑️ Clear</button>
+                    <button id="exampleBtn" class="btn btn-example" title="Load demo payload">📋 Example</button>
+                </div>
+            </div>
+            <textarea id="inputData" placeholder='Paste your base64+gzip string here... (usually starts with H4sIAAAAAAAA...)'></textarea>
+            <div class="stats-footer">
+                <span>🔹 Base64 length</span>
+                <span id="inputLength">0 chars</span>
+            </div>
+        </div>
+
+        <!-- RIGHT: OUTPUT + ACTION BUTTONS (Decode, Copy, Download) -->
+        <div class="panel">
+            <div class="panel-header">
+                <div class="panel-title">
+                    <span>📄 2. JSON Result</span>
+                </div>
+                <div class="action-group">
+                    <button id="decodeBtn" class="btn btn-decode">✨ Decode & Format</button>
+                    <button id="copyBtn" class="btn btn-copy">📋 Copy JSON</button>
+                    <button id="downloadBtn" class="btn btn-download">💾 Download JSON</button>
+                </div>
+            </div>
+            <div id="jsonOutput" class="json-viewer">✨ Ready — paste your base64 string and click <strong>Decode & Format</strong></div>
+            <div class="stats-footer">
+                <span>✅ Output stats</span>
+                <span id="outputSize">—</span>
+            </div>
+        </div>
+    </div>
+
+    <div id="messageArea" class="msg-area"></div>
+    <div class="footer-note">
+        🧠 Smart gzip detection (DecompressionStream + pako) • Auto-format JSON • Download as .json file
+    </div>
+</div>
+
+<script>
+    (function() {
+        // ----- DOM elements -----
+        const inputArea = document.getElementById('inputData');
+        const jsonOutputDiv = document.getElementById('jsonOutput');
+        const decodeBtn = document.getElementById('decodeBtn');
+        const clearBtn = document.getElementById('clearBtn');
+        const exampleBtn = document.getElementById('exampleBtn');
+        const copyBtn = document.getElementById('copyBtn');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const messageDiv = document.getElementById('messageArea');
+        const inputLengthSpan = document.getElementById('inputLength');
+        const outputSizeSpan = document.getElementById('outputSize');
+
+        // ----- internal state -----
+        let latestRawJson = '';       // pretty printed JSON string
+        let latestParsed = null;      // parsed object (for validation)
+
+        // ----- helpers: UI messaging -----
+        let toastTimeout = null;
+        function showMessage(text, isError = false) {
+            if (toastTimeout) clearTimeout(toastTimeout);
+            messageDiv.innerHTML = '';
+            const toast = document.createElement('div');
+            toast.className = isError ? 'toast-msg toast-error' : 'toast-msg';
+            toast.innerText = text;
+            messageDiv.appendChild(toast);
+            toastTimeout = setTimeout(() => {
+                if (messageDiv.firstChild === toast) messageDiv.innerHTML = '';
+                toastTimeout = null;
+            }, 3500);
+        }
+
+        // update input length display
+        function updateInputStats() {
+            const len = inputArea.value.length;
+            inputLengthSpan.innerText = `${len} chars`;
+        }
+
+        // update output stats (size, lines)
+        function updateOutputStatsFromRaw(jsonString) {
+            if (!jsonString || jsonString === '✨ Ready — paste your base64 string and click <strong>Decode & Format</strong>') {
+                outputSizeSpan.innerText = '—';
+                return;
+            }
+            const bytes = new Blob([jsonString]).size;
+            const kb = (bytes / 1024).toFixed(1);
+            const lines = jsonString.split(/\r?\n/).length;
+            outputSizeSpan.innerText = `${bytes} B (${kb} KB) · ${lines} lines`;
+        }
+
+        // fancy syntax highlighting for JSON (lightweight + readable)
+        function highlightJSON(jsonObj) {
+            let jsonStr = JSON.stringify(jsonObj, null, 2);
+            // escape HTML
+            jsonStr = jsonStr.replace(/[&<>]/g, (m) => {
+                if (m === '&') return '&amp;';
+                if (m === '<') return '&lt;';
+                if (m === '>') return '&gt;';
+                return m;
+            });
+            // highlight keys (yellow)
+            jsonStr = jsonStr.replace(/("(\\u[a-fA-F0-9]{4}|\\[^u]|[^\\"])*")(\s*:)/g, '<span style="color:#facc15;">$1$3</span>');
+            // highlight string values (soft green)
+            jsonStr = jsonStr.replace(/:(\s*)"(\\u[a-fA-F0-9]{4}|\\[^u]|[^\\"])*"/g, (match) => {
+                return match.replace(/"(\\u[a-fA-F0-9]{4}|\\[^u]|[^\\"])*"/g, '<span style="color:#86efac;">$&</span>');
+            });
+            // highlight numbers
+            jsonStr = jsonStr.replace(/(:\s*)(\d+\.?\d*)([,\n}])/g, '$1<span style="color:#fde047;">$2</span>$3');
+            // highlight booleans & null
+            jsonStr = jsonStr.replace(/\b(true|false|null)\b/g, '<span style="color:#c084fc;">$1</span>');
+            return jsonStr;
+        }
+
+        // ----- core decompression & decoding (base64 + gzip) -----
+        async function decompressBase64Gzip(base64Input) {
+            let clean = base64Input.trim();
+            if (!clean) throw new Error('Empty input');
+            // remove any whitespace (line breaks, spaces)
+            clean = clean.replace(/\s/g, '');
+            if (!/^[A-Za-z0-9+/]+=*$/.test(clean)) {
+                throw new Error('Invalid Base64 format. Only A-Z a-z 0-9 + / = expected.');
+            }
+            // step 1: atob decode
+            let binaryStr;
+            try {
+                binaryStr = atob(clean);
+            } catch (e) {
+                throw new Error('Base64 decoding failed: ' + e.message);
+            }
+            const byteArray = new Uint8Array(binaryStr.length);
+            for (let i = 0; i < binaryStr.length; i++) {
+                byteArray[i] = binaryStr.charCodeAt(i);
+            }
+            // check gzip header (0x1F 0x8B)
+            if (byteArray.length < 2 || byteArray[0] !== 0x1F || byteArray[1] !== 0x8B) {
+                throw new Error('Not a valid gzip stream. Header 0x1F 0x8B missing — are you sure this is gzip+base64?');
+            }
+            // decompress using modern DecompressionStream or pako fallback
+            let decompressedBytes;
+            if (window.DecompressionStream && typeof ReadableStream !== 'undefined') {
+                try {
+                    const blob = new Blob([byteArray]);
+                    const decompressedStream = blob.stream().pipeThrough(new DecompressionStream('gzip'));
+                    const resp = await new Response(decompressedStream);
+                    const buf = await resp.arrayBuffer();
+                    decompressedBytes = new Uint8Array(buf);
+                } catch (err) {
+                    console.warn('DecompressionStream failed, fallback to pako', err);
+                    decompressedBytes = pako.ungzip(byteArray);
+                }
+            } else {
+                decompressedBytes = pako.ungzip(byteArray);
+            }
+            const decoder = new TextDecoder('utf-8');
+            const jsonString = decoder.decode(decompressedBytes);
+            // parse to validate JSON
+            let parsed;
+            try {
+                parsed = JSON.parse(jsonString);
+            } catch (e) {
+                const trimmed = jsonString.trim();
+                if (!trimmed) throw new Error('Decompressed data is empty or not JSON.');
+                try {
+                    parsed = JSON.parse(trimmed);
+                } catch (e2) {
+                    throw new Error(`Invalid JSON after decompression: ${e2.message}\nFirst 200 chars: ${trimmed.substring(0,200)}`);
+                }
+            }
+            const pretty = JSON.stringify(parsed, null, 2);
+            return { parsed, prettyString: pretty };
+        }
+
+        // main decode & display action
+        async function handleDecode() {
+            const rawInput = inputArea.value;
+            if (!rawInput.trim()) {
+                showMessage('⚠️ Please paste the base64-encoded GZIP data first.', true);
+                jsonOutputDiv.innerHTML = '<span style="color:#f87171;">❌ No input provided. Paste your encoded string and try again.</span>';
+                latestRawJson = '';
+                latestParsed = null;
+                updateOutputStatsFromRaw('');
+                return;
+            }
+            // loading state
+            jsonOutputDiv.innerHTML = '<span style="color:#94a3b8;">🔄 Decompressing & decoding ... (this may take a moment for large payloads)</span>';
+            try {
+                const start = performance.now();
+                const { parsed, prettyString } = await decompressBase64Gzip(rawInput);
+                const elapsed = (performance.now() - start).toFixed(0);
+                latestRawJson = prettyString;
+                latestParsed = parsed;
+                // render syntax-highlighted JSON
+                const highlighted = highlightJSON(parsed);
+                jsonOutputDiv.innerHTML = highlighted;
+                updateOutputStatsFromRaw(prettyString);
+                showMessage(`✅ Success! Decompressed ${prettyString.length} bytes in ${elapsed} ms. You can now copy or download JSON.`, false);
+            } catch (err) {
+                console.error(err);
+                let errMsg = err.message || 'Decompression error.';
+                if (errMsg.includes('gzip header')) errMsg += ' Make sure the string starts with H4sI... (base64 encoded gzip).';
+                jsonOutputDiv.innerHTML = `<span style="color:#f87171;">❌ Error: ${escapeHtml(errMsg)}</span>`;
+                latestRawJson = '';
+                latestParsed = null;
+                updateOutputStatsFromRaw('');
+                showMessage(`Decode failed: ${errMsg}`, true);
+            }
+        }
+
+        // simple escape for error messages
+        function escapeHtml(str) {
+            return str.replace(/[&<>]/g, function(m) {
+                if (m === '&') return '&amp;';
+                if (m === '<') return '&lt;';
+                if (m === '>') return '&gt;';
+                return m;
+            });
+        }
+
+        // ----- copy JSON to clipboard -----
+        async function copyJson() {
+            if (!latestRawJson) {
+                showMessage('No JSON available to copy. Please decode a base64+gzip payload first.', true);
+                return;
+            }
+            try {
+                await navigator.clipboard.writeText(latestRawJson);
+                showMessage('📋 JSON copied to clipboard successfully!', false);
+            } catch (err) {
+                showMessage('Clipboard error: ' + err.message, true);
+            }
+        }
+
+        // ----- download JSON as .json file (with timestamp)-----
+        function downloadJsonFile() {
+            if (!latestRawJson) {
+                showMessage('No JSON data to download. Please decode a base64+gzip string first.', true);
+                return;
+            }
+            // ensure valid json (double-check)
+            try {
+                JSON.parse(latestRawJson);
+            } catch (e) {
+                showMessage('Cannot download: stored JSON is invalid. Please re-decode.', true);
+                return;
+            }
+            const blob = new Blob([latestRawJson], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            const now = new Date();
+            const timestamp = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}_${String(now.getHours()).padStart(2,'0')}-${String(now.getMinutes()).padStart(2,'0')}-${String(now.getSeconds()).padStart(2,'0')}`;
+            a.download = `decompressed_${timestamp}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            const sizeKB = (blob.size / 1024).toFixed(1);
+            showMessage(`💾 JSON file saved: decompressed_${timestamp}.json (${blob.size} bytes / ${sizeKB} KB)`, false);
+        }
+
+        // ----- clear everything -----
+        function clearAll() {
+            inputArea.value = '';
+            jsonOutputDiv.innerHTML = '✨ Ready — paste your base64 string and click <strong>Decode & Format</strong>';
+            latestRawJson = '';
+            latestParsed = null;
+            updateInputStats();
+            updateOutputStatsFromRaw('');
+            messageDiv.innerHTML = '';
+            showMessage('Cleared. Input and output reset.', false);
+        }
+
+        // ----- load a realistic example (small gzip+base64) -----
+        function loadExample() {
+            // example object: includes nested data, arrays, timestamp
+            const demoObject = {
+                "status": "success",
+                "tool": "GZIP + Base64 decoder",
+                "features": ["decompress", "syntax highlight", "copy", "download JSON"],
+                "timestamp": new Date().toISOString(),
+                "metadata": {
+                    "version": "2.0",
+                    "compression": "gzip + base64"
+                }
+            };
+            const jsonRaw = JSON.stringify(demoObject);
+            const encoder = new TextEncoder();
+            const compressed = pako.gzip(encoder.encode(jsonRaw));
+            let binary = '';
+            for (let i = 0; i < compressed.length; i++) binary += String.fromCharCode(compressed[i]);
+            const base64Example = btoa(binary);
+            inputArea.value = base64Example;
+            updateInputStats();
+            // auto decode
+            setTimeout(() => {
+                handleDecode();
+            }, 30);
+            showMessage('📋 Example loaded with valid gzip+base64 payload. Auto-decoding...', false);
+        }
+
+        // event listeners
+        decodeBtn.addEventListener('click', handleDecode);
+        clearBtn.addEventListener('click', clearAll);
+        exampleBtn.addEventListener('click', loadExample);
+        copyBtn.addEventListener('click', copyJson);
+        downloadBtn.addEventListener('click', downloadJsonFile);
+        inputArea.addEventListener('input', updateInputStats);
+        inputArea.addEventListener('paste', () => setTimeout(updateInputStats, 10));
+        
+        // extra: ctrl+enter triggers decode
+        inputArea.addEventListener('keydown', (e) => {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+                e.preventDefault();
+                handleDecode();
+            }
+        });
+
+        // initial stats
+        updateInputStats();
+        updateOutputStatsFromRaw('');
+    })();
+</script>
+</body>
+</html>
