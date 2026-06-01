@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JSON Compare Pro - Client Side Tool</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3f37c9;
+            --success: #4caf50;
+            --danger: #f44336;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e9ecef 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-bottom: 20px;
+        }
+
+        .card:hover {
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .card-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 15px 15px 0 0 !important;
+            padding: 15px 20px;
+            font-weight: 600;
+        }
+
+        .form-control, .form-select {
+            border-radius: 10px;
+            border: 2px solid #e0e0e0;
+            transition: all 0.3s;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 0.2rem rgba(67, 97, 238, 0.25);
+        }
+
+        .btn-compare {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border: none;
+            border-radius: 50px;
+            padding: 12px 40px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+        }
+
+        .btn-compare:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(67, 97, 238, 0.4);
+        }
+
+        .table {
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        .table thead {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+        }
+
+        .table thead th {
+            border: none;
+            padding: 12px;
+        }
+
+        @@keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .diff-row {
+            animation: slideIn 0.3s ease-out;
+        }
+
+        .column-select {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 10px;
+            margin-top: 10px;
+        }
+
+        .column-tag {
+            display: inline-block;
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 20px;
+            padding: 5px 12px;
+            margin: 3px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.85rem;
+        }
+
+        .column-tag:hover {
+            border-color: var(--primary);
+            background: #f0f4ff;
+            transform: scale(1.05);
+        }
+
+        .column-tag.selected {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .loading {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .loading.show {
+            display: flex;
+        }
+
+        pre {
+            margin: 0;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            font-size: 0.85rem;
+            max-height: 150px;
+            overflow-y: auto;
+            background: #f8f9fa;
+            padding: 8px;
+            border-radius: 5px;
+        }
+
+        .stats-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+
+        .btn-icon {
+            padding: 4px 8px;
+            font-size: 0.8rem;
+        }
+
+        .json-actions {
+            margin-top: 8px;
+        }
+
+        .match-info {
+            font-size: 0.85rem;
+            color: #6c757d;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-dark mb-4">
+        <div class="container">
+            <span class="navbar-brand fs-3">
+                <i class="fas fa-code-branch me-2"></i>JSON Compare Pro
+            </span>
+            <span class="text-white-50">
+                <i class="fas fa-columns me-1"></i>Smart Column Matching
+            </span>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="row">
+            <!-- JSON 1 Section -->
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-database me-2"></i>JSON 1 - Source
+                        <div class="float-end">
+                            <button type="button" class="btn btn-sm btn-light" onclick="formatJson(1)">
+                                <i class="fas fa-magic"></i> Format
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">
+                                <i class="fas fa-upload me-1"></i>Upload File
+                            </label>
+                            <input type="file" class="form-control" accept=".json" onchange="handleFileUpload(this, 1)">
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">
+                                <i class="fas fa-code me-1"></i>JSON Content
+                            </label>
+                            <textarea id="json1" class="form-control" rows="10" 
+                                      placeholder='{"users":[{"id":1,"name":"John","amount":500}]}'>{
+  "users": [
+    {
+      "id": 1,
+      "name": "John",
+      "amount": 500,
+      "date": "2024-01-01"
+    },
+    {
+      "id": 2,
+      "name": "Jane",
+      "amount": 1200.50,
+      "date": "2024-01-02"
+    }
+  ]
+}</textarea>
+                        </div>
+                        
+                        <div class="column-select">
+                            <label class="fw-bold mb-2">
+                                <i class="fas fa-columns me-1"></i>Match Columns (JSON 1)
+                                <small class="text-muted">- Select fields to match objects</small>
+                            </label>
+                            <div id="columns1" class="mb-2">
+                                <span class="text-muted">Loading columns...</span>
+                            </div>
+                            <div class="json-actions">
+                                <button type="button" class="btn btn-sm btn-outline-secondary" onclick="clearSelections(1)">
+                                    <i class="fas fa-times"></i> Clear All
+                                </button>
+                                <button type="button" class="btn btn-sm btn-outline-primary" onclick="selectAllColumns(1)">
+                                    <i class="fas fa-check-double"></i> Select All
+                                </button>
+                                <button type="button" class="btn btn-sm btn-outline-info" onclick="detectColumns(1)">
+                                    <i class="fas fa-sync-alt"></i> Re-detect
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- JSON 2 Section -->
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-database me-2"></i>JSON 2 - Target
+                        <div class="float-end">
+                            <button type="button" class="btn btn-sm btn-light" onclick="formatJson(2)">
+                                <i class="fas fa-magic"></i> Format
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">
+                                <i class="fas fa-upload me-1"></i>Upload File
+                            </label>
+                            <input type="file" class="form-control" accept=".json" onchange="handleFileUpload(this, 2)">
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">
+                                <i class="fas fa-code me-1"></i>JSON Content
+                            </label>
+                            <textarea id="json2" class="form-control" rows="10" 
+                                      placeholder='{"users":[{"id":1,"name":"John","amount":500.00}]}'>{
+  "users": [
+    {
+      "id": 1,
+      "name": "John",
+      "amount": 500.00,
+      "date": "2024-01-01"
+    },
+    {
+      "id": 3,
+      "name": "Bob",
+      "amount": 800,
+      "date": "2024-01-03"
+    }
+  ]
+}</textarea>
+                        </div>
+                        
+                        <div class="column-select">
+                            <label class="fw-bold mb-2">
+                                <i class="fas fa-columns me-1"></i>Match Columns (JSON 2)
+                                <small class="text-muted">- Select fields to match objects</small>
+                            </label>
+                            <div id="columns2" class="mb-2">
+                                <span class="text-muted">Loading columns...</span>
+                            </div>
+                            <div class="json-actions">
+                                <button type="button" class="btn btn-sm btn-outline-secondary" onclick="clearSelections(2)">
+                                    <i class="fas fa-times"></i> Clear All
+                                </button>
+                                <button type="button" class="btn btn-sm btn-outline-primary" onclick="selectAllColumns(2)">
+                                    <i class="fas fa-check-double"></i> Select All
+                                </button>
+                                <button type="button" class="btn btn-sm btn-outline-info" onclick="detectColumns(2)">
+                                    <i class="fas fa-sync-alt"></i> Re-detect
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center mt-3 mb-4">
+            <button class="btn btn-compare text-white" onclick="compareJSON()">
+                <i class="fas fa-exchange-alt me-2"></i>Compare JSONs
+            </button>
+        </div>
+
+        <!-- Results Section -->
+        <div id="results" style="display: none;">
+            <div class="stats-card">
+                <div class="row text-center">
+                    <div class="col-md-4">
+                        <h4><i class="fas fa-chart-line"></i> <span id="totalDiffs">0</span></h4>
+                        <p>Differences Found</p>
+                    </div>
+                    <div class="col-md-4">
+                        <h4><i class="fas fa-check-circle"></i> <span id="matchStatus">-</span></h4>
+                        <p>Match Status</p>
+                    </div>
+                    <div class="col-md-4">
+                        <h4><i class="fas fa-clock"></i> <span id="compareTime">0</span>ms</h4>
+                        <p>Compare Time</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-list-alt me-2"></i>Detailed Differences
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover" id="diffTable">
+                            <thead>
+                                <tr>
+                                    <th><i class="fas fa-road"></i> Path</th>
+                                    <th><i class="fas fa-tag"></i> Status</th>
+                                    <th><i class="fas fa-database"></i> JSON 1 Value</th>
+                                    <th><i class="fas fa-database"></i> JSON 2 Value</th>
+                                    <th><i class="fas fa-info-circle"></i> Reason</th>
+                                </tr>
+                            </thead>
+                            <tbody id="diffBody">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="loading" id="loading">
+        <div class="spinner-border text-light" style="width: 3rem; height: 3rem;" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+
+    <script>
+        // Store selected columns for each side
+        let selectedColumns1 = [];
+        let selectedColumns2 = [];
+        
+        // Detect columns from JSON
+        function detectColumns(side) {
+            const textarea = document.getElementById(`json${side}`);
+            const jsonText = textarea.value;
+            
+            if (!jsonText.trim()) {
+                document.getElementById(`columns${side}`).innerHTML = '<span class="text-muted">No columns detected (paste JSON first)</span>';
+                return;
+            }
+            
+            try {
+                const json = JSON.parse(jsonText);
+                const columns = new Set();
+                extractColumns(json, columns);
+                
+                const columnsArray = Array.from(columns).sort();
+                const container = document.getElementById(`columns${side}`);
+                
+                if (columnsArray.length === 0) {
+                    container.innerHTML = '<span class="text-muted">No fields found in JSON</span>';
+                    return;
+                }
+                
+                const selected = side === 1 ? selectedColumns1 : selectedColumns2;
+                let html = '';
+                columnsArray.forEach(col => {
+                    const isSelected = selected.includes(col);
+                    html += `<span class="column-tag ${isSelected ? 'selected' : ''}" onclick="toggleColumn(${side}, '${col}')">${col}</span>`;
+                });
+                container.innerHTML = html;
+            } catch(e) {
+                document.getElementById(`columns${side}`).innerHTML = '<span class="text-danger">Invalid JSON format</span>';
+            }
+        }
+        
+        function extractColumns(obj, columns, prefix = '') {
+            if (typeof obj !== 'object' || obj === null) return;
+            
+            if (Array.isArray(obj)) {
+                obj.forEach(item => extractColumns(item, columns, prefix));
+                return;
+            }
+            
+            for (let key in obj) {
+                if (obj.hasOwnProperty(key)) {
+                    const fullKey = prefix ? `${prefix}.${key}` : key;
+                    columns.add(fullKey);
+                    
+                    if (typeof obj[key] === 'object' && obj[key] !== null && !Array.isArray(obj[key])) {
+                        extractColumns(obj[key], columns, fullKey);
+                    } else if (Array.isArray(obj[key]) && obj[key].length > 0 && typeof obj[key][0] === 'object') {
+                        extractColumns(obj[key][0], columns, fullKey);
+                    }
+                }
+            }
+        }
+        
+        function toggleColumn(side, column) {
+            const selected = side === 1 ? selectedColumns1 : selectedColumns2;
+            const index = selected.indexOf(column);
+            
+            if (index > -1) {
+                selected.splice(index, 1);
+            } else {
+                selected.push(column);
+            }
+            
+            // Update UI
+            const container = document.getElementById(`columns${side}`);
+            const tags = container.getElementsByClassName('column-tag');
+            for (let tag of tags) {
+                if (tag.innerText === column) {
+                    if (selected.includes(column)) {
+                        tag.classList.add('selected');
+                    } else {
+                        tag.classList.remove('selected');
+                    }
+                }
+            }
+        }
+        
+        function clearSelections(side) {
+            if (side === 1) {
+                selectedColumns1 = [];
+            } else {
+                selectedColumns2 = [];
+            }
+            detectColumns(side);
+        }
+        
+        function selectAllColumns(side) {
+            const container = document.getElementById(`columns${side}`);
+            const tags = container.getElementsByClassName('column-tag');
+            const selected = [];
+            
+            for (let tag of tags) {
+                if (!tag.classList.contains('text-muted') && !tag.classList.contains('text-danger')) {
+                    const column = tag.innerText;
+                    selected.push(column);
+                    tag.classList.add('selected');
+                }
+            }
+            
+            if (side === 1) {
+                selectedColumns1 = selected;
+            } else {
+                selectedColumns2 = selected;
+            }
+        }
+        
+        // Compare JSON function
+        function compareJSON() {
+            const startTime = performance.now();
+            
+            try {
+                const json1Text = document.getElementById('json1').value;
+                const json2Text = document.getElementById('json2').value;
+                
+                if (!json1Text.trim() || !json2Text.trim()) {
+                    alert('Please provide both JSON inputs');
+                    return;
+                }
+                
+                const json1 = JSON.parse(json1Text);
+                const json2 = JSON.parse(json2Text);
+                
+                // Get match columns (intersection of both sides)
+                const matchColumns = getMatchColumns();
+                
+                const differences = [];
+                compareElements(json1, json2, '$', differences, matchColumns);
+                
+                const endTime = performance.now();
+                displayResults(differences, endTime - startTime);
+                
+            } catch(e) {
+                alert('Invalid JSON format: ' + e.message);
+            }
+        }
+        
+        function getMatchColumns() {
+            // Return intersection of selected columns from both sides
+            if (selectedColumns1.length === 0 && selectedColumns2.length === 0) return [];
+            if (selectedColumns1.length === 0) return selectedColumns2;
+            if (selectedColumns2.length === 0) return selectedColumns1;
+            return selectedColumns1.filter(col => selectedColumns2.includes(col));
+        }
+        
+        function compareElements(e1, e2, path, differences, matchColumns) {
+            const type1 = getType(e1);
+            const type2 = getType(e2);
+            
+            if (type1 !== type2) {
+                addDiff(differences, path, stringify(e1), stringify(e2), 'Type mismatch');
+                return;
+            }
+            
+            if (type1 === 'object') {
+                compareObjects(e1, e2, path, differences, matchColumns);
+            } else if (type1 === 'array') {
+                compareArrays(e1, e2, path, differences, matchColumns);
+            } else {
+                if (!areEqualValues(e1, e2)) {
+                    addDiff(differences, path, stringify(e1), stringify(e2), 'Value mismatch');
+                }
+            }
+        }
+        
+        function areEqualValues(v1, v2) {
+            if (v1 === v2) return true;
+            
+            // Numeric equality (500 vs 500.00)
+            const num1 = parseFloat(v1);
+            const num2 = parseFloat(v2);
+            if (!isNaN(num1) && !isNaN(num2) && num1 === num2) return true;
+            
+            // String case-insensitive comparison
+            if (typeof v1 === 'string' && typeof v2 === 'string') {
+                return v1.trim().toLowerCase() === v2.trim().toLowerCase();
+            }
+            
+            return false;
+        }
+        
+        function compareObjects(o1, o2, path, differences, matchColumns) {
+            const allKeys = new Set([...Object.keys(o1), ...Object.keys(o2)]);
+            
+            for (let key of allKeys) {
+                const newPath = path === '$' ? `$.${key}` : `${path}.${key}`;
+                const has1 = o1.hasOwnProperty(key);
+                const has2 = o2.hasOwnProperty(key);
+                
+                if (!has1 && has2) {
+                    addDiff(differences, newPath, '(missing)', stringify(o2[key]), 'Missing in JSON1');
+                } else if (has1 && !has2) {
+                    addDiff(differences, newPath, stringify(o1[key]), '(missing)', 'Missing in JSON2');
+                } else {
+                    compareElements(o1[key], o2[key], newPath, differences, matchColumns);
+                }
+            }
+        }
+        
+        function compareArrays(arr1, arr2, path, differences, matchColumns) {
+            // If no match columns or not objects, compare by index
+            if (matchColumns.length === 0 || !isObjectArray(arr1) || !isObjectArray(arr2)) {
+                compareArraysByIndex(arr1, arr2, path, differences, matchColumns);
+                return;
+            }
+            
+            const used2 = new Array(arr2.length).fill(false);
+            
+            // Match objects from arr1 to arr2
+            for (let i = 0; i < arr1.length; i++) {
+                let matched = false;
+                const identifier1 = getObjectIdentifier(arr1[i], matchColumns);
+                
+                for (let j = 0; j < arr2.length; j++) {
+                    if (!used2[j] && isMatchingObject(arr1[i], arr2[j], matchColumns)) {
+                        used2[j] = true;
+                        compareElements(arr1[i], arr2[j], `${path}[${identifier1}]`, differences, matchColumns);
+                        matched = true;
+                        break;
+                    }
+                }
+                
+                if (!matched) {
+                    addDiff(differences, `${path}[${identifier1}]`, stringify(arr1[i]), '(missing)', 'Only in JSON1');
+                }
+            }
+            
+            // Find unmatched items in arr2
+            for (let j = 0; j < arr2.length; j++) {
+                if (!used2[j]) {
+                    const identifier2 = getObjectIdentifier(arr2[j], matchColumns);
+                    addDiff(differences, `${path}[${identifier2}]`, '(missing)', stringify(arr2[j]), 'Only in JSON2');
+                }
+            }
+        }
+        
+        function compareArraysByIndex(arr1, arr2, path, differences, matchColumns) {
+            const maxLen = Math.max(arr1.length, arr2.length);
+            
+            for (let i = 0; i < maxLen; i++) {
+                const indexPath = `${path}[${i}]`;
+                
+                if (i < arr1.length && i < arr2.length) {
+                    compareElements(arr1[i], arr2[i], indexPath, differences, matchColumns);
+                } else if (i < arr1.length) {
+                    addDiff(differences, indexPath, stringify(arr1[i]), '(missing)', 'Only in JSON1');
+                } else {
+                    addDiff(differences, indexPath, '(missing)', stringify(arr2[i]), 'Only in JSON2');
+                }
+            }
+        }
+        
+        function isObjectArray(arr) {
+            return arr.length > 0 && arr.every(item => typeof item === 'object' && item !== null && !Array.isArray(item));
+        }
+        
+        function isMatchingObject(obj1, obj2, matchColumns) {
+            for (let column of matchColumns) {
+                const val1 = getNestedValue(obj1, column);
+                const val2 = getNestedValue(obj2, column);
+                
+                if (val1 === undefined || val2 === undefined) return false;
+                if (!areEqualValues(val1, val2)) return false;
+            }
+            return true;
+        }
+        
+        function getNestedValue(obj, path) {
+            const parts = path.split('.');
+            let current = obj;
+            
+            for (let part of parts) {
+                if (current === null || typeof current !== 'object' || !current.hasOwnProperty(part)) {
+                    return undefined;
+                }
+                current = current[part];
+            }
+            return current;
+        }
+        
+        function getObjectIdentifier(obj, matchColumns) {
+            const parts = [];
+            for (let column of matchColumns) {
+                const val = getNestedValue(obj, column);
+                if (val !== undefined) {
+                    parts.push(`${column}=${val}`);
+                }
+            }
+            return parts.length ? parts.join(',') : 'object';
+        }
+        
+        function getType(val) {
+            if (val === null) return 'null';
+            if (Array.isArray(val)) return 'array';
+            if (typeof val === 'object') return 'object';
+            return 'primitive';
+        }
+        
+        function stringify(val) {
+            if (val === null) return 'null';
+            if (typeof val === 'object') return JSON.stringify(val, null, 2);
+            return String(val);
+        }
+        
+        function addDiff(differences, path, val1, val2, reason) {
+            differences.push({ path, val1, val2, reason });
+        }
+        
+        function displayResults(differences, timeMs) {
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.style.display = 'block';
+            
+            document.getElementById('totalDiffs').textContent = differences.length;
+            document.getElementById('compareTime').textContent = Math.round(timeMs);
+            
+            const isFullyMatched = differences.length === 0;
+            const matchStatus = isFullyMatched ? '✓ Matched' : '✗ Not Matched';
+            document.getElementById('matchStatus').innerHTML = matchStatus;
+            document.getElementById('matchStatus').style.color = isFullyMatched ? '#4caf50' : '#ff6b6b';
+            
+            const tbody = document.getElementById('diffBody');
+            tbody.innerHTML = '';
+            
+            if (differences.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="5" class="text-center text-success">
+                            <i class="fas fa-check-circle me-2"></i>
+                            No differences found! Both JSON structures match perfectly.
+                        </td>
+                    </tr>
+                `;
+            } else {
+                differences.forEach(diff => {
+                    const row = tbody.insertRow();
+                    row.className = 'diff-row';
+                    row.innerHTML = `
+                        <td><code>${escapeHtml(diff.path)}</code></td>
+                        <td><span class="badge bg-danger">Not Matched</span></td>
+                        <td><pre>${escapeHtml(truncate(diff.val1, 200))}</pre></td>
+                        <td><pre>${escapeHtml(truncate(diff.val2, 200))}</pre></td>
+                        <td><small class="text-muted">${escapeHtml(diff.reason)}</small></td>
+                    `;
+                });
+            }
+            
+            // Scroll to results
+            resultsDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+        
+        function truncate(str, maxLen) {
+            if (!str) return str;
+            if (str.length <= maxLen) return str;
+            return str.substring(0, maxLen) + '...';
+        }
+        
+        function escapeHtml(str) {
+            if (!str) return '';
+            return str.replace(/[&<>]/g, function(m) {
+                if (m === '&') return '&amp;';
+                if (m === '<') return '&lt;';
+                if (m === '>') return '&gt;';
+                return m;
+            });
+        }
+        
+        function formatJson(side) {
+            const textarea = document.getElementById(`json${side}`);
+            try {
+                const json = JSON.parse(textarea.value);
+                textarea.value = JSON.stringify(json, null, 2);
+                detectColumns(side);
+            } catch(e) {
+                alert('Invalid JSON format');
+            }
+        }
+        
+        function handleFileUpload(input, side) {
+            const file = input.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const textarea = document.getElementById(`json${side}`);
+                textarea.value = e.target.result;
+                detectColumns(side);
+            };
+            reader.readAsText(file);
+        }
+        
+        // Initialize
+        window.onload = function() {
+            detectColumns(1);
+            detectColumns(2);
+        };
+    </script>
+</body>
+</html>
