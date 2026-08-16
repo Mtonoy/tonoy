@@ -1,0 +1,545 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>ToolNest Ultimate Browser Toolkit</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+    <style>
+        :root {
+            --bg: #f6f8fc;
+            --card: #fff;
+            --soft: #f1f3f9;
+            --text: #111827;
+            --muted: #667085;
+            --line: #e4e7ec;
+            --p: #635bff;
+            --p2: #8b5cf6;
+            --good: #079455;
+            --bad: #d92d20;
+            --shadow: 0 16px 45px #18204a12
+        }
+
+        html.dark {
+            --bg: #080c16;
+            --card: #111827;
+            --soft: #0d1524;
+            --text: #f5f7ff;
+            --muted: #98a2b3;
+            --line: #263247;
+            --shadow: 0 20px 55px #0008
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        body {
+            margin: 0;
+            background: radial-gradient(circle at 15% 0, #e9e7ff, transparent 28%), var(--bg);
+            color: var(--text);
+            font-family: Inter, system-ui, -apple-system, Segoe UI, sans-serif;
+            transition: .25s
+        }
+
+        button,
+        input,
+        textarea,
+        select {
+            font: inherit
+        }
+
+        .top {
+            position: sticky;
+            top: 0;
+            z-index: 20;
+            background: #ffffffdf;
+            backdrop-filter: blur(18px);
+            border-bottom: 1px solid var(--line)
+        }
+
+        .dark .top {
+            background: #080c16df
+        }
+
+        .nav {
+            max-width: 1280px;
+            margin: auto;
+            padding: 14px 22px;
+            display: flex;
+            gap: 14px;
+            align-items: center
+        }
+
+        .logo {
+            font-size: 23px;
+            font-weight: 950;
+            white-space: nowrap
+        }
+
+        .logo span {
+            color: var(--p)
+        }
+
+        .search {
+            flex: 1;
+            position: relative
+        }
+
+        .search input {
+            width: 100%;
+            padding: 12px 15px 12px 42px;
+            border: 1px solid var(--line);
+            background: var(--soft);
+            color: var(--text);
+            border-radius: 14px;
+            outline: 0
+        }
+
+        .search i {
+            position: absolute;
+            left: 15px;
+            top: 10px;
+            font-style: normal;
+            font-size: 19px
+        }
+
+        .round {
+            border: 1px solid var(--line);
+            background: var(--card);
+            color: var(--text);
+            border-radius: 12px;
+            padding: 10px 12px;
+            cursor: pointer
+        }
+
+        .hero {
+            max-width: 1280px;
+            margin: auto;
+            padding: 58px 22px 30px
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 7px 11px;
+            border-radius: 99px;
+            background: #ebe9ff;
+            color: #5146d8;
+            font-weight: 800;
+            font-size: 11px
+        }
+
+        .hero h1 {
+            font-size: clamp(40px, 6vw, 70px);
+            line-height: 1;
+            letter-spacing: -3px;
+            margin: 15px 0
+        }
+
+        .hero h1 span {
+            color: var(--p)
+        }
+
+        .hero p {
+            max-width: 720px;
+            color: var(--muted);
+            font-size: 17px;
+            line-height: 1.6
+        }
+
+        .pills {
+            display: flex;
+            gap: 9px;
+            flex-wrap: wrap;
+            margin-top: 22px
+        }
+
+        .pill {
+            padding: 9px 13px;
+            border: 1px solid var(--line);
+            background: var(--card);
+            color: var(--muted);
+            border-radius: 99px;
+            cursor: pointer
+        }
+
+        .pill.active {
+            background: var(--text);
+            color: var(--card);
+            border-color: var(--text)
+        }
+
+        main {
+            max-width: 1280px;
+            margin: auto;
+            padding: 0 22px 70px
+        }
+
+        .section {
+            margin-top: 24px
+        }
+
+        .section h2 {
+            font-size: 20px
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(225px, 1fr));
+            gap: 15px
+        }
+
+        .card {
+            background: var(--card);
+            border: 1px solid var(--line);
+            border-radius: 18px;
+            padding: 20px;
+            min-height: 155px;
+            box-shadow: var(--shadow);
+            cursor: pointer;
+            transition: .2s;
+            position: relative
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            border-color: #aaa4ff
+        }
+
+        .ico {
+            width: 43px;
+            height: 43px;
+            display: grid;
+            place-items: center;
+            border-radius: 13px;
+            background: #efedff;
+            color: #554ce8;
+            font-weight: 900
+        }
+
+        .dark .ico {
+            background: #29234b
+        }
+
+        .card h3 {
+            font-size: 16px;
+            margin: 14px 0 6px
+        }
+
+        .card p {
+            font-size: 13px;
+            color: var(--muted);
+            margin: 0
+        }
+
+        .arrow {
+            position: absolute;
+            right: 17px;
+            bottom: 18px;
+            color: var(--muted)
+        }
+
+        .empty {
+            text-align: center;
+            padding: 60px;
+            color: var(--muted)
+        }
+
+        .overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: #030712aa;
+            z-index: 50;
+            align-items: center;
+            justify-content: center;
+            padding: 18px
+        }
+
+        .overlay.open {
+            display: flex
+        }
+
+        .modal {
+            width: min(900px, 100%);
+            max-height: 92vh;
+            overflow: auto;
+            background: var(--card);
+            border: 1px solid var(--line);
+            border-radius: 24px;
+            box-shadow: 0 30px 100px #0009
+        }
+
+        .head {
+            padding: 19px 22px;
+            border-bottom: 1px solid var(--line);
+            display: flex;
+            justify-content: space-between;
+            align-items: center
+        }
+
+        .head h2 {
+            margin: 0;
+            font-size: 21px
+        }
+
+        .close {
+            border: 0;
+            background: var(--soft);
+            color: var(--text);
+            padding: 9px 12px;
+            border-radius: 10px;
+            cursor: pointer
+        }
+
+        .body {
+            padding: 22px
+        }
+
+        .fields {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 13px
+        }
+
+        .field label {
+            display: block;
+            font-size: 12px;
+            font-weight: 800;
+            color: var(--muted);
+            margin-bottom: 6px
+        }
+
+        .field input,
+        .field textarea,
+        .field select {
+            width: 100%;
+            padding: 11px 12px;
+            border: 1px solid var(--line);
+            background: var(--soft);
+            color: var(--text);
+            border-radius: 11px;
+            outline: 0
+        }
+
+        .field textarea {
+            min-height: 210px;
+            resize: vertical;
+            font-family: ui-monospace, Consolas, monospace
+        }
+
+        .actions {
+            display: flex;
+            gap: 9px;
+            flex-wrap: wrap;
+            margin-top: 16px
+        }
+
+        .btn {
+            border: 0;
+            border-radius: 11px;
+            padding: 11px 16px;
+            background: linear-gradient(90deg, var(--p), var(--p2));
+            color: #fff;
+            font-weight: 800;
+            cursor: pointer
+        }
+
+        .btn.alt {
+            background: var(--soft);
+            color: var(--text);
+            border: 1px solid var(--line)
+        }
+
+        .result {
+            margin-top: 16px;
+            padding: 15px;
+            border: 1px solid var(--line);
+            background: var(--soft);
+            border-radius: 14px
+        }
+
+        .result pre {
+            margin: 0;
+            white-space: pre-wrap;
+            word-break: break-word;
+            max-height: 350px;
+            overflow: auto
+        }
+
+        .good {
+            color: var(--good)
+        }
+
+        .bad {
+            color: var(--bad)
+        }
+
+        .drop {
+            border: 2px dashed var(--line);
+            border-radius: 16px;
+            padding: 30px;
+            text-align: center
+        }
+
+        .drop input {
+            margin-top: 15px
+        }
+
+        .preview {
+            max-width: 100%;
+            max-height: 330px;
+            margin-top: 15px;
+            border-radius: 12px
+        }
+
+        .small {
+            font-size: 12px;
+            color: var(--muted)
+        }
+
+        @media(max-width:680px) {
+            .nav {
+                flex-wrap: wrap
+            }
+
+            .search {
+                order: 3;
+                flex-basis: 100%
+            }
+
+            .fields {
+                grid-template-columns: 1fr
+            }
+
+            .grid {
+                grid-template-columns: repeat(auto-fill, minmax(180px, 1fr))
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header class="top">
+        <div class="nav">
+            <div class="logo">Tool<span>Nest</span> ⚡</div>
+            <div class="search"><i>⌕</i><input id="search" placeholder="Search any tool..."></div><button class="round"
+                id="theme">🌙</button>
+        </div>
+    </header>
+    <section class="hero"><span class="badge">42 TOOLS • 100% BROWSER BASED</span>
+        <h1>One place for<br><span>everything.</span></h1>
+        <p>Finance calculators, developer utilities, image/PDF tools and everyday helpers — beautifully designed and
+            ready to use.</p>
+        <div class="pills" id="cats"></div>
+    </section>
+    <main id="main"></main>
+    <div class="overlay" id="overlay">
+        <div class="modal">
+            <div class="head">
+                <h2 id="title"></h2><button class="close" id="close">✕</button>
+            </div>
+            <div class="body" id="body"></div>
+        </div>
+    </div>
+    <script>
+        const D = {
+            Finance: [["Loan EMI Calculator", "EMI", "emi"], ["Mortgage Calculator", "⌂", "mortgage"], ["Interest Calculator", "%", "interest"], ["Salary Calculator", "৳", "salary"], ["VAT Calculator", "VAT", "vat"], ["Discount Calculator", "%", "discount"], ["Profit Margin Calculator", "↗", "margin"], ["Investment Calculator", "↗", "investment"], ["Compound Interest Calculator", "CI", "compound"]],
+            "Developer Tools": [["JSON Formatter", "{}", "json"], ["JSON Validator", "✓", "jsonv"], ["JSON to C# Class Generator", "C#", "csharp"], ["SQL Formatter", "SQL", "sql"], ["SQL Query Formatter", "SQL", "sql"], ["Regex Tester", ".*", "regex"], ["Base64 Encoder/Decoder", "64", "base64"], ["URL Encoder/Decoder", "URL", "url"], ["JWT Decoder", "JWT", "jwt"], ["HTML Formatter", "<>", "html"], ["CSS Minifier", "CSS", "css"], ["JavaScript Minifier", "JS", "js"], ["Timestamp Converter", "TS", "timestamp"], ["UUID Generator", "ID", "uuid"], ["Cron Expression Generator", "CRON", "cron"]],
+            "Image/File Tools": [["Image Resize", "↔", "resize"], ["Image Compress", "◉", "compress"], ["JPG → PNG", "JPG", "jpgpng"], ["PNG → JPG", "PNG", "pngjpg"], ["Image to WebP", "WEBP", "webp"], ["PDF Merge", "PDF", "pdfmerge"], ["PDF Split", "PDF", "pdfsplit"], ["CSV → JSON", "CSV", "csvjson"], ["JSON → CSV", "JSON", "jsoncsv"]],
+            "Everyday Tools": [["Age Calculator", "AGE", "age"], ["Date Difference Calculator", "DATE", "datediff"], ["Percentage Calculator", "%", "percentage"], ["Time Calculator", "TIME", "time"], ["Unit Converter", "UNIT", "unit"], ["BMI Calculator", "BMI", "bmi"], ["GPA Calculator", "GPA", "gpa"], ["Number to Words", "123", "words"], ["Time Zone Converter", "TZ", "timezone"]]
+        };
+        let active = "All"; const $ = x => document.getElementById(x); function esc(s) { return String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;" }[c])) }
+        $("cats").innerHTML = ["All", ...Object.keys(D)].map(x => `<button class="pill ${x === "All" ? "active" : ""}" data-cat="${x}">${x}</button>`).join("");
+        $("cats").onclick = e => { if (!e.target.matches(".pill")) return; active = e.target.dataset.cat; document.querySelectorAll(".pill").forEach(x => x.classList.toggle("active", x === e.target)); render() }; $("search").oninput = render;
+        function render() { let q = $("search").value.toLowerCase(); $("main").innerHTML = ""; let found = 0; for (let [cat, list] of Object.entries(D)) { if (active != "All" && active != cat) continue; let a = list.filter(x => x[0].toLowerCase().includes(q)); if (!a.length) continue; found += a.length; let s = document.createElement("section"); s.className = "section"; s.innerHTML = `<h2>${cat}</h2><div class="grid">${a.map(x => `<article class="card" data-t="${x[2]}" data-n="${esc(x[0])}"><div class="ico">${x[1]}</div><h3>${x[0]}</h3><p>Open tool and calculate instantly</p><span class="arrow">→</span></article>`).join("")}</div>`; $("main").appendChild(s) } if (!found) $("main").innerHTML = '<div class="empty">No matching tool found.</div>'; document.querySelectorAll(".card").forEach(c => c.onclick = () => open(c.dataset.t, c.dataset.n)) }
+        $("theme").onclick = () => { document.documentElement.classList.toggle("dark"); $("theme").textContent = document.documentElement.classList.contains("dark") ? "☀️" : "🌙"; localStorage.setItem("tn-theme", document.documentElement.classList.contains("dark") ? "dark" : "light") }; if (localStorage.getItem("tn-theme") == "dark") $("theme").click();
+        $("close").onclick = close; $("overlay").onclick = e => { if (e.target === $("overlay")) close() }; document.addEventListener("keydown", e => e.key === "Escape" && close()); function close() { $("overlay").classList.remove("open") }
+        const N = (id, l) => `<div class="field"><label>${l}</label><input id="${id}" type="number" step="any"></div>`, F = (l, id = "input") => `<div class="field"><label>${l}</label><textarea id="${id}" spellcheck="false"></textarea></div>`, R = () => `<div class="result" id="result"></div>`, A = (txt = "Calculate") => `<div class="actions"><button class="btn" id="run">${txt}</button><button class="btn alt" id="clear">Clear</button></div>`;
+        function open(t, n) { $("title").textContent = n; $("body").innerHTML = UI(t); $("overlay").classList.add("open"); bind(t) }
+        function UI(t) {
+            let finance = {
+                emi: N("p", "Loan amount") + N("r", "Annual interest %") + N("n", "Months"),
+                mortgage: N("p", "Mortgage amount") + N("r", "Annual interest %") + N("n", "Term (years)"),
+                interest: N("p", "Principal") + N("r", "Rate %") + N("y", "Years"),
+                salary: N("s", "Gross monthly salary") + N("tax", "Tax / deductions %"),
+                vat: N("a", "Amount") + N("v", "VAT %", "") + N("v", "VAT %"),
+                discount: N("p", "Original price") + N("d", "Discount %"),
+                margin: N("rev", "Revenue") + N("cost", "Cost"),
+                investment: N("p", "Initial investment") + N("a", "Monthly contribution") + N("r", "Annual return %") + N("y", "Years"),
+                compound: N("p", "Principal") + N("r", "Annual rate %") + N("y", "Years") + N("n", "Compounds / year"),
+                bmi: N("w", "Weight kg") + N("h", "Height m"), gpa: N("g", "Grade points") + N("c", "Credits")
+            };
+            if (finance[t]) return `<div class="fields">${finance[t]}</div>${A()}${R()}`;
+            if (t === "percentage") return `<div class="fields">${N("v", "Value") + N("p", "Percentage %")}</div>${A()}${R()}`;
+            if (t === "age") return `<div class="fields"><div class="field"><label>Date of birth</label><input id="dob" type="date"></div><div class="field"><label>Calculate as of</label><input id="asof" type="date" value="${new Date().toISOString().slice(0, 10)}"></div></div>${A()}${R()}`;
+            if (t === "datediff") return `<div class="fields"><div class="field"><label>Start date</label><input id="d1" type="date"></div><div class="field"><label>End date</label><input id="d2" type="date"></div></div>${A()}${R()}`;
+            if (t === "timestamp") return `<div class="fields">${N("ts", "Unix timestamp (seconds)")}</div>${A("Convert")}${R()}`;
+            if (t === "uuid") return A("Generate UUID") + R();
+            if (t === "unit") return `<div class="fields">${N("uv", "Value")}<div class="field"><label>Conversion</label><select id="conv"><option>km-mi</option><option>mi-km</option><option>kg-lb</option><option>lb-kg</option><option>c-f</option><option>f-c</option><option>m-ft</option><option>ft-m</option></select></div></div>${A("Convert")}${R()}`;
+            if (t === "time") return `<div class="fields">${N("h", "Hours") + N("m", "Minutes") + N("ah", "Add hours") + N("am", "Add minutes")}</div>${A()}${R()}`;
+            if (t === "words") return N("wn", "Number") + A("Convert to words") + R();
+            if (t === "timezone") return `<div class="fields"><div class="field"><label>Date/time</label><input id="dt" type="datetime-local"></div><div class="field"><label>Timezone</label><select id="tz">${Intl.supportedValuesOf("timeZone").map(x => `<option>${x}</option>`).join("")}</select></div></div>${A("Convert")}${R()}`;
+            if (t === "regex") return `<div class="fields"><div class="field"><label>Regex pattern</label><input id="pattern" placeholder="\\d+"></div><div class="field"><label>Flags</label><input id="flags" value="g"></div></div>${F("Test text", "text")}${A("Test Regex")}${R()}`;
+            if (t === "base64" || t === "url") return F("Input") + `<div class="actions"><button class="btn" id="enc">Encode</button><button class="btn" id="dec">Decode</button></div>${R()}`;
+            if (["json", "jsonv", "csharp", "sql", "html", "css", "js", "jwt", "cron", "csvjson", "jsoncsv"].includes(t)) return F("Input") + A("Process") + R();
+            if (["resize", "compress", "jpgpng", "pngjpg", "webp"].includes(t)) return `<div class="drop"><b>Select an image</b><br><span class="small">Everything happens locally in your browser.</span><br><input id="img" type="file" accept="image/*"></div><div class="fields" style="margin-top:14px">${N("iw", "Width (optional)") + N("ih", "Height (optional)")}</div>${A("Process Image")}${R()}`;
+            if (t === "pdfmerge") return `<div class="drop"><b>Select 2+ PDF files</b><br><input id="pdfs" type="file" accept="application/pdf" multiple></div>${A("Merge PDFs")}${R()}`;
+            if (t === "pdfsplit") return `<div class="drop"><b>Select one PDF</b><br><input id="pdf" type="file" accept="application/pdf"><br><input id="pages" placeholder="Pages: 1,3-5" style="margin-top:12px;padding:10px;width:80%;border:1px solid var(--line);border-radius:10px;background:var(--soft);color:var(--text)"></div>${A("Split / Extract")}${R()}`;
+            return F("Input") + A("Run") + R()
+        }
+        function v(id) { return Number($(id)?.value || 0) } function set(x, good = true) { $("result").innerHTML = `<pre class="${good ? "good" : "bad"}">${esc(x)}</pre>` }
+        function bind(t) { $("clear")?.addEventListener("click", () => document.querySelectorAll("input,textarea").forEach(x => { if (x.type !== "file") x.value = "" })); $("enc")?.addEventListener("click", () => { try { set(t === "base64" ? btoa(unescape(encodeURIComponent($("input").value))) : encodeURIComponent($("input").value)) } catch (e) { set(e.message, false) } }); $("dec")?.addEventListener("click", () => { try { set(t === "base64" ? decodeURIComponent(escape(atob($("input").value))) : decodeURIComponent($("input").value)) } catch (e) { set("Invalid input: " + e.message, false) } }); $("run")?.addEventListener("click", () => run(t)) }
+        async function run(t) {
+            try {
+                let r = "";
+                if (t === "emi" || t === "mortgage") { let p = v("p"), m = v("r") / 1200, n = t === "emi" ? v("n") : v("n") * 12; r = m ? p * m * (1 + m) ** n / ((1 + m) ** n - 1) : p / n; r = `Monthly payment: ${r.toFixed(2)}` }
+                else if (t === "interest") r = `Simple interest: ${(v("p") * v("r") / 100 * v("y")).toFixed(2)} | Total: ${(v("p") * (1 + v("r") / 100 * v("y"))).toFixed(2)}`;
+                else if (t === "salary") r = `Net salary: ${(v("s") * (1 - v("tax") / 100)).toFixed(2)}`;
+                else if (t === "vat") r = `VAT: ${(v("a") * v("v") / 100).toFixed(2)} | Total: ${(v("a") * (1 + v("v") / 100)).toFixed(2)}`;
+                else if (t === "discount") r = `Savings: ${(v("p") * v("d") / 100).toFixed(2)} | Final price: ${(v("p") * (1 - v("d") / 100)).toFixed(2)}`;
+                else if (t === "margin") r = `Profit: ${(v("rev") - v("cost")).toFixed(2)} | Margin: ${((v("rev") - v("cost")) / v("rev") * 100).toFixed(2)}%`;
+                else if (t === "investment") { let m = v("r") / 1200, n = v("y") * 12; r = `Future value: ${(v("p") * (1 + m) ** n + v("a") * ((1 + m) ** n - 1) / m).toFixed(2)}` }
+                else if (t === "compound") r = `Future value: ${(v("p") * (1 + v("r") / 100 / v("n")) ** (v("n") * v("y"))).toFixed(2)}`;
+                else if (t === "bmi") { let b = v("w") / v("h") ** 2; r = `BMI: ${b.toFixed(2)} — ${b < 18.5 ? "Underweight" : b < 25 ? "Normal" : b < 30 ? "Overweight" : "Obesity"}` }
+                else if (t === "gpa") r = `Grade points: ${v("g")} | Credits: ${v("c")} | GPA: ${v("g").toFixed(2)}`;
+                else if (t === "percentage") r = `Result: ${(v("v") * v("p") / 100).toFixed(2)}`;
+                else if (t === "age") { let a = new Date($("dob").value), b = new Date($("asof").value); if (isNaN(a)) throw Error("Choose date of birth"); let y = b.getFullYear() - a.getFullYear(); if (b < new Date(b.getFullYear(), a.getMonth(), a.getDate())) y--; r = `Age: ${y} years` }
+                else if (t === "datediff") r = `Difference: ${Math.abs(new Date($("d2").value) - new Date($("d1").value)) / 86400000} days`;
+                else if (t === "timestamp") r = new Date(v("ts") * 1000).toString();
+                else if (t === "uuid") r = crypto.randomUUID();
+                else if (t === "unit") { let x = v("uv"), c = $("conv").value, m = { "km-mi": x * .621371, "mi-km": x * 1.609344, "kg-lb": x * 2.20462262, "lb-kg": x * .45359237, "c-f": x * 9 / 5 + 32, "f-c": (x - 32) * 5 / 9, "m-ft": x * 3.28084, "ft-m": x * .3048 }; r = m[c].toFixed(5) }
+                else if (t === "time") { let z = v("h") * 60 + v("m") + v("ah") * 60 + v("am"); r = `${Math.floor(z / 60)} hours ${z % 60} minutes` }
+                else if (t === "words") r = numberWords(v("wn"));
+                else if (t === "timezone") r = new Intl.DateTimeFormat(undefined, { dateStyle: "full", timeStyle: "long", timeZone: $("tz").value }).format(new Date($("dt").value));
+                else if (t === "regex") { let re = new RegExp($("pattern").value, $("flags").value), m = [...$("text").value.matchAll(re)]; r = m.length ? m.map(x => x[0]).join("\\n") : "No matches" }
+                else if (t === "json" || t === "jsonv") { let x = JSON.parse($("input").value); r = t === "json" ? JSON.stringify(x, null, 2) : "✓ Valid JSON" }
+                else if (t === "csharp") r = csharp(JSON.parse($("input").value));
+                else if (t === "sql") r = formatSQL($("input").value);
+                else if (t === "html") r = $("input").value.replace(/></g, ">\n<");
+                else if (t === "css" || t === "js") r = $("input").value.replace(/\/\*[\s\S]*?\*\//g, "").replace(/\/\/.*$/gm, "").replace(/\s+/g, " ").trim();
+                else if (t === "jwt") { let p = $("input").value.split(".")[1]; r = JSON.stringify(JSON.parse(atob(p.replace(/-/g, "+").replace(/_/g, "/"))), null, 2) }
+                else if (t === "cron") r = "Cron expression: " + $("input").value;
+                else if (t === "csvjson") { let a = $("input").value.trim().split(/\r?\n/), h = a.shift().split(","); r = JSON.stringify(a.map(l => { let x = l.split(","); return Object.fromEntries(h.map((k, i) => [k, x[i] ?? ""])) }), null, 2) }
+                else if (t === "jsoncsv") { let a = JSON.parse($("input").value), h = [...new Set(a.flatMap(o => Object.keys(o)))]; r = [h.join(","), ...a.map(o => h.map(k => JSON.stringify(o[k] ?? "")).join(","))].join("\n") }
+                else if (["resize", "compress", "jpgpng", "pngjpg", "webp"].includes(t)) await imageTool(t);
+                else if (t === "pdfmerge") await mergePDF();
+                else if (t === "pdfsplit") await splitPDF();
+                else r = $("input").value;
+                if (r !== undefined) set(r)
+            } catch (e) { set("Error: " + e.message, false) }
+        }
+        function csharp(x, name = "Root") { if (Array.isArray(x)) x = x[0]; let s = `public class ${name}\n{\n`; for (let [k, z] of Object.entries(x || {})) { let q = Array.isArray(z) ? "List<object>" : z === null ? "object" : typeof z === "number" ? (Number.isInteger(z) ? "int" : "double") : typeof z === "boolean" ? "bool" : "string"; s += `    public ${q} ${k} { get; set; }\n` } return s + "}" }
+        function formatSQL(s) { return s.replace(/\s+/g, " ").replace(/\b(SELECT|FROM|WHERE|GROUP BY|ORDER BY|HAVING|LIMIT|JOIN|LEFT JOIN|RIGHT JOIN|INNER JOIN|SET|VALUES|AND|OR)\b/gi, "\n$1").trim() }
+        function numberWords(n) { if (n === 0) return "zero"; if (n < 0) return "minus " + numberWords(-n); let o = ["", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen"], t = ["", "", "twenty", "thirty", "forty", "fifty", "sixty", "seventy", "eighty", "ninety"]; function w(x) { if (x < 20) return o[x]; if (x < 100) return t[Math.floor(x / 10)] + (x % 10 ? "-" + o[x % 10] : ""); if (x < 1000) return o[Math.floor(x / 100)] + " hundred" + (x % 100 ? " " + w(x % 100) : ""); if (x < 1000000) return w(Math.floor(x / 1000)) + " thousand" + (x % 1000 ? " " + w(x % 1000) : ""); return x.toLocaleString() } return w(Math.floor(n)) }
+        async function imageTool(t) { let f = $("img").files[0]; if (!f) throw Error("Select an image"); let im = new Image(), url = URL.createObjectURL(f); await new Promise((res, rej) => { im.onload = res; im.onerror = rej; im.src = url }); let w = v("iw") || im.width, h = v("ih") || im.height, cv = document.createElement("canvas"); cv.width = w; cv.height = h; cv.getContext("2d").drawImage(im, 0, 0, w, h); let mime = t === "webp" ? "image/webp" : t === "jpgpng" ? "image/png" : "image/jpeg", q = t === "compress" ? .65 : 0.92, blob = await new Promise(r => cv.toBlob(r, mime, q)); let a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = `toolnest-${t}.${mime === "image/png" ? "png" : mime === "image/webp" ? "webp" : "jpg"}`; a.textContent = `Download processed image (${Math.round(blob.size / 1024)} KB)`; a.className = "btn"; $("result").innerHTML = ""; $("result").append(a); let p = document.createElement("img"); p.src = cv.toDataURL(mime, q); p.className = "preview"; $("result").append(p) }
+        async function mergePDF() { let fs = [...$("pdfs").files]; if (fs.length < 2) throw Error("Select at least 2 PDFs"); let out = await PDFLib.PDFDocument.create(); for (let f of fs) { let doc = await PDFLib.PDFDocument.load(await f.arrayBuffer()); let pages = await out.copyPages(doc, doc.getPageIndices()); pages.forEach(p => out.addPage(p)) } download(new Blob([await out.save()], { type: "application/pdf" }), "merged.pdf") }
+        async function splitPDF() { let f = $("pdf").files[0]; if (!f) throw Error("Select a PDF"); let doc = await PDFLib.PDFDocument.load(await f.arrayBuffer()), p = $("pages").value.trim(); let idx = []; (p || "1").split(",").forEach(x => { if (x.includes("-")) { let [a, b] = x.split("-").map(Number); for (let i = a; i <= b; i++)idx.push(i - 1) } else idx.push(Number(x) - 1) }); idx = idx.filter(i => i >= 0 && i < doc.getPageCount()); if (!idx.length) throw Error("Invalid page range"); let out = await PDFLib.PDFDocument.create(); let pages = await out.copyPages(doc, idx); pages.forEach(x => out.addPage(x)); download(new Blob([await out.save()], { type: "application/pdf" }), "split.pdf") }
+        function download(blob, name) { let a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = name; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1000) }
+        render();
+    </script>
+</body>
+
+</html>
