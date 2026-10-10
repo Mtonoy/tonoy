@@ -1,0 +1,96 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 800" width="1280" height="800" role="img">
+<defs>
+  <linearGradient id="app" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#0d1330"/><stop offset="55%" stop-color="#111a3d"/><stop offset="100%" stop-color="#0a0f26"/>
+  </linearGradient>
+  <linearGradient id="acc" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#f59e0b"/><stop offset="100%" stop-color="#6366f1"/>
+  </linearGradient>
+  <linearGradient id="area" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#f59e0b" stop-opacity=".45"/><stop offset="100%" stop-color="#f59e0b" stop-opacity="0"/>
+  </linearGradient>
+  <linearGradient id="area2" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#6366f1" stop-opacity=".4"/><stop offset="100%" stop-color="#6366f1" stop-opacity="0"/>
+  </linearGradient>
+  <filter id="soft"><feGaussianBlur stdDeviation="10"/></filter>
+</defs>
+<rect width="1280" height="800" fill="url(#app)"/>
+<ellipse cx="1049.6" cy="64" rx="240" ry="180" fill="#f59e0b" opacity=".10" filter="url(#soft)"/>
+<ellipse cx="153.6" cy="760" rx="220" ry="170" fill="#6366f1" opacity=".10" filter="url(#soft)"/>
+<rect x="0" y="0" width="1280" height="56" fill="#0a0f26"/>
+<rect x="0" y="55" width="1280" height="1" fill="rgba(255,255,255,.08)"/>
+<circle cx="26" cy="28" r="5" fill="#ff5f57"/><circle cx="44" cy="28" r="5" fill="#febc2e"/><circle cx="62" cy="28" r="5" fill="#28c840"/>
+<rect x="88" y="19" width="120" height="18" rx="6" fill="url(#acc)" opacity=".9"/>
+<text x="98" y="32" font-family="Segoe UI,Arial" font-size="11" font-weight="700" fill="#06121f">FIELDFORCE</text>
+<rect x="900" y="18" width="250" height="20" rx="10" fill="rgba(255,255,255,.06)"/>
+<text x="914" y="32" font-family="Segoe UI,Arial" font-size="10" fill="#8fa0c8">Search modules, records…</text>
+<circle cx="1188" cy="28" r="14" fill="rgba(255,255,255,.10)"/>
+<text x="1183" y="32" font-family="Segoe UI,Arial" font-size="10" font-weight="700" fill="#cfe0ff">MT</text>
+<circle cx="1226" cy="28" r="14" fill="rgba(255,255,255,.06)"/>
+<circle cx="1258" cy="28" r="3" fill="#f59e0b"/><rect x="0" y="56" width="220" height="744" fill="rgba(255,255,255,.028)"/>
+<rect x="219" y="56" width="1" height="744" fill="rgba(255,255,255,.07)"/>
+
+<rect x="28" y="72" width="11" height="11" rx="3" fill="rgba(255,255,255,.28)"/>
+<text x="48" y="82" font-family="Segoe UI,Arial" font-size="11.5" font-weight="400" fill="#94a3c8">Command Centre</text>
+<rect x="28" y="108" width="11" height="11" rx="3" fill="rgba(255,255,255,.28)"/>
+<text x="48" y="118" font-family="Segoe UI,Arial" font-size="11.5" font-weight="400" fill="#94a3c8">Field Officers</text>
+<rect x="28" y="144" width="11" height="11" rx="3" fill="rgba(255,255,255,.28)"/>
+<text x="48" y="154" font-family="Segoe UI,Arial" font-size="11.5" font-weight="400" fill="#94a3c8">Territories</text><rect x="14" y="172" width="192" height="30" rx="8" fill="#f59e0b" opacity=".16"/>
+<rect x="14" y="172" width="3" height="30" rx="2" fill="#f59e0b"/>
+<rect x="28" y="180" width="11" height="11" rx="3" fill="#f59e0b"/>
+<text x="48" y="190" font-family="Segoe UI,Arial" font-size="11.5" font-weight="700" fill="#eaf2ff">Visits</text>
+<rect x="28" y="216" width="11" height="11" rx="3" fill="rgba(255,255,255,.28)"/>
+<text x="48" y="226" font-family="Segoe UI,Arial" font-size="11.5" font-weight="400" fill="#94a3c8">Leads</text>
+<rect x="28" y="252" width="11" height="11" rx="3" fill="rgba(255,255,255,.28)"/>
+<text x="48" y="262" font-family="Segoe UI,Arial" font-size="11.5" font-weight="400" fill="#94a3c8">Orders</text>
+<rect x="28" y="288" width="11" height="11" rx="3" fill="rgba(255,255,255,.28)"/>
+<text x="48" y="298" font-family="Segoe UI,Arial" font-size="11.5" font-weight="400" fill="#94a3c8">Performance</text>
+<rect x="14" y="700" width="192" height="84" rx="12" fill="rgba(255,255,255,.05)" stroke="rgba(255,255,255,.08)"/>
+<text x="28" y="726" font-family="Segoe UI,Arial" font-size="10" fill="#8fa0c8">Storage used</text>
+<text x="28" y="750" font-family="Segoe UI,Arial" font-size="15" font-weight="700" fill="#eaf2ff">68%</text>
+<rect x="28" y="760" width="164" height="6" rx="3" fill="rgba(255,255,255,.10)"/>
+<rect x="28" y="760" width="112" height="6" rx="3" fill="url(#acc)"/><text x="252" y="96" font-family="Segoe UI,Arial" font-size="21" font-weight="700" fill="#eef4ff">Visit Schedule</text>
+<text x="252" y="116" font-family="Segoe UI,Arial" font-size="11.5" fill="#8fa0c8">Plan, assign and geo-verify every outlet visit</text>
+<rect x="1054" y="80" width="94" height="30" rx="8" fill="rgba(255,255,255,.07)" stroke="rgba(255,255,255,.12)"/>
+<text x="1078" y="99" font-family="Segoe UI,Arial" font-size="11" font-weight="600" fill="#cfe0ff">Export</text>
+<rect x="1160" y="80" width="94" height="30" rx="8" fill="url(#acc)"/>
+<text x="1178" y="99" font-family="Segoe UI,Arial" font-size="11" font-weight="700" fill="#06121f">+ New</text><rect x="252" y="138" width="1002" height="44" rx="12" fill="rgba(255,255,255,.04)" stroke="rgba(255,255,255,.08)"/>
+<rect x="268" y="146" width="44" height="28" rx="8" fill="rgba(255,255,255,.05)"/>
+<text x="280" y="165" font-family="Segoe UI,Arial" font-size="10.5" font-weight="600" fill="#9fb0d4">‹</text><rect x="346" y="146" width="62" height="28" rx="8" fill="url(#acc)"/>
+<text x="360" y="165" font-family="Segoe UI,Arial" font-size="10.5" font-weight="600" fill="#06121f">Today</text><rect x="424" y="146" width="44" height="28" rx="8" fill="rgba(255,255,255,.05)"/>
+<text x="436" y="165" font-family="Segoe UI,Arial" font-size="10.5" font-weight="600" fill="#9fb0d4">›</text>
+<rect x="520" y="148" width="106" height="24" rx="12" fill="rgba(255,255,255,.10)"/>
+<text x="540" y="164" font-family="Segoe UI,Arial" font-size="10" fill="#e6eeff">Dhaka North</text><rect x="638" y="148" width="106" height="24" rx="12" fill="rgba(255,255,255,.04)"/>
+<text x="658" y="164" font-family="Segoe UI,Arial" font-size="10" fill="#8fa0c8">Dhaka South</text><rect x="756" y="148" width="106" height="24" rx="12" fill="rgba(255,255,255,.04)"/>
+<text x="776" y="164" font-family="Segoe UI,Arial" font-size="10" fill="#8fa0c8">Gazipur</text><rect x="874" y="148" width="106" height="24" rx="12" fill="rgba(255,255,255,.04)"/>
+<text x="894" y="164" font-family="Segoe UI,Arial" font-size="10" fill="#8fa0c8">Chattogram</text><rect x="252" y="200" width="1002" height="32" rx="8" fill="rgba(255,255,255,.055)"/>
+<text x="268" y="221" font-family="Segoe UI,Arial" font-size="10" font-weight="700" fill="#8fa0c8" letter-spacing=".5">Time</text><text x="435" y="221" font-family="Segoe UI,Arial" font-size="10" font-weight="700" fill="#8fa0c8" letter-spacing=".5">Officer</text><text x="602" y="221" font-family="Segoe UI,Arial" font-size="10" font-weight="700" fill="#8fa0c8" letter-spacing=".5">Outlet</text><text x="769" y="221" font-family="Segoe UI,Arial" font-size="10" font-weight="700" fill="#8fa0c8" letter-spacing=".5">Address</text><text x="936" y="221" font-family="Segoe UI,Arial" font-size="10" font-weight="700" fill="#8fa0c8" letter-spacing=".5">Purpose</text><text x="1103" y="221" font-family="Segoe UI,Arial" font-size="10" font-weight="700" fill="#8fa0c8" letter-spacing=".5">Status</text>
+<text x="268" y="252" font-family="Segoe UI,Arial" font-size="10.5" fill="#e6eeff" font-weight="600">09:00</text><text x="435" y="252" font-family="Segoe UI,Arial" font-size="10.5" fill="#9fb0d4" font-weight="400">Rafi Ahmed</text><text x="602" y="252" font-family="Segoe UI,Arial" font-size="10.5" fill="#9fb0d4" font-weight="400">Shahab Superstore</text><text x="769" y="252" font-family="Segoe UI,Arial" font-size="10.5" fill="#9fb0d4" font-weight="400">Mirpur DOHS</text><text x="936" y="252" font-family="Segoe UI,Arial" font-size="10.5" fill="#9fb0d4" font-weight="400">New Outlet</text><rect x="1097" y="239" width="66" height="18" rx="9" fill="#22c55e" opacity=".18"/>
+<text x="1105" y="252" font-family="Segoe UI,Arial" font-size="9.5" font-weight="700" fill="#22c55e">Completed</text><rect x="252" y="264" width="1002" height="30" fill="rgba(255,255,255,.022)"/>
+<text x="268" y="282" font-family="Segoe UI,Arial" font-size="10.5" fill="#e6eeff" font-weight="600">010:07</text><text x="435" y="282" font-family="Segoe UI,Arial" font-size="10.5" fill="#9fb0d4" font-weight="400">Nadia Islam</text><text x="602" y="282" font-family="Segoe UI,Arial" font-size="10.5" fill="#9fb0d4" font-weight="400">Bismillah Store</text><text x="769" y="282" font-family="Segoe UI,Arial" font-size="10.5" fill="#9fb0d4" font-weight="400">Uttara Sector-2</text><text x="936" y="282" font-family="Segoe UI,Arial" font-size="10.5" fill="#9fb0d4" font-weight="400">Reorder</text><rect x="1097" y="269" width="70" height="18" rx="9" fill="#f59e0b" opacity=".18"/>
+<text x="1105" y="282" font-family="Segoe UI,Arial" font-size="9.5" font-weight="700" fill="#f59e0b">In Progress</text>
+<text x="268" y="312" font-family="Segoe UI,Arial" font-size="10.5" fill="#e6eeff" font-weight="600">09:14</text><text x="435" y="312" font-family="Segoe UI,Arial" font-size="10.5" fill="#9fb0d4" font-weight="400">Tanvir Hasan</text><text x="602" y="312" font-family="Segoe UI,Arial" font-size="10.5" fill="#9fb0d4" font-weight="400">Al-Modina Mart</text><text x="769" y="312" font-family="Segoe UI,Arial" font-size="10.5" fill="#9fb0d4" font-weight="400">Gazipur Sadar</text><text x="936" y="312" font-family="Segoe UI,Arial" font-size="10.5" fill="#9fb0d4" font-weight="400">Collection</text><rect x="1097" y="299" width="54" height="18" rx="9" fill="#94a3c8" opacity=".18"/>
+<text x="1105" y="312" font-family="Segoe UI,Arial" font-size="9.5" font-weight="700" fill="#94a3c8">Planned</text><rect x="252" y="324" width="1002" height="30" fill="rgba(255,255,255,.022)"/>
+<text x="268" y="342" font-family="Segoe UI,Arial" font-size="10.5" fill="#e6eeff" font-weight="600">010:21</text><text x="435" y="342" font-family="Segoe UI,Arial" font-size="10.5" fill="#9fb0d4" font-weight="400">Sadia Akter</text><text x="602" y="342" font-family="Segoe UI,Arial" font-size="10.5" fill="#9fb0d4" font-weight="400">New Century Plaza</text><text x="769" y="342" font-family="Segoe UI,Arial" font-size="10.5" fill="#9fb0d4" font-weight="400">Dhanmondi 32</text><text x="936" y="342" font-family="Segoe UI,Arial" font-size="10.5" fill="#9fb0d4" font-weight="400">New Outlet</text><rect x="1097" y="329" width="50" height="18" rx="9" fill="#fb7185" opacity=".18"/>
+<text x="1105" y="342" font-family="Segoe UI,Arial" font-size="9.5" font-weight="700" fill="#fb7185">Missed</text>
+<text x="268" y="372" font-family="Segoe UI,Arial" font-size="10.5" fill="#e6eeff" font-weight="600">09:28</text><text x="435" y="372" font-family="Segoe UI,Arial" font-size="10.5" fill="#9fb0d4" font-weight="400">Jahid Khan</text><text x="602" y="372" font-family="Segoe UI,Arial" font-size="10.5" fill="#9fb0d4" font-weight="400">Bismillah Store</text><text x="769" y="372" font-family="Segoe UI,Arial" font-size="10.5" fill="#9fb0d4" font-weight="400">Uttara Sector-2</text><text x="936" y="372" font-family="Segoe UI,Arial" font-size="10.5" fill="#9fb0d4" font-weight="400">Reorder</text><rect x="1097" y="359" width="66" height="18" rx="9" fill="#22c55e" opacity=".18"/>
+<text x="1105" y="372" font-family="Segoe UI,Arial" font-size="9.5" font-weight="700" fill="#22c55e">Completed</text><rect x="252" y="384" width="1002" height="30" fill="rgba(255,255,255,.022)"/>
+<text x="268" y="402" font-family="Segoe UI,Arial" font-size="10.5" fill="#e6eeff" font-weight="600">010:35</text><text x="435" y="402" font-family="Segoe UI,Arial" font-size="10.5" fill="#9fb0d4" font-weight="400">Rima Sultana</text><text x="602" y="402" font-family="Segoe UI,Arial" font-size="10.5" fill="#9fb0d4" font-weight="400">Al-Modina Mart</text><text x="769" y="402" font-family="Segoe UI,Arial" font-size="10.5" fill="#9fb0d4" font-weight="400">Savar Upazila</text><text x="936" y="402" font-family="Segoe UI,Arial" font-size="10.5" fill="#9fb0d4" font-weight="400">Collection</text><rect x="1097" y="389" width="70" height="18" rx="9" fill="#f59e0b" opacity=".18"/>
+<text x="1105" y="402" font-family="Segoe UI,Arial" font-size="9.5" font-weight="700" fill="#f59e0b">In Progress</text>
+<text x="268" y="432" font-family="Segoe UI,Arial" font-size="10.5" fill="#e6eeff" font-weight="600">09:42</text><text x="435" y="432" font-family="Segoe UI,Arial" font-size="10.5" fill="#9fb0d4" font-weight="400">Rafi Ahmed</text><text x="602" y="432" font-family="Segoe UI,Arial" font-size="10.5" fill="#9fb0d4" font-weight="400">Shahab Superstore</text><text x="769" y="432" font-family="Segoe UI,Arial" font-size="10.5" fill="#9fb0d4" font-weight="400">Mirpur DOHS</text><text x="936" y="432" font-family="Segoe UI,Arial" font-size="10.5" fill="#9fb0d4" font-weight="400">New Outlet</text><rect x="1097" y="419" width="54" height="18" rx="9" fill="#94a3c8" opacity=".18"/>
+<text x="1105" y="432" font-family="Segoe UI,Arial" font-size="9.5" font-weight="700" fill="#94a3c8">Planned</text><rect x="252" y="444" width="1002" height="30" fill="rgba(255,255,255,.022)"/>
+<text x="268" y="462" font-family="Segoe UI,Arial" font-size="10.5" fill="#e6eeff" font-weight="600">010:49</text><text x="435" y="462" font-family="Segoe UI,Arial" font-size="10.5" fill="#9fb0d4" font-weight="400">Nadia Islam</text><text x="602" y="462" font-family="Segoe UI,Arial" font-size="10.5" fill="#9fb0d4" font-weight="400">Bismillah Store</text><text x="769" y="462" font-family="Segoe UI,Arial" font-size="10.5" fill="#9fb0d4" font-weight="400">Uttara Sector-2</text><text x="936" y="462" font-family="Segoe UI,Arial" font-size="10.5" fill="#9fb0d4" font-weight="400">Reorder</text><rect x="1097" y="449" width="50" height="18" rx="9" fill="#fb7185" opacity=".18"/>
+<text x="1105" y="462" font-family="Segoe UI,Arial" font-size="9.5" font-weight="700" fill="#fb7185">Missed</text>
+<text x="268" y="492" font-family="Segoe UI,Arial" font-size="10.5" fill="#e6eeff" font-weight="600">09:56</text><text x="435" y="492" font-family="Segoe UI,Arial" font-size="10.5" fill="#9fb0d4" font-weight="400">Tanvir Hasan</text><text x="602" y="492" font-family="Segoe UI,Arial" font-size="10.5" fill="#9fb0d4" font-weight="400">Al-Modina Mart</text><text x="769" y="492" font-family="Segoe UI,Arial" font-size="10.5" fill="#9fb0d4" font-weight="400">Gazipur Sadar</text><text x="936" y="492" font-family="Segoe UI,Arial" font-size="10.5" fill="#9fb0d4" font-weight="400">Collection</text><rect x="1097" y="479" width="66" height="18" rx="9" fill="#22c55e" opacity=".18"/>
+<text x="1105" y="492" font-family="Segoe UI,Arial" font-size="9.5" font-weight="700" fill="#22c55e">Completed</text><rect x="252" y="504" width="1002" height="30" fill="rgba(255,255,255,.022)"/>
+<text x="268" y="522" font-family="Segoe UI,Arial" font-size="10.5" fill="#e6eeff" font-weight="600">010:03</text><text x="435" y="522" font-family="Segoe UI,Arial" font-size="10.5" fill="#9fb0d4" font-weight="400">Sadia Akter</text><text x="602" y="522" font-family="Segoe UI,Arial" font-size="10.5" fill="#9fb0d4" font-weight="400">New Century Plaza</text><text x="769" y="522" font-family="Segoe UI,Arial" font-size="10.5" fill="#9fb0d4" font-weight="400">Dhanmondi 32</text><text x="936" y="522" font-family="Segoe UI,Arial" font-size="10.5" fill="#9fb0d4" font-weight="400">New Outlet</text><rect x="1097" y="509" width="70" height="18" rx="9" fill="#f59e0b" opacity=".18"/>
+<text x="1105" y="522" font-family="Segoe UI,Arial" font-size="9.5" font-weight="700" fill="#f59e0b">In Progress</text>
+<text x="268" y="552" font-family="Segoe UI,Arial" font-size="10.5" fill="#e6eeff" font-weight="600">09:10</text><text x="435" y="552" font-family="Segoe UI,Arial" font-size="10.5" fill="#9fb0d4" font-weight="400">Jahid Khan</text><text x="602" y="552" font-family="Segoe UI,Arial" font-size="10.5" fill="#9fb0d4" font-weight="400">Bismillah Store</text><text x="769" y="552" font-family="Segoe UI,Arial" font-size="10.5" fill="#9fb0d4" font-weight="400">Uttara Sector-2</text><text x="936" y="552" font-family="Segoe UI,Arial" font-size="10.5" fill="#9fb0d4" font-weight="400">Reorder</text><rect x="1097" y="539" width="54" height="18" rx="9" fill="#94a3c8" opacity=".18"/>
+<text x="1105" y="552" font-family="Segoe UI,Arial" font-size="9.5" font-weight="700" fill="#94a3c8">Planned</text><rect x="252" y="564" width="1002" height="30" fill="rgba(255,255,255,.022)"/>
+<text x="268" y="582" font-family="Segoe UI,Arial" font-size="10.5" fill="#e6eeff" font-weight="600">010:17</text><text x="435" y="582" font-family="Segoe UI,Arial" font-size="10.5" fill="#9fb0d4" font-weight="400">Rima Sultana</text><text x="602" y="582" font-family="Segoe UI,Arial" font-size="10.5" fill="#9fb0d4" font-weight="400">Al-Modina Mart</text><text x="769" y="582" font-family="Segoe UI,Arial" font-size="10.5" fill="#9fb0d4" font-weight="400">Savar Upazila</text><text x="936" y="582" font-family="Segoe UI,Arial" font-size="10.5" fill="#9fb0d4" font-weight="400">Collection</text><rect x="1097" y="569" width="50" height="18" rx="9" fill="#fb7185" opacity=".18"/>
+<text x="1105" y="582" font-family="Segoe UI,Arial" font-size="9.5" font-weight="700" fill="#fb7185">Missed</text>
+<text x="268" y="612" font-family="Segoe UI,Arial" font-size="10.5" fill="#e6eeff" font-weight="600">09:24</text><text x="435" y="612" font-family="Segoe UI,Arial" font-size="10.5" fill="#9fb0d4" font-weight="400">Rafi Ahmed</text><text x="602" y="612" font-family="Segoe UI,Arial" font-size="10.5" fill="#9fb0d4" font-weight="400">Shahab Superstore</text><text x="769" y="612" font-family="Segoe UI,Arial" font-size="10.5" fill="#9fb0d4" font-weight="400">Mirpur DOHS</text><text x="936" y="612" font-family="Segoe UI,Arial" font-size="10.5" fill="#9fb0d4" font-weight="400">New Outlet</text><rect x="1097" y="599" width="66" height="18" rx="9" fill="#22c55e" opacity=".18"/>
+<text x="1105" y="612" font-family="Segoe UI,Arial" font-size="9.5" font-weight="700" fill="#22c55e">Completed</text><rect x="252" y="624" width="1002" height="30" fill="rgba(255,255,255,.022)"/>
+<text x="268" y="642" font-family="Segoe UI,Arial" font-size="10.5" fill="#e6eeff" font-weight="600">010:31</text><text x="435" y="642" font-family="Segoe UI,Arial" font-size="10.5" fill="#9fb0d4" font-weight="400">Nadia Islam</text><text x="602" y="642" font-family="Segoe UI,Arial" font-size="10.5" fill="#9fb0d4" font-weight="400">Bismillah Store</text><text x="769" y="642" font-family="Segoe UI,Arial" font-size="10.5" fill="#9fb0d4" font-weight="400">Uttara Sector-2</text><text x="936" y="642" font-family="Segoe UI,Arial" font-size="10.5" fill="#9fb0d4" font-weight="400">Reorder</text><rect x="1097" y="629" width="70" height="18" rx="9" fill="#f59e0b" opacity=".18"/>
+<text x="1105" y="642" font-family="Segoe UI,Arial" font-size="9.5" font-weight="700" fill="#f59e0b">In Progress</text>
+</svg>

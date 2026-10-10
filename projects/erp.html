@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark" class="no-js">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Enterprise Resource Planning Platform — Md. Mahamudul Hasan Tonoy</title>
+<meta name="description" content="A complete ERP platform built to run the operations of large Bangladeshi enterprises — finance, procurement, inventory, production and HR on a single datab">
+<meta name="author" content="Md. Mahamudul Hasan Tonoy">
+<meta name="theme-color" content="#070a18">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' font-family='Segoe UI'>⚡</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css">
+<link rel="stylesheet" href="../assets/css/project.css">
+<noscript>
+  <style>
+    .scroll-progress,.to-top{display:none!important}
+    .p-hero{padding-top:40px}
+  </style>
+</noscript>
+</head>
+<body>
+<svg class="svg-sprite" aria-hidden="true">
+  <symbol id="i-github" viewBox="0 0 24 24"><path d="M12 .5A11.5 11.5 0 0 0 .5 12a11.5 11.5 0 0 0 7.86 10.92c.58.1.79-.25.79-.56v-2c-3.2.7-3.88-1.37-3.88-1.37-.53-1.34-1.29-1.7-1.29-1.7-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.2 1.77 1.2 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.7 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.8 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.84 1.19 3.1 0 4.43-2.7 5.4-5.26 5.69.41.36.78 1.06.78 2.14v3.17c0 .31.2.67.8.56A11.5 11.5 0 0 0 23.5 12 11.5 11.5 0 0 0 12 .5z"/></symbol>
+  <symbol id="i-linkedin" viewBox="0 0 24 24"><path d="M4.98 3.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM3 9h4v12H3zM10 9h3.8v1.7h.05c.53-.95 1.83-1.95 3.76-1.95C21.4 8.75 22 11.1 22 14.2V21h-4v-6c0-1.43-.03-3.27-2-3.27-2 0-2.3 1.56-2.3 3.17V21h-4z"/></symbol>
+  <symbol id="i-facebook" viewBox="0 0 24 24"><path d="M22 12a10 10 0 1 0-11.56 9.88v-6.99H7.9V12h2.54V9.8c0-2.5 1.49-3.89 3.77-3.89 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56V12h2.78l-.45 2.89h-2.33v6.99A10 10 0 0 0 22 12z"/></symbol>
+  <symbol id="i-twitter" viewBox="0 0 24 24"><path d="M18.24 2.25h3.31l-7.23 8.26 8.5 11.24h-6.65l-5.21-6.82-5.97 6.82H1.68l7.73-8.84L1.25 2.25h6.82l4.71 6.23zm-1.16 17.52h1.83L7.08 4.13H5.11z"/></symbol>
+  <symbol id="i-instagram" viewBox="0 0 24 24"><path d="M12 2.16c3.2 0 3.58.01 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.36 1.06.41 2.23.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.25 1.8-.41 2.23-.22.56-.48.96-.9 1.38-.42.42-.82.68-1.38.9-.42.16-1.06.36-2.23.41-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.8-.25-2.23-.41-.56-.22-.96-.48-1.38-.9-.42-.42-.68-.82-.9-1.38-.16-.42-.36-1.06-.41-2.23-.06-1.27-.07-1.65-.07-4.85s.01-3.58.07-4.85c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.16 1.06-.36 2.23-.41 1.27-.06 1.65-.07 4.85-.07M12 0C8.74 0 8.33.01 7.05.07 5.78.13 4.9.33 4.14.63c-.79.3-1.46.72-2.12 1.38A5.9 5.9 0 0 0 .63 4.14c-.3.76-.5 1.64-.56 2.91C.01 8.33 0 8.74 0 12s.01 3.67.07 4.95c.06 1.27.26 2.15.56 2.91.3.79.72 1.46 1.38 2.12a5.9 5.9 0 0 0 2.12 1.38c.76.3 1.64.5 2.91.56C8.33 23.99 8.74 24 12 24s3.67-.01 4.95-.07c1.27-.06 2.15-.26 2.91-.56a5.9 5.9 0 0 0 2.12-1.38 5.9 5.9 0 0 0 1.38-2.12c.3-.76.5-1.64.56-2.91.06-1.28.07-1.69.07-4.96s-.01-3.68-.07-4.96c-.06-1.27-.26-2.15-.56-2.91a5.9 5.9 0 0 0-1.38-2.12A5.9 5.9 0 0 0 19.86.63c-.76-.3-1.64-.5-2.91-.56C15.67.01 15.26 0 12 0zm0 5.84a6.16 6.16 0 1 0 0 12.32 6.16 6.16 0 0 0 0-12.32zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm7.85-10.4a1.44 1.44 0 1 1-2.88 0 1.44 1.44 0 0 1 2.88 0z"/></symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24"><path d="M3 5h18a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1zm9 8.2L4.7 7H19.3L12 13.2zM3 8.7V17h18V8.7l-9 6.2-9-6.2z"/></symbol>
+  <symbol id="i-phone" viewBox="0 0 24 24"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.2.2 2.4.6 3.6.1.3 0 .7-.2 1l-2.3 2.2z"/></symbol>
+  <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 0-7 7c0 5.2 7 13 7 13s7-7.8 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 14.5 9 2.5 2.5 0 0 1 12 11.5z"/></symbol>
+  <symbol id="i-calendar" viewBox="0 0 24 24"><path d="M7 2v2h10V2h2v2h1a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h1V2zm13 8H4v10h16zM7 12h3v3H7z"/></symbol>
+  <symbol id="i-briefcase" viewBox="0 0 24 24"><path d="M9 2h6a2 2 0 0 1 2 2v2h5a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5V4a2 2 0 0 1 2-2zm0 4h6V4H9z"/></symbol>
+  <symbol id="i-cap" viewBox="0 0 24 24"><path d="M12 3 1 9l11 6 9-4.9V17h2V9zM5 13.2V17c0 1.7 3.1 3 7 3s7-1.3 7-3v-3.8l-7 3.8z"/></symbol>
+  <symbol id="i-code" viewBox="0 0 24 24"><path d="M8.7 16.3 4.4 12l4.3-4.3L7.3 6.3 1.6 12l5.7 5.7zM15.3 16.3l4.3-4.3-4.3-4.3 1.4-1.4 5.7 5.7-5.7 5.7z"/></symbol>
+  <symbol id="i-server" viewBox="0 0 24 24"><path d="M3 4h18a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1zm0 9h18a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1v-5a1 1 0 0 1 1-1zm2 2v2h2v-2zm0 9v2h2v-2z"/></symbol>
+  <symbol id="i-db" viewBox="0 0 24 24"><path d="M12 2c-4.4 0-8 1.3-8 3s3.6 3 8 3 8-1.3 8-3-3.6-3-8-3zm8 6.5V12c0 1.7-3.6 3-8 3s-8-1.3-8-3V8.5C6.6 10 10 10.7 12 10.7s5.4-.7 8-2.2zm0 6V18c0 1.7-3.6 3-8 3s-8-1.3-8-3v-3.5C6.6 16 10 16.7 12 16.7s5.4-.7 8-2.2z"/></symbol>
+  <symbol id="i-tools" viewBox="0 0 24 24"><path d="M20.7 19.3 13 11.6a5.5 5.5 0 0 0-6.6-7L9.1 7.3 7.3 9.1 4.6 6.4a5.5 5.5 0 0 0 7 6.6l7.7 7.7a1 1 0 0 0 1.4-1.4zM3 21h8v-2H3z"/></symbol>
+  <symbol id="i-rocket" viewBox="0 0 24 24"><path d="M14 3.5c3-3 6.5-2.5 6.5-2.5s.5 3.5-2.5 6.5l-5.4 5.4-4-4zM7.6 10.4 5 9l-2 3 2.6 2.6-2 2L1 15l3.5-1.2 1.4-2.6a3 3 0 0 1 .9 2.6z"/></symbol>
+  <symbol id="i-quote" viewBox="0 0 24 24"><path d="M7.5 6C5 6 3 8 3 10.5S5 15 7.5 15c.3 0 .6 0 .9-.1-.6 1.9-2.2 3.3-4.3 3.7l.4 1.9c4.4-.9 7.5-4.7 7.5-9.7V10c0-2.2-1.6-4-3.6-4H7.5zm11 0C16 6 14 8 14 10.5s2 4.5 4.5 4.5c.3 0 .6 0 .9-.1-.6 1.9-2.2 3.3-4.3 3.7l.4 1.9c4.4-.9 7.5-4.7 7.5-9.7V10c0-2.2-1.6-4-3.6-4h-1z"/></symbol>
+  <symbol id="i-sun" viewBox="0 0 24 24"><path d="M12 17a5 5 0 1 0-5-5 5 5 0 0 0 5 5zm0-2a3 3 0 1 1 3-3 3 3 0 0 1-3 3zM11 1h2v3h-2zm0 19h2v3h-2zM1 11h3v2H1zm19 0h3v2h-3zM4.2 5.6 5.6 4.2l2.1 2.1-1.4 1.4zM16.3 17.7l1.4-1.4 2.1 2.1-1.4 1.4zM19.8 4.2l-2.1 2.1 1.4 1.4 2.1-2.1zM5.6 19.8l2.1-2.1 1.4 1.4-2.1 2.1z"/></symbol>
+  <symbol id="i-moon" viewBox="0 0 24 24"><path d="M21 13.5A9 9 0 0 1 10.5 3 9 9 0 1 0 21 13.5z"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h13m-6-7 7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-external" viewBox="0 0 24 24"><path d="M14 3h7v7h-2V6.4l-8.3 8.3-1.4-1.4L17.6 5H14zM5 5h5v2H6v11h11v-4h2v6H4V5z"/></symbol>
+  <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v10.2l3.6-3.6 1.4 1.4-6 6-6-6 1.4-1.4L10 13.2V3zM4 19h16v2H4z"/></symbol>
+  <symbol id="i-menu" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></symbol>
+  <symbol id="i-close" viewBox="0 0 24 24"><path d="m6.4 5 5.6 5.6L17.6 5 19 6.4 13.4 12 19 17.6 17.6 19 12 13.4 6.4 19 5 17.6 10.6 12 5 6.4z"/></symbol>
+</svg>
+
+<div class="bg-orbs" aria-hidden="true">
+  <span class="orb orb-1"></span><span class="orb orb-2"></span><span class="orb orb-3"></span><span class="grid-lines"></span>
+</div>
+<div class="noise" aria-hidden="true"></div>
+
+<div class="scroll-progress" id="scrollProgress" aria-hidden="true"><i></i></div>
+
+<!-- PAGE BAR -->
+<div class="page-bar">
+  <div class="container page-bar-inner">
+    <a class="back-link" href="../index.html#projects" data-cursor="hover"><svg class="ico"><use href="#i-arrow"/></svg><span>All Projects</span></a>
+    <span class="page-bar-crumb">/</span>
+    <span class="page-bar-title">Enterprise Resource Planning Platform</span>
+    <div class="page-bar-actions">
+      <button class="icon-btn theme-toggle" id="themeToggle" aria-label="Toggle colour theme" data-cursor="hover">
+        <svg class="ico"><use href="#i-sun"/></svg><svg class="ico ico-alt"><use href="#i-moon"/></svg>
+      </button>
+      <a class="icon-btn" href="../index.html#contact" aria-label="Contact" data-cursor="hover"><svg class="ico"><use href="#i-mail"/></svg></a>
+    </div>
+  </div>
+</div>
+
+<main>
+
+<!-- HERO -->
+<section class="p-hero">
+  <div class="container p-hero-grid">
+    <div>
+      <span class="p-kicker" data-reveal="fade-up"><i style="width:6px;height:6px;border-radius:50%;background:#22d3ee;box-shadow:0 0 12px #22d3ee"></i>Enterprise Software</span>
+      <h1 data-reveal="fade-up" data-delay="60">Enterprise Resource Planning Platform</h1>
+      <p class="p-lede" data-reveal="fade-up" data-delay="120">A <strong>complete ERP platform</strong> built to run the operations of large Bangladeshi enterprises — finance, procurement, inventory, production and HR on a single database, replacing a patchwork of disconnected spreadsheets and legacy tools.</p>
+
+      <div class="p-facts">
+        <div class="p-fact" data-reveal="fade-up" data-delay="160">
+          <label>Clients</label><span>BRAC · Priyojon · BNB</span></div><div class="p-fact" data-reveal="fade-up" data-delay="230">
+          <label>Sectors</label><span>Retail, Distribution, Micro-finance</span></div><div class="p-fact" data-reveal="fade-up" data-delay="300">
+          <label>Delivered</label><span>2019 — 2021</span></div><div class="p-fact" data-reveal="fade-up" data-delay="370">
+          <label>My role</label><span>Software Engineer</span></div>
+      </div>
+
+      <div class="p-hero-cta" data-reveal="fade-up" data-delay="440">
+        <a class="btn btn-primary" href="../index.html#contact" data-magnetic data-cursor="hover"><span>Discuss a similar build</span><svg class="ico"><use href="#i-arrow"/></svg></a>
+        <a class="btn btn-ghost" href="../index.html#projects" data-magnetic data-cursor="hover"><span>More projects</span></a>
+      </div>
+    </div>
+
+    <div class="p-preview reveal" data-reveal="zoom-in" data-delay="200" data-tilt>
+      <div class="p-glow"></div>
+      <div class="p-preview-frame">
+        <img src="../assets/img/mock/erp-dashboard.svg" alt="ERP executive dashboard" width="1280" height="800">
+      </div>
+      <span class="p-badge-float one"><svg class="ico-sm"><use href="#i-rocket"/></svg>11 modules live</span>
+      <span class="p-badge-float two"><svg class="ico-sm"><use href="#i-server"/></svg>6,000+ daily users</span>
+    </div>
+  </div>
+</section>
+
+<!-- PROBLEM / SOLUTION -->
+<section class="p-section">
+  <div class="container">
+    <div class="p-section-head" data-reveal="fade-up">
+      <span class="p-sec-label"><i></i>Background</span>
+      <h2>Why it existed, and how it was solved</h2>
+      <p>Every engagement in this portfolio started the same way — a business process that had outgrown the tools it ran on.</p>
+    </div>
+    <div class="ps-grid">
+      <article class="ps-card problem glass" data-reveal="fade-right">
+        <h3><span class="ps-dot">!</span>The challenge</h3>
+        <ul><li>Operations ran across <strong>seven disconnected spreadsheets</strong> per department — finance never matched sales, and month-end closing took weeks.</li><li>Branch data arrived late and inconsistently, so leadership made decisions on <strong>outdated numbers</strong>.</li><li>Multi-division structures with different pricing rules meant <strong>every report needed manual rework</strong>.</li><li>Existing off-the-shelf ERP could not be adapted to the client’s credit, payroll and distribution rules without heavy customisation.</li></ul>
+      </article>
+      <article class="ps-card solution glass" data-reveal="fade-left">
+        <h3><span class="ps-dot">✓</span>The solution</h3>
+        <ul><li>One <strong>modular monolith</strong> — shared master data, role-based access, and a single source of truth across every branch.</li><li>A <strong>workflow engine</strong> for approval chains: purchase orders, stock transfers, credit notes and payroll all route by rule, not by email.</li><li>Real-time dashboards that aggregate from transaction tables, so a figure on screen is never a cached copy.</li><li>A <strong>role-aware reporting layer</strong> that generates statutory and management reports from the same data, with export to Excel and PDF.</li></ul>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section class="p-section">
+  <div class="container">
+    <div class="p-section-head center" data-reveal="fade-up">
+      <span class="p-sec-label"><i></i>Sample screens</span>
+      <h2>Inside the interface</h2>
+      <p>Representative screens, drawn from the modules I designed and built. Layouts and labels are illustrative.</p>
+    </div>
+    <div class="gal"><figure class="gal-item wide" data-reveal="fade-up" data-delay="0" data-tilt>
+  <img src="../assets/img/mock/erp-dashboard.svg" alt="ERP executive dashboard with KPIs and revenue charts" loading="lazy" width="1280" height="800">
+  <figcaption class="gal-cap">
+    <div><h4>Executive dashboard</h4><p>Live KPIs, revenue trends by division and the open-order pipeline, aggregated from transaction data — no manual refresh.</p></div>
+    <span class="gal-num">01</span>
+  </figcaption>
+</figure><figure class="gal-item" data-reveal="fade-up" data-delay="90" data-tilt>
+  <img src="../assets/img/mock/erp-orders.svg" alt="Sales order listing with filters and status" loading="lazy" width="1280" height="800">
+  <figcaption class="gal-cap">
+    <div><h4>Order lifecycle</h4><p>Every order from draft to dispatch, with division filters, approval state and export.</p></div>
+    <span class="gal-num">02</span>
+  </figcaption>
+</figure><figure class="gal-item" data-reveal="fade-up" data-delay="180" data-tilt>
+  <img src="../assets/img/mock/erp-inventory.svg" alt="Inventory control screen with warehouse ledger and reorder alerts" loading="lazy" width="1280" height="800">
+  <figcaption class="gal-cap">
+    <div><h4>Inventory control</h4><p>Multi-warehouse stock ledger with reorder alerts, valuation and stock-health tracking.</p></div>
+    <span class="gal-num">03</span>
+  </figcaption>
+</figure></div>
+  </div>
+</section>
+
+<!-- MODULES -->
+<section class="p-section">
+  <div class="container">
+    <div class="p-section-head" data-reveal="fade-up">
+      <span class="p-sec-label"><i></i>Scope</span>
+      <h2>Modules delivered</h2>
+      <p>What the system actually did for the people using it every day.</p>
+    </div>
+    <div class="mod-grid"><article class="mod glass" data-reveal="fade-up" data-delay="0" data-tilt>
+  <div class="mod-ico"><svg class="ico"><use href="#i-briefcase"/></svg></div><h4>Sales & Distribution</h4><p>Quotation, sales order, dispatch, delivery confirmation, returns and territory-wise billing.</p></article><article class="mod glass" data-reveal="fade-up" data-delay="80" data-tilt>
+  <div class="mod-ico"><svg class="ico"><use href="#i-db"/></svg></div><h4>Procurement & Inventory</h4><p>Supplier masters, purchase orders, GRN, multi-warehouse transfers, batch and serial tracking with live reorder alerts.</p></article><article class="mod glass" data-reveal="fade-up" data-delay="160" data-tilt>
+  <div class="mod-ico"><svg class="ico"><use href="#i-code"/></svg></div><h4>Accounts & Finance</h4><p>Double-entry ledger, chart of accounts, VAT, bank reconciliation, ageing reports and financial statements.</p></article><article class="mod glass" data-reveal="fade-up" data-delay="0" data-tilt>
+  <div class="mod-ico"><svg class="ico"><use href="#i-server"/></svg></div><h4>Production Planning</h4><p>Bill of materials, work orders, machine scheduling and finished-goods receipts.</p></article><article class="mod glass" data-reveal="fade-up" data-delay="80" data-tilt>
+  <div class="mod-ico"><svg class="ico"><use href="#i-tools"/></svg></div><h4>HR & Payroll</h4><p>Employee masters, attendance, leave, salary structure, payslips and statutory deductions.</p></article><article class="mod glass" data-reveal="fade-up" data-delay="160" data-tilt>
+  <div class="mod-ico"><svg class="ico"><use href="#i-cap"/></svg></div><h4>Branch & Territory</h4><p>Multi-branch setup, territory allocation, branch-wise P&L and consolidated group reporting.</p></article><article class="mod glass" data-reveal="fade-up" data-delay="0" data-tilt>
+  <div class="mod-ico"><svg class="ico"><use href="#i-phone"/></svg></div><h4>Mobile Field Companion</h4><p>Officers capture orders and stock checks on Android; data syncs to the server when online.</p></article><article class="mod glass" data-reveal="fade-up" data-delay="80" data-tilt>
+  <div class="mod-ico"><svg class="ico"><use href="#i-tools"/></svg></div><h4>Reporting & Audit</h4><p>Scheduled report generation, an immutable audit log and role-restricted data export.</p></article></div>
+  </div>
+</section>
+
+<!-- TECHNOLOGY -->
+<section class="p-section">
+  <div class="container">
+    <div class="p-section-head" data-reveal="fade-up">
+      <span class="p-sec-label"><i></i>Under the hood</span>
+      <h2>Technology</h2>
+    </div>
+    <div class="tech-grid"><div class="tech-col glass" data-reveal="fade-up">
+  <h3><svg class="ico-sm"><use href="#i-code"/></svg>Application</h3>
+  <div class="stack-lines">
+    <div class="stack-line"><span class="k">Language</span><span class="v">C# · .NET</span></div><div class="stack-line"><span class="k">Web framework</span><span class="v">ASP.NET Core</span></div><div class="stack-line"><span class="k">Data access</span><span class="v">Entity Framework Core</span></div><div class="stack-line"><span class="k">Real-time</span><span class="v">SignalR</span></div><div class="stack-line"><span class="k">Reporting</span><span class="v">RDLC / Excel export</span></div><div class="stack-line"><span class="k">Auth</span><span class="v">ASP.NET Identity</span></div>
+  </div></div><div class="tech-col glass" data-reveal="fade-up">
+  <h3><svg class="ico-sm"><use href="#i-db"/></svg>Data & Infrastructure</h3>
+  <div class="stack-lines">
+    <div class="stack-line"><span class="k">Primary database</span><span class="v">SQL Server</span></div><div class="stack-line"><span class="k">Procedures</span><span class="v">150+ stored procedures</span></div><div class="stack-line"><span class="k">Reporting store</span><span class="v">Indexed views</span></div><div class="stack-line"><span class="k">Hosting</span><span class="v">IIS / Windows Server</span></div><div class="stack-line"><span class="k">Version control</span><span class="v">Git</span></div><div class="stack-line"><span class="k">Method</span><span class="v">Agile / SCRUM</span></div>
+  </div></div></div>
+  </div>
+</section>
+
+<!-- ROLE -->
+<section class="p-section">
+  <div class="container">
+    <div class="p-section-head" data-reveal="fade-up">
+      <span class="p-sec-label"><i></i>My contribution</span>
+      <h2>What I owned</h2>
+    </div>
+    <div class="role-grid">
+      <article class="role-card glass" data-reveal="fade-right">
+        <div class="who">
+          <span class="role-avatar"><img src="../assets/img/avatar.jpg" alt="Md. Mahamudul Hasan Tonoy" loading="lazy"></span>
+          <div><h4>Md. Mahamudul Hasan Tonoy</h4><span>Software Engineer</span></div>
+        </div>
+        <ul class="role-list"><li>Designed the <strong>domain model</strong> and the module boundaries that let eleven functional areas share one database safely.</li><li>Wrote the majority of the <strong>stored procedure layer</strong> and the authorisation rules behind every screen.</li><li>Built reusable <strong>reporting components</strong> that saved the team weeks on each new client report.</li><li>Ran integration testing across modules and mentored junior developers through code review.</li></ul>
+      </article>
+      <div class="tech-col glass" data-reveal="fade-left">
+        <h3><svg class="ico-sm"><use href="#i-briefcase"/></svg>Engagement detail</h3>
+        <div class="stack-lines">
+          <div class="stack-line"><span class="k">Architecture</span><span class="v">Modular monolith, service/repository layers</span></div><div class="stack-line"><span class="k">Database</span><span class="v">SQL Server · 150+ stored procedures · indexed views</span></div><div class="stack-line"><span class="k">Team</span><span class="v">Cross-functional squad of 6, SCRUM sprints</span></div><div class="stack-line"><span class="k">Duration</span><span class="v">≈ 18 months across two engagements</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RESULTS -->
+<section class="p-section">
+  <div class="container">
+    <div class="p-section-head center" data-reveal="fade-up">
+      <span class="p-sec-label"><i></i>Outcome</span>
+      <h2>What changed</h2>
+    </div>
+    <div class="res-grid">
+      <article class="res glass" data-reveal="zoom-in" data-delay="0">
+        <b>98%</b><span>Month-end close accuracy across audited branches</span></article><article class="res glass" data-reveal="zoom-in" data-delay="80">
+        <b>6×</b><span>Faster month-end reporting cycle</span></article><article class="res glass" data-reveal="zoom-in" data-delay="160">
+        <b>11</b><span>Modules delivered in one platform</span></article><article class="res glass" data-reveal="zoom-in" data-delay="240">
+        <b>5k+</b><span>Concurrent users supported</span></article>
+    </div>
+  </div>
+</section>
+
+<!-- QUOTE -->
+<section class="p-section">
+  <div class="container">
+    <blockquote class="quote-card glass" data-reveal="fade-up">
+      <svg class="ico"><use href="#i-quote"/></svg>
+      <p>The ERP replaced seven spreadsheets and gave us one number we can trust. Reporting that used to take a week now takes an afternoon.</p>
+      <footer><span class="role-avatar"><img src="../assets/img/avatar.jpg" alt="" loading="lazy"></span>
+      <div><strong>Head of Operations</strong><br><span>Enterprise client · 2021</span></div></footer>
+    </blockquote>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="p-section">
+  <div class="container">
+    <div class="p-cta" data-reveal="zoom-in">
+      <h2>Need something like this?</h2>
+      <p>I design and build enterprise web applications, ERPs and internal platforms — from schema to screen. Tell me what your process looks like today and I will map the system it needs.</p>
+      <div class="btn-row">
+        <a class="btn btn-primary" href="../index.html#contact" data-magnetic data-cursor="hover"><span>Start a conversation</span><svg class="ico"><use href="#i-arrow"/></svg></a>
+        <a class="btn btn-ghost" href="../index.html" data-magnetic data-cursor="hover"><span>Back to home</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NEXT -->
+<section class="p-section">
+  <div class="container">
+    <div class="next-nav">
+      <a class="next-card prev glass" href="hrm-redcross.html" data-reveal="fade-right" data-cursor="hover">
+        <svg class="ico"><use href="#i-arrow"/></svg><span class="dir">← Previous project</span>
+        <h3>HRM System — Red Cross Bangladesh</h3><p>Human Resources</p>
+      </a>
+      <a class="next-card glass" href="field-force.html" data-reveal="fade-left" data-cursor="hover">
+        <svg class="ico"><use href="#i-arrow"/></svg><span class="dir">Next project →</span>
+        <h3>Field Force Management System</h3><p>Sales Operations</p>
+      </a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-bottom" style="border-top:0">
+    <p>© <span id="year">2026</span> Md. Mahamudul Hasan Tonoy. All rights reserved.</p>
+    <p class="footer-made">Designed &amp; built with <span class="heart">♥</span> using HTML, CSS &amp; JavaScript</p>
+  </div>
+</footer>
+
+<button class="to-top" id="toTop" aria-label="Back to top" data-cursor="hover"><svg class="ico"><use href="#i-arrow"/></svg></button>
+<script src="../assets/js/main.js"></script>
+</body>
+</html>

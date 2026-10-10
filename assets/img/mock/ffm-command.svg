@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 800" width="1280" height="800" role="img">
+<defs>
+  <linearGradient id="app" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#0d1330"/><stop offset="55%" stop-color="#111a3d"/><stop offset="100%" stop-color="#0a0f26"/>
+  </linearGradient>
+  <linearGradient id="acc" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#f59e0b"/><stop offset="100%" stop-color="#6366f1"/>
+  </linearGradient>
+  <linearGradient id="area" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#f59e0b" stop-opacity=".45"/><stop offset="100%" stop-color="#f59e0b" stop-opacity="0"/>
+  </linearGradient>
+  <linearGradient id="area2" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#6366f1" stop-opacity=".4"/><stop offset="100%" stop-color="#6366f1" stop-opacity="0"/>
+  </linearGradient>
+  <filter id="soft"><feGaussianBlur stdDeviation="10"/></filter>
+</defs>
+<rect width="1280" height="800" fill="url(#app)"/>
+<ellipse cx="1049.6" cy="64" rx="240" ry="180" fill="#f59e0b" opacity=".10" filter="url(#soft)"/>
+<ellipse cx="153.6" cy="760" rx="220" ry="170" fill="#6366f1" opacity=".10" filter="url(#soft)"/>
+<rect x="0" y="0" width="1280" height="56" fill="#0a0f26"/>
+<rect x="0" y="55" width="1280" height="1" fill="rgba(255,255,255,.08)"/>
+<circle cx="26" cy="28" r="5" fill="#ff5f57"/><circle cx="44" cy="28" r="5" fill="#febc2e"/><circle cx="62" cy="28" r="5" fill="#28c840"/>
+<rect x="88" y="19" width="120" height="18" rx="6" fill="url(#acc)" opacity=".9"/>
+<text x="98" y="32" font-family="Segoe UI,Arial" font-size="11" font-weight="700" fill="#06121f">FIELDFORCE</text>
+<rect x="900" y="18" width="250" height="20" rx="10" fill="rgba(255,255,255,.06)"/>
+<text x="914" y="32" font-family="Segoe UI,Arial" font-size="10" fill="#8fa0c8">Search modules, records…</text>
+<circle cx="1188" cy="28" r="14" fill="rgba(255,255,255,.10)"/>
+<text x="1183" y="32" font-family="Segoe UI,Arial" font-size="10" font-weight="700" fill="#cfe0ff">MT</text>
+<circle cx="1226" cy="28" r="14" fill="rgba(255,255,255,.06)"/>
+<circle cx="1258" cy="28" r="3" fill="#f59e0b"/><rect x="0" y="56" width="220" height="744" fill="rgba(255,255,255,.028)"/>
+<rect x="219" y="56" width="1" height="744" fill="rgba(255,255,255,.07)"/>
+<rect x="14" y="64" width="192" height="30" rx="8" fill="#f59e0b" opacity=".16"/>
+<rect x="14" y="64" width="3" height="30" rx="2" fill="#f59e0b"/>
+<rect x="28" y="72" width="11" height="11" rx="3" fill="#f59e0b"/>
+<text x="48" y="82" font-family="Segoe UI,Arial" font-size="11.5" font-weight="700" fill="#eaf2ff">Command Centre</text>
+<rect x="28" y="108" width="11" height="11" rx="3" fill="rgba(255,255,255,.28)"/>
+<text x="48" y="118" font-family="Segoe UI,Arial" font-size="11.5" font-weight="400" fill="#94a3c8">Field Officers</text>
+<rect x="28" y="144" width="11" height="11" rx="3" fill="rgba(255,255,255,.28)"/>
+<text x="48" y="154" font-family="Segoe UI,Arial" font-size="11.5" font-weight="400" fill="#94a3c8">Territories</text>
+<rect x="28" y="180" width="11" height="11" rx="3" fill="rgba(255,255,255,.28)"/>
+<text x="48" y="190" font-family="Segoe UI,Arial" font-size="11.5" font-weight="400" fill="#94a3c8">Visits</text>
+<rect x="28" y="216" width="11" height="11" rx="3" fill="rgba(255,255,255,.28)"/>
+<text x="48" y="226" font-family="Segoe UI,Arial" font-size="11.5" font-weight="400" fill="#94a3c8">Leads</text>
+<rect x="28" y="252" width="11" height="11" rx="3" fill="rgba(255,255,255,.28)"/>
+<text x="48" y="262" font-family="Segoe UI,Arial" font-size="11.5" font-weight="400" fill="#94a3c8">Orders</text>
+<rect x="28" y="288" width="11" height="11" rx="3" fill="rgba(255,255,255,.28)"/>
+<text x="48" y="298" font-family="Segoe UI,Arial" font-size="11.5" font-weight="400" fill="#94a3c8">Performance</text>
+<rect x="14" y="700" width="192" height="84" rx="12" fill="rgba(255,255,255,.05)" stroke="rgba(255,255,255,.08)"/>
+<text x="28" y="726" font-family="Segoe UI,Arial" font-size="10" fill="#8fa0c8">Storage used</text>
+<text x="28" y="750" font-family="Segoe UI,Arial" font-size="15" font-weight="700" fill="#eaf2ff">68%</text>
+<rect x="28" y="760" width="164" height="6" rx="3" fill="rgba(255,255,255,.10)"/>
+<rect x="28" y="760" width="112" height="6" rx="3" fill="url(#acc)"/><text x="252" y="96" font-family="Segoe UI,Arial" font-size="21" font-weight="700" fill="#eef4ff">Command Centre</text>
+<text x="252" y="116" font-family="Segoe UI,Arial" font-size="11.5" fill="#8fa0c8">Live view of every field officer on the road right now</text>
+<rect x="1054" y="80" width="94" height="30" rx="8" fill="rgba(255,255,255,.07)" stroke="rgba(255,255,255,.12)"/>
+<text x="1078" y="99" font-family="Segoe UI,Arial" font-size="11" font-weight="600" fill="#cfe0ff">Export</text>
+<rect x="1160" y="80" width="94" height="30" rx="8" fill="url(#acc)"/>
+<text x="1178" y="99" font-family="Segoe UI,Arial" font-size="11" font-weight="700" fill="#06121f">+ New</text><rect x="252" y="138" width="238" height="96" rx="14" fill="rgba(255,255,255,.05)" stroke="rgba(255,255,255,.09)"/>
+<rect x="266" y="152" width="30" height="30" rx="9" fill="#22c55e" opacity=".18"/>
+<rect x="276" y="162" width="10" height="10" rx="3" fill="#22c55e"/>
+<text x="266" y="204" font-family="Segoe UI,Arial" font-size="22" font-weight="700" fill="#eef4ff">412</text>
+<text x="338" y="204" font-family="Segoe UI,Arial" font-size="10" font-weight="700" fill="#22c55e">▲ 18</text>
+<text x="266" y="222" font-family="Segoe UI,Arial" font-size="10" fill="#8fa0c8">Officers Active</text><rect x="510" y="138" width="238" height="96" rx="14" fill="rgba(255,255,255,.05)" stroke="rgba(255,255,255,.09)"/>
+<rect x="524" y="152" width="30" height="30" rx="9" fill="#22d3ee" opacity=".18"/>
+<rect x="534" y="162" width="10" height="10" rx="3" fill="#22d3ee"/>
+<text x="524" y="204" font-family="Segoe UI,Arial" font-size="22" font-weight="700" fill="#eef4ff">1,986</text>
+<text x="596" y="204" font-family="Segoe UI,Arial" font-size="10" font-weight="700" fill="#22d3ee">▲ 6.2%</text>
+<text x="524" y="222" font-family="Segoe UI,Arial" font-size="10" fill="#8fa0c8">Visits Today</text><rect x="768" y="138" width="238" height="96" rx="14" fill="rgba(255,255,255,.05)" stroke="rgba(255,255,255,.09)"/>
+<rect x="782" y="152" width="30" height="30" rx="9" fill="#6366f1" opacity=".18"/>
+<rect x="792" y="162" width="10" height="10" rx="3" fill="#6366f1"/>
+<text x="782" y="204" font-family="Segoe UI,Arial" font-size="22" font-weight="700" fill="#eef4ff">347</text>
+<text x="854" y="204" font-family="Segoe UI,Arial" font-size="10" font-weight="700" fill="#6366f1">▲ 11.8%</text>
+<text x="782" y="222" font-family="Segoe UI,Arial" font-size="10" fill="#8fa0c8">Leads Captured</text><rect x="1026" y="138" width="238" height="96" rx="14" fill="rgba(255,255,255,.05)" stroke="rgba(255,255,255,.09)"/>
+<rect x="1040" y="152" width="30" height="30" rx="9" fill="#f59e0b" opacity=".18"/>
+<rect x="1050" y="162" width="10" height="10" rx="3" fill="#f59e0b"/>
+<text x="1040" y="204" font-family="Segoe UI,Arial" font-size="22" font-weight="700" fill="#eef4ff">৳ 8.4 L</text>
+<text x="1112" y="204" font-family="Segoe UI,Arial" font-size="10" font-weight="700" fill="#f59e0b">▲ 9.4%</text>
+<text x="1040" y="222" font-family="Segoe UI,Arial" font-size="10" fill="#8fa0c8">Booked Today</text><rect x="252" y="258" width="620" height="360" rx="14" fill="rgba(255,255,255,.04)" stroke="rgba(255,255,255,.08)"/>
+<text x="270" y="284" font-family="Segoe UI,Arial" font-size="12" font-weight="700" fill="#eef4ff">Territory Coverage</text>
+<path d="M300 320 L420 300 L560 340 L700 296 L840 340 L830 470 L700 500 L560 470 L420 510 L300 470 Z" fill="#22c55e" opacity=".08" stroke="rgba(255,255,255,.10)" stroke-width="1.5"/>
+<path d="M300 310 L420 360 L500 320" fill="none" stroke="rgba(255,255,255,.06)" stroke-width="1"/><path d="M390 350 L510 420 L590 370" fill="none" stroke="rgba(255,255,255,.06)" stroke-width="1"/><path d="M480 390 L600 360 L680 420" fill="none" stroke="rgba(255,255,255,.06)" stroke-width="1"/><path d="M570 310 L690 420 L770 320" fill="none" stroke="rgba(255,255,255,.06)" stroke-width="1"/><path d="M660 350 L780 360 L860 370" fill="none" stroke="rgba(255,255,255,.06)" stroke-width="1"/><path d="M750 390 L870 420 L950 420" fill="none" stroke="rgba(255,255,255,.06)" stroke-width="1"/><path d="M840 310 L960 360 L1040 320" fill="none" stroke="rgba(255,255,255,.06)" stroke-width="1"/>
+<circle cx="352" cy="412" r="16" fill="#22c55e" opacity=".20"/><circle cx="352" cy="412" r="6" fill="#22c55e"/><circle cx="352" cy="412" r="16" fill="none" stroke="#22c55e" stroke-width="1.5" opacity=".6"><animate attributeName="r" values="10;30" dur="2.4s" repeatCount="indefinite"/><animate attributeName="opacity" values=".7;0" dur="2.4s" repeatCount="indefinite"/></circle><circle cx="452" cy="486" r="16" fill="#22d3ee" opacity=".20"/><circle cx="452" cy="486" r="6" fill="#22d3ee"/><circle cx="452" cy="486" r="16" fill="none" stroke="#22d3ee" stroke-width="1.5" opacity=".6"><animate attributeName="r" values="10;30" dur="2.4s" repeatCount="indefinite"/><animate attributeName="opacity" values=".7;0" dur="2.4s" repeatCount="indefinite"/></circle><circle cx="556" cy="404" r="16" fill="#22c55e" opacity=".20"/><circle cx="556" cy="404" r="6" fill="#22c55e"/><circle cx="556" cy="404" r="16" fill="none" stroke="#22c55e" stroke-width="1.5" opacity=".6"><animate attributeName="r" values="10;30" dur="2.4s" repeatCount="indefinite"/><animate attributeName="opacity" values=".7;0" dur="2.4s" repeatCount="indefinite"/></circle><circle cx="648" cy="520" r="16" fill="#f59e0b" opacity=".20"/><circle cx="648" cy="520" r="6" fill="#f59e0b"/><circle cx="648" cy="520" r="16" fill="none" stroke="#f59e0b" stroke-width="1.5" opacity=".6"><animate attributeName="r" values="10;30" dur="2.4s" repeatCount="indefinite"/><animate attributeName="opacity" values=".7;0" dur="2.4s" repeatCount="indefinite"/></circle><circle cx="742" cy="470" r="16" fill="#22c55e" opacity=".20"/><circle cx="742" cy="470" r="6" fill="#22c55e"/><circle cx="742" cy="470" r="16" fill="none" stroke="#22c55e" stroke-width="1.5" opacity=".6"><animate attributeName="r" values="10;30" dur="2.4s" repeatCount="indefinite"/><animate attributeName="opacity" values=".7;0" dur="2.4s" repeatCount="indefinite"/></circle><circle cx="806" cy="430" r="16" fill="#22d3ee" opacity=".20"/><circle cx="806" cy="430" r="6" fill="#22d3ee"/><circle cx="806" cy="430" r="16" fill="none" stroke="#22d3ee" stroke-width="1.5" opacity=".6"><animate attributeName="r" values="10;30" dur="2.4s" repeatCount="indefinite"/><animate attributeName="opacity" values=".7;0" dur="2.4s" repeatCount="indefinite"/></circle>
+<text x="270" y="600" font-family="Segoe UI,Arial" font-size="9.5" fill="#8fa0c8">● 312 on-site   ● 74 travelling   ● 26 on leave</text><rect x="890" y="258" width="364" height="360" rx="14" fill="rgba(255,255,255,.04)" stroke="rgba(255,255,255,.08)"/>
+<text x="908" y="284" font-family="Segoe UI,Arial" font-size="12" font-weight="700" fill="#eef4ff">Today's Target</text>
+<text x="908" y="318" font-family="Segoe UI,Arial" font-size="26" font-weight="700" fill="#eef4ff">74%</text>
+<rect x="908" y="332" width="328" height="10" rx="5" fill="rgba(255,255,255,.08)"/>
+<rect x="908" y="332" width="243" height="10" rx="5" fill="url(#acc)"/>
+<text x="908" y="376" font-family="Segoe UI,Arial" font-size="10.5" fill="#9fb0d4">Outlet visits</text>
+<text x="1180" y="376" font-family="Segoe UI,Arial" font-size="10.5" font-weight="700" fill="#e6eeff">186 / 220</text>
+<rect x="908" y="385" width="328" height="6" rx="3" fill="rgba(255,255,255,.07)"/>
+<rect x="908" y="385" width="277" height="6" rx="3" fill="#22d3ee"/><text x="908" y="432" font-family="Segoe UI,Arial" font-size="10.5" fill="#9fb0d4">New outlets</text>
+<text x="1180" y="432" font-family="Segoe UI,Arial" font-size="10.5" font-weight="700" fill="#e6eeff">34 / 45</text>
+<rect x="908" y="441" width="328" height="6" rx="3" fill="rgba(255,255,255,.07)"/>
+<rect x="908" y="441" width="248" height="6" rx="3" fill="#6366f1"/><text x="908" y="488" font-family="Segoe UI,Arial" font-size="10.5" fill="#9fb0d4">Reorders</text>
+<text x="1180" y="488" font-family="Segoe UI,Arial" font-size="10.5" font-weight="700" fill="#e6eeff">128 / 180</text>
+<rect x="908" y="497" width="328" height="6" rx="3" fill="rgba(255,255,255,.07)"/>
+<rect x="908" y="497" width="233" height="6" rx="3" fill="#f59e0b"/><text x="908" y="544" font-family="Segoe UI,Arial" font-size="10.5" fill="#9fb0d4">Collections</text>
+<text x="1180" y="544" font-family="Segoe UI,Arial" font-size="10.5" font-weight="700" fill="#e6eeff">92 / 150</text>
+<rect x="908" y="553" width="328" height="6" rx="3" fill="rgba(255,255,255,.07)"/>
+<rect x="908" y="553" width="201" height="6" rx="3" fill="#22c55e"/>
+</svg>

@@ -1,327 +1,117 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark" class="no-js">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>GZIP Base64 → JSON Decoder | Download JSON</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GZIP + Base64 → JSON Decoder — Tonoy.dev</title>
+<meta name="description" content="Paste a Base64-encoded GZIP string, decompress it in your browser and preview, copy or download a syntax-highlighted JSON payload.">
+<meta name="theme-color" content="#070a18">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' font-family='Segoe UI'>⚡</text></svg>">
 
-        body {
-            background: linear-gradient(145deg, #0b1120 0%, #111827 100%);
-            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, sans-serif;
-            padding: 2rem 1.5rem;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 
-        /* main card */
-        .tool-card {
-            max-width: 1440px;
-            width: 100%;
-            background: rgba(17, 24, 39, 0.75);
-            backdrop-filter: blur(12px);
-            border-radius: 2rem;
-            border: 1px solid rgba(71, 85, 105, 0.5);
-            box-shadow: 0 25px 40px -12px rgba(0, 0, 0, 0.6);
-            overflow: hidden;
-            transition: all 0.2s;
-        }
+<link rel="stylesheet" href="../assets/css/tools.css">
 
-        /* header area */
-        .header-area {
-            padding: 1.6rem 2rem;
-            background: rgba(15, 23, 42, 0.6);
-            border-bottom: 1px solid rgba(51, 65, 85, 0.6);
-        }
+<!-- pako for gzip decompression fallback -->
+<script src="https://cdn.jsdelivr.net/npm/pako@2.1.0/dist/pako.min.js"></script>
 
-        .header-area h1 {
-            font-size: 1.8rem;
-            font-weight: 600;
-            background: linear-gradient(135deg, #c084fc, #60a5fa, #34d399);
-            background-clip: text;
-            -webkit-background-clip: text;
-            color: transparent;
-            letter-spacing: -0.3px;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .sub {
-            color: #9ca3af;
-            font-size: 0.85rem;
-            margin-top: 0.5rem;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1rem;
-            align-items: center;
-        }
-
-        .badge {
-            background: #1e293b;
-            font-family: 'Menlo', monospace;
-            font-size: 0.7rem;
-            padding: 0.25rem 0.7rem;
-            border-radius: 30px;
-            color: #a5f3fc;
-            border: 1px solid #334155;
-        }
-
-        /* two column layout */
-        .two-columns {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1.5rem;
-            padding: 2rem;
-        }
-
-        .panel {
-            flex: 1;
-            min-width: 280px;
-            background: #0f172ad9;
-            border-radius: 1.25rem;
-            border: 1px solid #2d3a4e;
-            overflow: hidden;
-            transition: box-shadow 0.2s;
-        }
-
-        .panel-header {
-            background: #1e293b;
-            padding: 1rem 1.2rem;
-            border-bottom: 1px solid #334155;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 0.75rem;
-        }
-
-        .panel-title {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-weight: 500;
-            color: #e2e8f0;
-            font-size: 1rem;
-        }
-
-        /* BUTTON GROUP — ENHANCED DESIGN (modern, rounded, distinct actions) */
-        .action-group {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-
-        /* Base button style */
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 0.5rem 1rem;
-            font-size: 0.75rem;
-            font-weight: 500;
-            font-family: inherit;
-            border-radius: 40px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            border: none;
-            background: #2d3a4e;
-            color: #e2e8f0;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.2);
-        }
-
-        .btn i { font-style: normal; font-weight: 600; letter-spacing: 0.3px; }
-        
-        .btn:hover {
-            transform: translateY(-2px);
-            filter: brightness(1.08);
-            box-shadow: 0 6px 12px -6px rgba(0,0,0,0.4);
-        }
-        
-        .btn:active { transform: translateY(1px); }
-
-        /* Clear button (neutral) */
-        .btn-clear {
-            background: #334155;
-            color: #f1f5f9;
-            border: 1px solid #475569;
-        }
-        .btn-clear:hover { background: #3b4a62; }
-
-        /* Example button (secondary) */
-        .btn-example {
-            background: #2d3a4e;
-            border: 1px solid #5b6e8c;
-            color: #b9d0f0;
-        }
-        .btn-example:hover { background: #3e556e; color: white; }
-
-        /* Primary decode button (blue gradient) */
-        .btn-decode {
-            background: linear-gradient(95deg, #2563eb, #3b82f6);
-            color: white;
-            box-shadow: 0 2px 8px rgba(37,99,235,0.3);
-            border: none;
-        }
-        .btn-decode:hover { background: linear-gradient(95deg, #1d4ed8, #2563eb); box-shadow: 0 4px 12px rgba(37,99,235,0.4); }
-
-        /* Copy button (slate/teal) */
-        .btn-copy {
-            background: #2a3a4f;
-            border: 1px solid #4b6b8f;
-            color: #cbd5e6;
-        }
-        .btn-copy:hover { background: #3b5a78; color: white; }
-
-        /* Download button (success green) */
-        .btn-download {
-            background: linear-gradient(100deg, #0d9488, #14b8a6);
-            color: white;
-            font-weight: 600;
-            box-shadow: 0 2px 8px rgba(13,148,136,0.3);
-        }
-        .btn-download:hover { background: linear-gradient(100deg, #0f766e, #0d9488); box-shadow: 0 4px 12px rgba(13,148,136,0.4); }
-
-        /* textarea & json viewer */
-        textarea, .json-viewer {
-            width: 100%;
-            font-family: 'JetBrains Mono', 'Fira Code', 'Menlo', monospace;
-            font-size: 0.8rem;
-            line-height: 1.5;
-            background: #0a0f1a;
-            border: none;
-            color: #e2e8f0;
-            resize: vertical;
-            padding: 1.2rem;
-            outline: none;
-        }
-
-        textarea {
-            min-height: 320px;
-        }
-
-        .json-viewer {
-            min-height: 320px;
-            max-height: 65vh;
-            overflow: auto;
-            white-space: pre-wrap;
-            word-break: break-word;
-        }
-
-        /* stats footer */
-        .stats-footer {
-            display: flex;
-            justify-content: space-between;
-            padding: 0.6rem 1.2rem;
-            background: #020617b3;
-            font-size: 0.7rem;
-            font-family: monospace;
-            color: #6b7280;
-            border-top: 1px solid #1e293b;
-        }
-
-        /* message area */
-        .msg-area {
-            margin: 0 2rem 1.5rem 2rem;
-        }
-
-        .toast-msg {
-            background: #064e3bdd;
-            backdrop-filter: blur(8px);
-            border-left: 4px solid #10b981;
-            padding: 0.75rem 1.2rem;
-            border-radius: 1rem;
-            color: #ccf0e6;
-            font-size: 0.85rem;
-            font-weight: 500;
-        }
-
-        .toast-error {
-            background: #7f1a1add;
-            border-left-color: #ef4444;
-            color: #fee2e2;
-        }
-
-        .footer-note {
-            text-align: center;
-            font-size: 0.7rem;
-            color: #475569;
-            padding: 1rem;
-            border-top: 1px solid #1e293b;
-        }
-
-        @media (max-width: 780px) {
-            body { padding: 1rem; }
-            .two-columns { padding: 1rem; gap: 1rem; }
-            .btn { padding: 0.4rem 0.8rem; font-size: 0.7rem; }
-        }
-    </style>
-    <!-- pako for gzip decompression fallback -->
-    <script src="https://cdn.jsdelivr.net/npm/pako@2.1.0/dist/pako.min.js"></script>
+<style>
+  .card-actions{display:flex;flex-wrap:wrap;gap:.5rem}
+  #inputData{min-height:320px}
+  .io-stats{
+    display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;
+    margin-top:1rem;padding-top:.85rem;border-top:1px solid var(--border);
+    font-family:'JetBrains Mono',ui-monospace,Consolas,monospace;font-size:.74rem;color:var(--txt-mute);
+  }
+  .io-stats span:last-child{color:var(--txt-dim)}
+  .json-view{
+    margin:0;min-height:320px;max-height:65vh;overflow:auto;
+    padding:1.1rem 1.2rem;border-radius:var(--r);border:1px solid var(--border);
+    background:color-mix(in srgb,var(--bg) 68%,transparent);
+    font-family:'JetBrains Mono',ui-monospace,Consolas,monospace;
+    font-size:.8rem;line-height:1.6;white-space:pre-wrap;word-break:break-word;color:var(--txt-dim);
+  }
+  .json-view .ph{color:var(--txt-mute)}
+  .toast-host{margin-top:1.35rem}
+  .toast-host:empty{display:none}
+  .tool-head .tag-list{margin-top:1.1rem}
+</style>
 </head>
 <body>
-<div class="tool-card">
-    <div class="header-area">
-        <h1>🔓 GZIP + Base64 → JSON Hub</h1>
-        <div class="sub">
-            <span>📥 Paste encoded string (<span class="badge">H4sIAAAA...</span>) → decompress → preview → download JSON</span>
-        </div>
-    </div>
 
-    <div class="two-columns">
-        <!-- LEFT: INPUT SECTION -->
-        <div class="panel">
-            <div class="panel-header">
-                <div class="panel-title">
-                    <span>📦 1. Base64‑GZIP Input</span>
-                </div>
-                <div class="action-group">
-                    <button id="clearBtn" class="btn btn-clear" title="Clear all">🗑️ Clear</button>
-                    <button id="exampleBtn" class="btn btn-example" title="Load demo payload">📋 Example</button>
-                </div>
-            </div>
-            <textarea id="inputData" placeholder='Paste your base64+gzip string here... (usually starts with H4sIAAAAAAAA...)'></textarea>
-            <div class="stats-footer">
-                <span>🔹 Base64 length</span>
-                <span id="inputLength">0 chars</span>
-            </div>
-        </div>
+<header class="tools-header">
+  <div class="tools-bar">
+    <a class="brand" href="../"><span class="brand-mark">&lt;/&gt;</span><span class="brand-text">TONOY<em>.dev</em></span></a>
+    <nav class="tools-crumb" aria-label="Breadcrumb"><a href="../#tools">Tools</a><span class="sep">/</span><span>GZIP → JSON</span></nav>
+    <button class="icon-btn theme-toggle" data-theme-toggle aria-label="Toggle colour theme">
+      <svg class="ico" viewBox="0 0 24 24" fill="currentColor"><path d="M12 17a5 5 0 1 0-5-5 5 5 0 0 0 5 5zm0-2a3 3 0 1 1 3-3 3 3 0 0 1-3 3zM11 1h2v3h-2zm0 19h2v3h-2zM1 11h3v2H1zm19 0h3v2h-3zM4.2 5.6 5.6 4.2l2.1 2.1-1.4 1.4zM16.3 17.7l1.4-1.4 2.1 2.1-1.4 1.4zM19.8 4.2l-2.1 2.1 1.4 1.4 2.1-2.1zM5.6 19.8l2.1-2.1 1.4 1.4-2.1 2.1z"/></svg>
+      <svg class="ico ico-alt" viewBox="0 0 24 24" fill="currentColor"><path d="M21 13.5A9 9 0 0 1 10.5 3 9 9 0 1 0 21 13.5z"/></svg>
+    </button>
+  </div>
+</header>
 
-        <!-- RIGHT: OUTPUT + ACTION BUTTONS (Decode, Copy, Download) -->
-        <div class="panel">
-            <div class="panel-header">
-                <div class="panel-title">
-                    <span>📄 2. JSON Result</span>
-                </div>
-                <div class="action-group">
-                    <button id="decodeBtn" class="btn btn-decode">✨ Decode & Format</button>
-                    <button id="copyBtn" class="btn btn-copy">📋 Copy JSON</button>
-                    <button id="downloadBtn" class="btn btn-download">💾 Download JSON</button>
-                </div>
-            </div>
-            <div id="jsonOutput" class="json-viewer">✨ Ready — paste your base64 string and click <strong>Decode & Format</strong></div>
-            <div class="stats-footer">
-                <span>✅ Output stats</span>
-                <span id="outputSize">—</span>
-            </div>
-        </div>
-    </div>
+<div class="wrap tool-page">
 
-    <div id="messageArea" class="msg-area"></div>
-    <div class="footer-note">
-        🧠 Smart gzip detection (DecompressionStream + pako) • Auto-format JSON • Download as .json file
-    </div>
+  <header class="tool-head">
+    <span class="eyebrow"><i></i>Developer Tools</span>
+    <h1 class="tool-title">GZIP + Base64 <span class="grad-text">→ JSON</span></h1>
+    <p class="tool-sub">Paste a Base64-encoded GZIP string, decompress it right in your browser, then preview a syntax-highlighted, pretty-printed JSON payload you can copy or download.</p>
+    <ul class="tag-list">
+      <li>DecompressionStream + pako</li>
+      <li>Smart gzip detection</li>
+      <li>Copy &amp; download</li>
+    </ul>
+  </header>
+
+  <div class="grid-2">
+
+    <!-- LEFT: INPUT -->
+    <section class="card">
+      <div class="card-head">
+        <h2>📦 1. Base64-GZIP Input</h2>
+        <div class="card-actions">
+          <button id="clearBtn" class="btn btn-ghost btn-sm" type="button" title="Clear all">Clear</button>
+          <button id="exampleBtn" class="btn btn-soft btn-sm" type="button" title="Load demo payload">Example</button>
+        </div>
+      </div>
+      <div class="field">
+        <textarea id="inputData" class="mono-input" aria-label="Base64-encoded GZIP input" placeholder="Paste your base64+gzip string here… (usually starts with H4sIAAAAAAAA)"></textarea>
+      </div>
+      <div class="io-stats">
+        <span>Base64 length</span>
+        <span id="inputLength">0 chars</span>
+      </div>
+    </section>
+
+    <!-- RIGHT: OUTPUT -->
+    <section class="card">
+      <div class="card-head">
+        <h2>📄 2. JSON Result</h2>
+        <div class="card-actions">
+          <button id="decodeBtn" class="btn btn-primary btn-sm" type="button">Decode &amp; Format</button>
+          <button id="copyBtn" class="btn btn-ghost btn-sm" type="button">Copy JSON</button>
+          <button id="downloadBtn" class="btn btn-good btn-sm" type="button">Download JSON</button>
+        </div>
+      </div>
+      <pre id="jsonOutput" class="json-view"><span class="ph">Ready — paste your Base64 string and click <strong>Decode &amp; Format</strong>.</span></pre>
+      <div class="io-stats">
+        <span>Output stats</span>
+        <span id="outputSize">—</span>
+      </div>
+    </section>
+
+  </div>
+
+  <div id="messageArea" class="toast-host" role="status" aria-live="polite"></div>
 </div>
 
+<script src="../assets/js/tools.js"></script>
 <script>
     (function() {
+        'use strict';
+
         // ----- DOM elements -----
         const inputArea = document.getElementById('inputData');
         const jsonOutputDiv = document.getElementById('jsonOutput');
@@ -334,6 +124,8 @@
         const inputLengthSpan = document.getElementById('inputLength');
         const outputSizeSpan = document.getElementById('outputSize');
 
+        const PLACEHOLDER = '<span class="ph">Ready — paste your Base64 string and click <strong>Decode &amp; Format</strong>.</span>';
+
         // ----- internal state -----
         let latestRawJson = '';       // pretty printed JSON string
         let latestParsed = null;      // parsed object (for validation)
@@ -344,7 +136,7 @@
             if (toastTimeout) clearTimeout(toastTimeout);
             messageDiv.innerHTML = '';
             const toast = document.createElement('div');
-            toast.className = isError ? 'toast-msg toast-error' : 'toast-msg';
+            toast.className = isError ? 'toast err' : 'toast ok';
             toast.innerText = text;
             messageDiv.appendChild(toast);
             toastTimeout = setTimeout(() => {
@@ -361,7 +153,7 @@
 
         // update output stats (size, lines)
         function updateOutputStatsFromRaw(jsonString) {
-            if (!jsonString || jsonString === '✨ Ready — paste your base64 string and click <strong>Decode & Format</strong>') {
+            if (!jsonString) {
                 outputSizeSpan.innerText = '—';
                 return;
             }
@@ -457,7 +249,7 @@
         async function handleDecode() {
             const rawInput = inputArea.value;
             if (!rawInput.trim()) {
-                showMessage('⚠️ Please paste the base64-encoded GZIP data first.', true);
+                showMessage('⚠️ Please paste the Base64-encoded GZIP data first.', true);
                 jsonOutputDiv.innerHTML = '<span style="color:#f87171;">❌ No input provided. Paste your encoded string and try again.</span>';
                 latestRawJson = '';
                 latestParsed = null;
@@ -465,7 +257,7 @@
                 return;
             }
             // loading state
-            jsonOutputDiv.innerHTML = '<span style="color:#94a3b8;">🔄 Decompressing & decoding ... (this may take a moment for large payloads)</span>';
+            jsonOutputDiv.innerHTML = '<span style="color:#94a3b8;">🔄 Decompressing &amp; decoding … (this may take a moment for large payloads)</span>';
             try {
                 const start = performance.now();
                 const { parsed, prettyString } = await decompressBase64Gzip(rawInput);
@@ -480,7 +272,7 @@
             } catch (err) {
                 console.error(err);
                 let errMsg = err.message || 'Decompression error.';
-                if (errMsg.includes('gzip header')) errMsg += ' Make sure the string starts with H4sI... (base64 encoded gzip).';
+                if (errMsg.includes('gzip header')) errMsg += ' Make sure the string starts with H4sI… (base64 encoded gzip).';
                 jsonOutputDiv.innerHTML = `<span style="color:#f87171;">❌ Error: ${escapeHtml(errMsg)}</span>`;
                 latestRawJson = '';
                 latestParsed = null;
@@ -513,7 +305,7 @@
             }
         }
 
-        // ----- download JSON as .json file (with timestamp)-----
+        // ----- download JSON as .json file (with timestamp) -----
         function downloadJsonFile() {
             if (!latestRawJson) {
                 showMessage('No JSON data to download. Please decode a base64+gzip string first.', true);
@@ -544,7 +336,7 @@
         // ----- clear everything -----
         function clearAll() {
             inputArea.value = '';
-            jsonOutputDiv.innerHTML = '✨ Ready — paste your base64 string and click <strong>Decode & Format</strong>';
+            jsonOutputDiv.innerHTML = PLACEHOLDER;
             latestRawJson = '';
             latestParsed = null;
             updateInputStats();
@@ -578,7 +370,7 @@
             setTimeout(() => {
                 handleDecode();
             }, 30);
-            showMessage('📋 Example loaded with valid gzip+base64 payload. Auto-decoding...', false);
+            showMessage('📋 Example loaded with a valid gzip+base64 payload. Auto-decoding…', false);
         }
 
         // event listeners
@@ -589,7 +381,7 @@
         downloadBtn.addEventListener('click', downloadJsonFile);
         inputArea.addEventListener('input', updateInputStats);
         inputArea.addEventListener('paste', () => setTimeout(updateInputStats, 10));
-        
+
         // extra: ctrl+enter triggers decode
         inputArea.addEventListener('keydown', (e) => {
             if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {

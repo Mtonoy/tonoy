@@ -1,545 +1,476 @@
-<!doctype html>
-<html lang="en">
-
+<!DOCTYPE html>
+<html lang="en" data-theme="dark" class="no-js">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>ToolNest Ultimate Browser Toolkit</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
-    <style>
-        :root {
-            --bg: #f6f8fc;
-            --card: #fff;
-            --soft: #f1f3f9;
-            --text: #111827;
-            --muted: #667085;
-            --line: #e4e7ec;
-            --p: #635bff;
-            --p2: #8b5cf6;
-            --good: #079455;
-            --bad: #d92d20;
-            --shadow: 0 16px 45px #18204a12
-        }
-
-        html.dark {
-            --bg: #080c16;
-            --card: #111827;
-            --soft: #0d1524;
-            --text: #f5f7ff;
-            --muted: #98a2b3;
-            --line: #263247;
-            --shadow: 0 20px 55px #0008
-        }
-
-        * {
-            box-sizing: border-box
-        }
-
-        body {
-            margin: 0;
-            background: radial-gradient(circle at 15% 0, #e9e7ff, transparent 28%), var(--bg);
-            color: var(--text);
-            font-family: Inter, system-ui, -apple-system, Segoe UI, sans-serif;
-            transition: .25s
-        }
-
-        button,
-        input,
-        textarea,
-        select {
-            font: inherit
-        }
-
-        .top {
-            position: sticky;
-            top: 0;
-            z-index: 20;
-            background: #ffffffdf;
-            backdrop-filter: blur(18px);
-            border-bottom: 1px solid var(--line)
-        }
-
-        .dark .top {
-            background: #080c16df
-        }
-
-        .nav {
-            max-width: 1280px;
-            margin: auto;
-            padding: 14px 22px;
-            display: flex;
-            gap: 14px;
-            align-items: center
-        }
-
-        .logo {
-            font-size: 23px;
-            font-weight: 950;
-            white-space: nowrap
-        }
-
-        .logo span {
-            color: var(--p)
-        }
-
-        .search {
-            flex: 1;
-            position: relative
-        }
-
-        .search input {
-            width: 100%;
-            padding: 12px 15px 12px 42px;
-            border: 1px solid var(--line);
-            background: var(--soft);
-            color: var(--text);
-            border-radius: 14px;
-            outline: 0
-        }
-
-        .search i {
-            position: absolute;
-            left: 15px;
-            top: 10px;
-            font-style: normal;
-            font-size: 19px
-        }
-
-        .round {
-            border: 1px solid var(--line);
-            background: var(--card);
-            color: var(--text);
-            border-radius: 12px;
-            padding: 10px 12px;
-            cursor: pointer
-        }
-
-        .hero {
-            max-width: 1280px;
-            margin: auto;
-            padding: 58px 22px 30px
-        }
-
-        .badge {
-            display: inline-block;
-            padding: 7px 11px;
-            border-radius: 99px;
-            background: #ebe9ff;
-            color: #5146d8;
-            font-weight: 800;
-            font-size: 11px
-        }
-
-        .hero h1 {
-            font-size: clamp(40px, 6vw, 70px);
-            line-height: 1;
-            letter-spacing: -3px;
-            margin: 15px 0
-        }
-
-        .hero h1 span {
-            color: var(--p)
-        }
-
-        .hero p {
-            max-width: 720px;
-            color: var(--muted);
-            font-size: 17px;
-            line-height: 1.6
-        }
-
-        .pills {
-            display: flex;
-            gap: 9px;
-            flex-wrap: wrap;
-            margin-top: 22px
-        }
-
-        .pill {
-            padding: 9px 13px;
-            border: 1px solid var(--line);
-            background: var(--card);
-            color: var(--muted);
-            border-radius: 99px;
-            cursor: pointer
-        }
-
-        .pill.active {
-            background: var(--text);
-            color: var(--card);
-            border-color: var(--text)
-        }
-
-        main {
-            max-width: 1280px;
-            margin: auto;
-            padding: 0 22px 70px
-        }
-
-        .section {
-            margin-top: 24px
-        }
-
-        .section h2 {
-            font-size: 20px
-        }
-
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(225px, 1fr));
-            gap: 15px
-        }
-
-        .card {
-            background: var(--card);
-            border: 1px solid var(--line);
-            border-radius: 18px;
-            padding: 20px;
-            min-height: 155px;
-            box-shadow: var(--shadow);
-            cursor: pointer;
-            transition: .2s;
-            position: relative
-        }
-
-        .card:hover {
-            transform: translateY(-4px);
-            border-color: #aaa4ff
-        }
-
-        .ico {
-            width: 43px;
-            height: 43px;
-            display: grid;
-            place-items: center;
-            border-radius: 13px;
-            background: #efedff;
-            color: #554ce8;
-            font-weight: 900
-        }
-
-        .dark .ico {
-            background: #29234b
-        }
-
-        .card h3 {
-            font-size: 16px;
-            margin: 14px 0 6px
-        }
-
-        .card p {
-            font-size: 13px;
-            color: var(--muted);
-            margin: 0
-        }
-
-        .arrow {
-            position: absolute;
-            right: 17px;
-            bottom: 18px;
-            color: var(--muted)
-        }
-
-        .empty {
-            text-align: center;
-            padding: 60px;
-            color: var(--muted)
-        }
-
-        .overlay {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: #030712aa;
-            z-index: 50;
-            align-items: center;
-            justify-content: center;
-            padding: 18px
-        }
-
-        .overlay.open {
-            display: flex
-        }
-
-        .modal {
-            width: min(900px, 100%);
-            max-height: 92vh;
-            overflow: auto;
-            background: var(--card);
-            border: 1px solid var(--line);
-            border-radius: 24px;
-            box-shadow: 0 30px 100px #0009
-        }
-
-        .head {
-            padding: 19px 22px;
-            border-bottom: 1px solid var(--line);
-            display: flex;
-            justify-content: space-between;
-            align-items: center
-        }
-
-        .head h2 {
-            margin: 0;
-            font-size: 21px
-        }
-
-        .close {
-            border: 0;
-            background: var(--soft);
-            color: var(--text);
-            padding: 9px 12px;
-            border-radius: 10px;
-            cursor: pointer
-        }
-
-        .body {
-            padding: 22px
-        }
-
-        .fields {
-            display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 13px
-        }
-
-        .field label {
-            display: block;
-            font-size: 12px;
-            font-weight: 800;
-            color: var(--muted);
-            margin-bottom: 6px
-        }
-
-        .field input,
-        .field textarea,
-        .field select {
-            width: 100%;
-            padding: 11px 12px;
-            border: 1px solid var(--line);
-            background: var(--soft);
-            color: var(--text);
-            border-radius: 11px;
-            outline: 0
-        }
-
-        .field textarea {
-            min-height: 210px;
-            resize: vertical;
-            font-family: ui-monospace, Consolas, monospace
-        }
-
-        .actions {
-            display: flex;
-            gap: 9px;
-            flex-wrap: wrap;
-            margin-top: 16px
-        }
-
-        .btn {
-            border: 0;
-            border-radius: 11px;
-            padding: 11px 16px;
-            background: linear-gradient(90deg, var(--p), var(--p2));
-            color: #fff;
-            font-weight: 800;
-            cursor: pointer
-        }
-
-        .btn.alt {
-            background: var(--soft);
-            color: var(--text);
-            border: 1px solid var(--line)
-        }
-
-        .result {
-            margin-top: 16px;
-            padding: 15px;
-            border: 1px solid var(--line);
-            background: var(--soft);
-            border-radius: 14px
-        }
-
-        .result pre {
-            margin: 0;
-            white-space: pre-wrap;
-            word-break: break-word;
-            max-height: 350px;
-            overflow: auto
-        }
-
-        .good {
-            color: var(--good)
-        }
-
-        .bad {
-            color: var(--bad)
-        }
-
-        .drop {
-            border: 2px dashed var(--line);
-            border-radius: 16px;
-            padding: 30px;
-            text-align: center
-        }
-
-        .drop input {
-            margin-top: 15px
-        }
-
-        .preview {
-            max-width: 100%;
-            max-height: 330px;
-            margin-top: 15px;
-            border-radius: 12px
-        }
-
-        .small {
-            font-size: 12px;
-            color: var(--muted)
-        }
-
-        @media(max-width:680px) {
-            .nav {
-                flex-wrap: wrap
-            }
-
-            .search {
-                order: 3;
-                flex-basis: 100%
-            }
-
-            .fields {
-                grid-template-columns: 1fr
-            }
-
-            .grid {
-                grid-template-columns: repeat(auto-fill, minmax(180px, 1fr))
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tools — Md. Mahamudul Hasan Tonoy</title>
+<meta name="description" content="A toolkit of 40+ browser-based finance calculators, developer utilities, image/PDF tools and everyday helpers by Md. Mahamudul Hasan Tonoy.">
+<meta name="theme-color" content="#070a18">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' font-family='Segoe UI'>⚡</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/tools.css">
+<style>
+  .tk-search{position:relative;max-width:520px;margin:1.6rem auto 0}
+  .tk-search input{width:100%;padding:.95rem 1.1rem .95rem 3rem;border-radius:99px;border:1px solid var(--border-str);background:var(--surface);color:var(--txt);outline:none;transition:.25s}
+  .tk-search input:focus{border-color:var(--c2);box-shadow:0 0 0 3px color-mix(in srgb,var(--c2) 28%,transparent)}
+  .tk-search .tk-search-ico{position:absolute;left:1.15rem;top:50%;transform:translateY(-50%);opacity:.6;font-size:1.05rem}
+  .tk-pills{display:flex;flex-wrap:wrap;justify-content:center;gap:.55rem;margin-top:1.3rem}
+  .tk-section{margin-bottom:clamp(28px,4vw,46px)}
+  .tk-cat{display:flex;align-items:center;gap:.6rem;font-size:1.02rem;margin-bottom:1rem;color:var(--txt)}
+  .tk-cat::before{content:'';width:8px;height:8px;border-radius:50%;background:var(--grad)}
+  .tk-cat span{margin-left:auto;font-family:'JetBrains Mono',monospace;font-size:.75rem;color:var(--txt-mute);font-weight:400}
+  .tk-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(215px,1fr));gap:1rem}
+  .tk-card{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:.7rem;text-align:left;
+    padding:1.15rem 1.2rem;border-radius:var(--r);border:1px solid var(--border);background:var(--surface);
+    box-shadow:var(--shadow-sm);cursor:pointer;transition:transform .3s var(--ease),border-color .3s,box-shadow .3s,background .3s;color:var(--txt)}
+  .tk-card:hover{transform:translateY(-4px);border-color:var(--c1);background:var(--surface-2);box-shadow:0 26px 54px -26px rgba(34,211,238,.6)}
+  .tk-ico{display:grid;place-items:center;min-width:44px;height:44px;padding:0 .5rem;border-radius:13px;
+    background:var(--grad-soft);border:1px solid var(--border);font-family:'JetBrains Mono',monospace;font-weight:700;font-size:.82rem;color:var(--c1)}
+  .tk-card strong{font-family:'Sora';font-weight:600;font-size:.95rem;line-height:1.3}
+  .tk-go{font-size:.72rem;font-weight:600;color:var(--txt-mute);margin-top:auto;transition:color .3s}
+  .tk-card:hover .tk-go{color:var(--c1)}
+  .tk-empty{text-align:center;padding:3rem 1rem;color:var(--txt-dim)}
+  .tk-featured .tk-card{background:linear-gradient(145deg,var(--surface),var(--grad-soft))}
+  /* modal helpers */
+  .fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.9rem 1rem}
+  .preview{max-width:100%;max-height:330px;margin-top:.9rem;border-radius:var(--r-sm);border:1px solid var(--border)}
+  .result a.btn{margin-right:.5rem;margin-top:.5rem}
+  @media(max-width:680px){.fields{grid-template-columns:1fr}}
+</style>
 </head>
-
 <body>
-    <header class="top">
-        <div class="nav">
-            <div class="logo">Tool<span>Nest</span> ⚡</div>
-            <div class="search"><i>⌕</i><input id="search" placeholder="Search any tool..."></div><button class="round"
-                id="theme">🌙</button>
-        </div>
-    </header>
-    <section class="hero"><span class="badge">42 TOOLS • 100% BROWSER BASED</span>
-        <h1>One place for<br><span>everything.</span></h1>
-        <p>Finance calculators, developer utilities, image/PDF tools and everyday helpers — beautifully designed and
-            ready to use.</p>
-        <div class="pills" id="cats"></div>
-    </section>
-    <main id="main"></main>
-    <div class="overlay" id="overlay">
-        <div class="modal">
-            <div class="head">
-                <h2 id="title"></h2><button class="close" id="close">✕</button>
-            </div>
-            <div class="body" id="body"></div>
-        </div>
-    </div>
-    <script>
-        const D = {
-            Finance: [["Loan EMI Calculator", "EMI", "emi"], ["Mortgage Calculator", "⌂", "mortgage"], ["Interest Calculator", "%", "interest"], ["Salary Calculator", "৳", "salary"], ["VAT Calculator", "VAT", "vat"], ["Discount Calculator", "%", "discount"], ["Profit Margin Calculator", "↗", "margin"], ["Investment Calculator", "↗", "investment"], ["Compound Interest Calculator", "CI", "compound"]],
-            "Developer Tools": [["JSON Formatter", "{}", "json"], ["JSON Validator", "✓", "jsonv"], ["JSON to C# Class Generator", "C#", "csharp"], ["SQL Formatter", "SQL", "sql"], ["SQL Query Formatter", "SQL", "sql"], ["Regex Tester", ".*", "regex"], ["Base64 Encoder/Decoder", "64", "base64"], ["URL Encoder/Decoder", "URL", "url"], ["JWT Decoder", "JWT", "jwt"], ["HTML Formatter", "<>", "html"], ["CSS Minifier", "CSS", "css"], ["JavaScript Minifier", "JS", "js"], ["Timestamp Converter", "TS", "timestamp"], ["UUID Generator", "ID", "uuid"], ["Cron Expression Generator", "CRON", "cron"]],
-            "Image/File Tools": [["Image Resize", "↔", "resize"], ["Image Compress", "◉", "compress"], ["JPG → PNG", "JPG", "jpgpng"], ["PNG → JPG", "PNG", "pngjpg"], ["Image to WebP", "WEBP", "webp"], ["PDF Merge", "PDF", "pdfmerge"], ["PDF Split", "PDF", "pdfsplit"], ["CSV → JSON", "CSV", "csvjson"], ["JSON → CSV", "JSON", "jsoncsv"]],
-            "Everyday Tools": [["Age Calculator", "AGE", "age"], ["Date Difference Calculator", "DATE", "datediff"], ["Percentage Calculator", "%", "percentage"], ["Time Calculator", "TIME", "time"], ["Unit Converter", "UNIT", "unit"], ["BMI Calculator", "BMI", "bmi"], ["GPA Calculator", "GPA", "gpa"], ["Number to Words", "123", "words"], ["Time Zone Converter", "TZ", "timezone"]]
-        };
-        let active = "All"; const $ = x => document.getElementById(x); function esc(s) { return String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;" }[c])) }
-        $("cats").innerHTML = ["All", ...Object.keys(D)].map(x => `<button class="pill ${x === "All" ? "active" : ""}" data-cat="${x}">${x}</button>`).join("");
-        $("cats").onclick = e => { if (!e.target.matches(".pill")) return; active = e.target.dataset.cat; document.querySelectorAll(".pill").forEach(x => x.classList.toggle("active", x === e.target)); render() }; $("search").oninput = render;
-        function render() { let q = $("search").value.toLowerCase(); $("main").innerHTML = ""; let found = 0; for (let [cat, list] of Object.entries(D)) { if (active != "All" && active != cat) continue; let a = list.filter(x => x[0].toLowerCase().includes(q)); if (!a.length) continue; found += a.length; let s = document.createElement("section"); s.className = "section"; s.innerHTML = `<h2>${cat}</h2><div class="grid">${a.map(x => `<article class="card" data-t="${x[2]}" data-n="${esc(x[0])}"><div class="ico">${x[1]}</div><h3>${x[0]}</h3><p>Open tool and calculate instantly</p><span class="arrow">→</span></article>`).join("")}</div>`; $("main").appendChild(s) } if (!found) $("main").innerHTML = '<div class="empty">No matching tool found.</div>'; document.querySelectorAll(".card").forEach(c => c.onclick = () => open(c.dataset.t, c.dataset.n)) }
-        $("theme").onclick = () => { document.documentElement.classList.toggle("dark"); $("theme").textContent = document.documentElement.classList.contains("dark") ? "☀️" : "🌙"; localStorage.setItem("tn-theme", document.documentElement.classList.contains("dark") ? "dark" : "light") }; if (localStorage.getItem("tn-theme") == "dark") $("theme").click();
-        $("close").onclick = close; $("overlay").onclick = e => { if (e.target === $("overlay")) close() }; document.addEventListener("keydown", e => e.key === "Escape" && close()); function close() { $("overlay").classList.remove("open") }
-        const N = (id, l) => `<div class="field"><label>${l}</label><input id="${id}" type="number" step="any"></div>`, F = (l, id = "input") => `<div class="field"><label>${l}</label><textarea id="${id}" spellcheck="false"></textarea></div>`, R = () => `<div class="result" id="result"></div>`, A = (txt = "Calculate") => `<div class="actions"><button class="btn" id="run">${txt}</button><button class="btn alt" id="clear">Clear</button></div>`;
-        function open(t, n) { $("title").textContent = n; $("body").innerHTML = UI(t); $("overlay").classList.add("open"); bind(t) }
-        function UI(t) {
-            let finance = {
-                emi: N("p", "Loan amount") + N("r", "Annual interest %") + N("n", "Months"),
-                mortgage: N("p", "Mortgage amount") + N("r", "Annual interest %") + N("n", "Term (years)"),
-                interest: N("p", "Principal") + N("r", "Rate %") + N("y", "Years"),
-                salary: N("s", "Gross monthly salary") + N("tax", "Tax / deductions %"),
-                vat: N("a", "Amount") + N("v", "VAT %", "") + N("v", "VAT %"),
-                discount: N("p", "Original price") + N("d", "Discount %"),
-                margin: N("rev", "Revenue") + N("cost", "Cost"),
-                investment: N("p", "Initial investment") + N("a", "Monthly contribution") + N("r", "Annual return %") + N("y", "Years"),
-                compound: N("p", "Principal") + N("r", "Annual rate %") + N("y", "Years") + N("n", "Compounds / year"),
-                bmi: N("w", "Weight kg") + N("h", "Height m"), gpa: N("g", "Grade points") + N("c", "Credits")
-            };
-            if (finance[t]) return `<div class="fields">${finance[t]}</div>${A()}${R()}`;
-            if (t === "percentage") return `<div class="fields">${N("v", "Value") + N("p", "Percentage %")}</div>${A()}${R()}`;
-            if (t === "age") return `<div class="fields"><div class="field"><label>Date of birth</label><input id="dob" type="date"></div><div class="field"><label>Calculate as of</label><input id="asof" type="date" value="${new Date().toISOString().slice(0, 10)}"></div></div>${A()}${R()}`;
-            if (t === "datediff") return `<div class="fields"><div class="field"><label>Start date</label><input id="d1" type="date"></div><div class="field"><label>End date</label><input id="d2" type="date"></div></div>${A()}${R()}`;
-            if (t === "timestamp") return `<div class="fields">${N("ts", "Unix timestamp (seconds)")}</div>${A("Convert")}${R()}`;
-            if (t === "uuid") return A("Generate UUID") + R();
-            if (t === "unit") return `<div class="fields">${N("uv", "Value")}<div class="field"><label>Conversion</label><select id="conv"><option>km-mi</option><option>mi-km</option><option>kg-lb</option><option>lb-kg</option><option>c-f</option><option>f-c</option><option>m-ft</option><option>ft-m</option></select></div></div>${A("Convert")}${R()}`;
-            if (t === "time") return `<div class="fields">${N("h", "Hours") + N("m", "Minutes") + N("ah", "Add hours") + N("am", "Add minutes")}</div>${A()}${R()}`;
-            if (t === "words") return N("wn", "Number") + A("Convert to words") + R();
-            if (t === "timezone") return `<div class="fields"><div class="field"><label>Date/time</label><input id="dt" type="datetime-local"></div><div class="field"><label>Timezone</label><select id="tz">${Intl.supportedValuesOf("timeZone").map(x => `<option>${x}</option>`).join("")}</select></div></div>${A("Convert")}${R()}`;
-            if (t === "regex") return `<div class="fields"><div class="field"><label>Regex pattern</label><input id="pattern" placeholder="\\d+"></div><div class="field"><label>Flags</label><input id="flags" value="g"></div></div>${F("Test text", "text")}${A("Test Regex")}${R()}`;
-            if (t === "base64" || t === "url") return F("Input") + `<div class="actions"><button class="btn" id="enc">Encode</button><button class="btn" id="dec">Decode</button></div>${R()}`;
-            if (["json", "jsonv", "csharp", "sql", "html", "css", "js", "jwt", "cron", "csvjson", "jsoncsv"].includes(t)) return F("Input") + A("Process") + R();
-            if (["resize", "compress", "jpgpng", "pngjpg", "webp"].includes(t)) return `<div class="drop"><b>Select an image</b><br><span class="small">Everything happens locally in your browser.</span><br><input id="img" type="file" accept="image/*"></div><div class="fields" style="margin-top:14px">${N("iw", "Width (optional)") + N("ih", "Height (optional)")}</div>${A("Process Image")}${R()}`;
-            if (t === "pdfmerge") return `<div class="drop"><b>Select 2+ PDF files</b><br><input id="pdfs" type="file" accept="application/pdf" multiple></div>${A("Merge PDFs")}${R()}`;
-            if (t === "pdfsplit") return `<div class="drop"><b>Select one PDF</b><br><input id="pdf" type="file" accept="application/pdf"><br><input id="pages" placeholder="Pages: 1,3-5" style="margin-top:12px;padding:10px;width:80%;border:1px solid var(--line);border-radius:10px;background:var(--soft);color:var(--text)"></div>${A("Split / Extract")}${R()}`;
-            return F("Input") + A("Run") + R()
-        }
-        function v(id) { return Number($(id)?.value || 0) } function set(x, good = true) { $("result").innerHTML = `<pre class="${good ? "good" : "bad"}">${esc(x)}</pre>` }
-        function bind(t) { $("clear")?.addEventListener("click", () => document.querySelectorAll("input,textarea").forEach(x => { if (x.type !== "file") x.value = "" })); $("enc")?.addEventListener("click", () => { try { set(t === "base64" ? btoa(unescape(encodeURIComponent($("input").value))) : encodeURIComponent($("input").value)) } catch (e) { set(e.message, false) } }); $("dec")?.addEventListener("click", () => { try { set(t === "base64" ? decodeURIComponent(escape(atob($("input").value))) : decodeURIComponent($("input").value)) } catch (e) { set("Invalid input: " + e.message, false) } }); $("run")?.addEventListener("click", () => run(t)) }
-        async function run(t) {
-            try {
-                let r = "";
-                if (t === "emi" || t === "mortgage") { let p = v("p"), m = v("r") / 1200, n = t === "emi" ? v("n") : v("n") * 12; r = m ? p * m * (1 + m) ** n / ((1 + m) ** n - 1) : p / n; r = `Monthly payment: ${r.toFixed(2)}` }
-                else if (t === "interest") r = `Simple interest: ${(v("p") * v("r") / 100 * v("y")).toFixed(2)} | Total: ${(v("p") * (1 + v("r") / 100 * v("y"))).toFixed(2)}`;
-                else if (t === "salary") r = `Net salary: ${(v("s") * (1 - v("tax") / 100)).toFixed(2)}`;
-                else if (t === "vat") r = `VAT: ${(v("a") * v("v") / 100).toFixed(2)} | Total: ${(v("a") * (1 + v("v") / 100)).toFixed(2)}`;
-                else if (t === "discount") r = `Savings: ${(v("p") * v("d") / 100).toFixed(2)} | Final price: ${(v("p") * (1 - v("d") / 100)).toFixed(2)}`;
-                else if (t === "margin") r = `Profit: ${(v("rev") - v("cost")).toFixed(2)} | Margin: ${((v("rev") - v("cost")) / v("rev") * 100).toFixed(2)}%`;
-                else if (t === "investment") { let m = v("r") / 1200, n = v("y") * 12; r = `Future value: ${(v("p") * (1 + m) ** n + v("a") * ((1 + m) ** n - 1) / m).toFixed(2)}` }
-                else if (t === "compound") r = `Future value: ${(v("p") * (1 + v("r") / 100 / v("n")) ** (v("n") * v("y"))).toFixed(2)}`;
-                else if (t === "bmi") { let b = v("w") / v("h") ** 2; r = `BMI: ${b.toFixed(2)} — ${b < 18.5 ? "Underweight" : b < 25 ? "Normal" : b < 30 ? "Overweight" : "Obesity"}` }
-                else if (t === "gpa") r = `Grade points: ${v("g")} | Credits: ${v("c")} | GPA: ${v("g").toFixed(2)}`;
-                else if (t === "percentage") r = `Result: ${(v("v") * v("p") / 100).toFixed(2)}`;
-                else if (t === "age") { let a = new Date($("dob").value), b = new Date($("asof").value); if (isNaN(a)) throw Error("Choose date of birth"); let y = b.getFullYear() - a.getFullYear(); if (b < new Date(b.getFullYear(), a.getMonth(), a.getDate())) y--; r = `Age: ${y} years` }
-                else if (t === "datediff") r = `Difference: ${Math.abs(new Date($("d2").value) - new Date($("d1").value)) / 86400000} days`;
-                else if (t === "timestamp") r = new Date(v("ts") * 1000).toString();
-                else if (t === "uuid") r = crypto.randomUUID();
-                else if (t === "unit") { let x = v("uv"), c = $("conv").value, m = { "km-mi": x * .621371, "mi-km": x * 1.609344, "kg-lb": x * 2.20462262, "lb-kg": x * .45359237, "c-f": x * 9 / 5 + 32, "f-c": (x - 32) * 5 / 9, "m-ft": x * 3.28084, "ft-m": x * .3048 }; r = m[c].toFixed(5) }
-                else if (t === "time") { let z = v("h") * 60 + v("m") + v("ah") * 60 + v("am"); r = `${Math.floor(z / 60)} hours ${z % 60} minutes` }
-                else if (t === "words") r = numberWords(v("wn"));
-                else if (t === "timezone") r = new Intl.DateTimeFormat(undefined, { dateStyle: "full", timeStyle: "long", timeZone: $("tz").value }).format(new Date($("dt").value));
-                else if (t === "regex") { let re = new RegExp($("pattern").value, $("flags").value), m = [...$("text").value.matchAll(re)]; r = m.length ? m.map(x => x[0]).join("\\n") : "No matches" }
-                else if (t === "json" || t === "jsonv") { let x = JSON.parse($("input").value); r = t === "json" ? JSON.stringify(x, null, 2) : "✓ Valid JSON" }
-                else if (t === "csharp") r = csharp(JSON.parse($("input").value));
-                else if (t === "sql") r = formatSQL($("input").value);
-                else if (t === "html") r = $("input").value.replace(/></g, ">\n<");
-                else if (t === "css" || t === "js") r = $("input").value.replace(/\/\*[\s\S]*?\*\//g, "").replace(/\/\/.*$/gm, "").replace(/\s+/g, " ").trim();
-                else if (t === "jwt") { let p = $("input").value.split(".")[1]; r = JSON.stringify(JSON.parse(atob(p.replace(/-/g, "+").replace(/_/g, "/"))), null, 2) }
-                else if (t === "cron") r = "Cron expression: " + $("input").value;
-                else if (t === "csvjson") { let a = $("input").value.trim().split(/\r?\n/), h = a.shift().split(","); r = JSON.stringify(a.map(l => { let x = l.split(","); return Object.fromEntries(h.map((k, i) => [k, x[i] ?? ""])) }), null, 2) }
-                else if (t === "jsoncsv") { let a = JSON.parse($("input").value), h = [...new Set(a.flatMap(o => Object.keys(o)))]; r = [h.join(","), ...a.map(o => h.map(k => JSON.stringify(o[k] ?? "")).join(","))].join("\n") }
-                else if (["resize", "compress", "jpgpng", "pngjpg", "webp"].includes(t)) await imageTool(t);
-                else if (t === "pdfmerge") await mergePDF();
-                else if (t === "pdfsplit") await splitPDF();
-                else r = $("input").value;
-                if (r !== undefined) set(r)
-            } catch (e) { set("Error: " + e.message, false) }
-        }
-        function csharp(x, name = "Root") { if (Array.isArray(x)) x = x[0]; let s = `public class ${name}\n{\n`; for (let [k, z] of Object.entries(x || {})) { let q = Array.isArray(z) ? "List<object>" : z === null ? "object" : typeof z === "number" ? (Number.isInteger(z) ? "int" : "double") : typeof z === "boolean" ? "bool" : "string"; s += `    public ${q} ${k} { get; set; }\n` } return s + "}" }
-        function formatSQL(s) { return s.replace(/\s+/g, " ").replace(/\b(SELECT|FROM|WHERE|GROUP BY|ORDER BY|HAVING|LIMIT|JOIN|LEFT JOIN|RIGHT JOIN|INNER JOIN|SET|VALUES|AND|OR)\b/gi, "\n$1").trim() }
-        function numberWords(n) { if (n === 0) return "zero"; if (n < 0) return "minus " + numberWords(-n); let o = ["", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen"], t = ["", "", "twenty", "thirty", "forty", "fifty", "sixty", "seventy", "eighty", "ninety"]; function w(x) { if (x < 20) return o[x]; if (x < 100) return t[Math.floor(x / 10)] + (x % 10 ? "-" + o[x % 10] : ""); if (x < 1000) return o[Math.floor(x / 100)] + " hundred" + (x % 100 ? " " + w(x % 100) : ""); if (x < 1000000) return w(Math.floor(x / 1000)) + " thousand" + (x % 1000 ? " " + w(x % 1000) : ""); return x.toLocaleString() } return w(Math.floor(n)) }
-        async function imageTool(t) { let f = $("img").files[0]; if (!f) throw Error("Select an image"); let im = new Image(), url = URL.createObjectURL(f); await new Promise((res, rej) => { im.onload = res; im.onerror = rej; im.src = url }); let w = v("iw") || im.width, h = v("ih") || im.height, cv = document.createElement("canvas"); cv.width = w; cv.height = h; cv.getContext("2d").drawImage(im, 0, 0, w, h); let mime = t === "webp" ? "image/webp" : t === "jpgpng" ? "image/png" : "image/jpeg", q = t === "compress" ? .65 : 0.92, blob = await new Promise(r => cv.toBlob(r, mime, q)); let a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = `toolnest-${t}.${mime === "image/png" ? "png" : mime === "image/webp" ? "webp" : "jpg"}`; a.textContent = `Download processed image (${Math.round(blob.size / 1024)} KB)`; a.className = "btn"; $("result").innerHTML = ""; $("result").append(a); let p = document.createElement("img"); p.src = cv.toDataURL(mime, q); p.className = "preview"; $("result").append(p) }
-        async function mergePDF() { let fs = [...$("pdfs").files]; if (fs.length < 2) throw Error("Select at least 2 PDFs"); let out = await PDFLib.PDFDocument.create(); for (let f of fs) { let doc = await PDFLib.PDFDocument.load(await f.arrayBuffer()); let pages = await out.copyPages(doc, doc.getPageIndices()); pages.forEach(p => out.addPage(p)) } download(new Blob([await out.save()], { type: "application/pdf" }), "merged.pdf") }
-        async function splitPDF() { let f = $("pdf").files[0]; if (!f) throw Error("Select a PDF"); let doc = await PDFLib.PDFDocument.load(await f.arrayBuffer()), p = $("pages").value.trim(); let idx = []; (p || "1").split(",").forEach(x => { if (x.includes("-")) { let [a, b] = x.split("-").map(Number); for (let i = a; i <= b; i++)idx.push(i - 1) } else idx.push(Number(x) - 1) }); idx = idx.filter(i => i >= 0 && i < doc.getPageCount()); if (!idx.length) throw Error("Invalid page range"); let out = await PDFLib.PDFDocument.create(); let pages = await out.copyPages(doc, idx); pages.forEach(x => out.addPage(x)); download(new Blob([await out.save()], { type: "application/pdf" }), "split.pdf") }
-        function download(blob, name) { let a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = name; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1000) }
-        render();
-    </script>
-</body>
 
+<header class="tools-header">
+  <div class="tools-bar">
+    <a class="brand" href="../"><span class="brand-mark">&lt;/&gt;</span><span class="brand-text">TONOY<em>.dev</em></span></a>
+    <nav class="tools-crumb" aria-label="Breadcrumb"><a href="../#tools">Tools</a><span class="sep">/</span><span>Toolkit</span></nav>
+    <button class="icon-btn theme-toggle" data-theme-toggle aria-label="Toggle colour theme">
+      <svg class="ico" viewBox="0 0 24 24" fill="currentColor"><path d="M12 17a5 5 0 1 0-5-5 5 5 0 0 0 5 5zm0-2a3 3 0 1 1 3-3 3 3 0 0 1-3 3zM11 1h2v3h-2zm0 19h2v3h-2zM1 11h3v2H1zm19 0h3v2h-3zM4.2 5.6 5.6 4.2l2.1 2.1-1.4 1.4zM16.3 17.7l1.4-1.4 2.1 2.1-1.4 1.4zM19.8 4.2l-2.1 2.1 1.4 1.4 2.1-2.1zM5.6 19.8l2.1-2.1 1.4 1.4-2.1 2.1z"/></svg>
+      <svg class="ico ico-alt" viewBox="0 0 24 24" fill="currentColor"><path d="M21 13.5A9 9 0 0 1 10.5 3 9 9 0 1 0 21 13.5z"/></svg>
+    </button>
+  </div>
+</header>
+
+<div class="wrap tool-page">
+  <section class="tool-head center">
+    <span class="eyebrow"><i></i><b id="count">40</b>&nbsp;TOOLS • 100% BROWSER BASED</span>
+    <h1 class="tool-title">One place for <span class="grad-text">everything.</span></h1>
+    <p class="tool-sub">Finance calculators, developer utilities, image &amp; PDF tools and everyday helpers — beautifully designed and ready to use.</p>
+    <div class="tk-search">
+      <span class="tk-search-ico">⌕</span>
+      <input id="search" type="search" placeholder="Search any tool..." aria-label="Search tools">
+    </div>
+    <div class="tk-pills" id="cats"></div>
+  </section>
+
+  <main id="main"></main>
+</div>
+
+<!-- Modal — closes ONLY via the ✕ button (see assets/js/tools.js) -->
+<div class="overlay" id="overlay" aria-hidden="true">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="title">
+    <div class="modal-head">
+      <h2 id="title"></h2>
+      <button class="modal-close" data-modal-close aria-label="Close">✕</button>
+    </div>
+    <div class="modal-body" id="body"></div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  /* ─────────── TOOL CATALOGUE ─────────── */
+  const D = {
+    Finance: [
+      ["Loan EMI Calculator", "EMI", "emi"],
+      ["Mortgage Calculator", "⌂", "mortgage"],
+      ["Interest Calculator", "%", "interest"],
+      ["Salary Calculator", "৳", "salary"],
+      ["VAT Calculator", "VAT", "vat"],
+      ["Discount Calculator", "%", "discount"],
+      ["Profit Margin Calculator", "↗", "margin"],
+      ["Investment Calculator", "↗", "investment"],
+      ["Compound Interest Calculator", "CI", "compound"],
+      ["DPS Calculator", "DPS", "dps"],
+      ["FDR Calculator", "FDR", "fdr"]
+    ],
+    "Developer Tools": [
+      ["JSON Formatter", "{}", "json"],
+      ["JSON Validator", "✓", "jsonv"],
+      ["JSON to C# Class Generator", "C#", "csharp"],
+      ["SQL Formatter", "SQL", "sql"],
+      ["Regex Tester", ".*", "regex"],
+      ["Base64 Encoder/Decoder", "64", "base64"],
+      ["URL Encoder/Decoder", "URL", "url"],
+      ["JWT Decoder", "JWT", "jwt"],
+      ["HTML Formatter", "<>", "html"],
+      ["CSS Minifier", "CSS", "css"],
+      ["JavaScript Minifier", "JS", "js"],
+      ["Timestamp Converter", "TS", "timestamp"],
+      ["UUID Generator", "ID", "uuid"],
+      ["Cron Expression Generator", "CRON", "cron"]
+    ],
+    "Image/File Tools": [
+      ["Image Resize", "↔", "resize"],
+      ["Image Compress", "◉", "compress"],
+      ["JPG → PNG", "JPG", "jpgpng"],
+      ["PNG → JPG", "PNG", "pngjpg"],
+      ["Image to WebP", "WEBP", "webp"],
+      ["PDF Merge", "PDF", "pdfmerge"],
+      ["PDF Split", "PDF", "pdfsplit"],
+      ["CSV → JSON", "CSV", "csvjson"],
+      ["JSON → CSV", "JSON", "jsoncsv"]
+    ],
+    "Everyday Tools": [
+      ["Age Calculator", "AGE", "age"],
+      ["Date Difference Calculator", "DATE", "datediff"],
+      ["Percentage Calculator", "%", "percentage"],
+      ["Time Calculator", "TIME", "time"],
+      ["Unit Converter", "UNIT", "unit"],
+      ["BMI Calculator", "BMI", "bmi"],
+      ["GPA Calculator", "GPA", "gpa"],
+      ["Number to Words", "123", "words"],
+      ["Time Zone Converter", "TZ", "timezone"]
+    ]
+  };
+
+  const FEATURED = [
+    ["JSON Compare", "⇄", "../JsonCompare/", "Compare two JSONs with smart column matching."],
+    ["GZIP → JSON", "🗜", "../GZIPToJson/", "Decode Base64 + GZIP payloads into formatted JSON."],
+    ["NBR Audit Checker", "TIN", "../NBRAudit/", "Verify a 12-digit TIN against the NBR audit list."],
+    ["PDF Splitter", "PDF", "../PdfSplit/", "Split a PDF into single pages and download as ZIP."],
+    ["Tax Calculator", "৳", "../TaxCalculator/", "BD income tax calculator for NBR 2025-26 slabs."]
+  ];
+
+  let active = "All";
+  const $ = (id) => document.getElementById(id);
+  const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;" }[c]));
+  const total = Object.values(D).reduce((a, l) => a + l.length, 0);
+  $("count").textContent = total + FEATURED.length;
+
+  /* ─────────── RENDER ─────────── */
+  $("cats").innerHTML = ["All", ...Object.keys(D)]
+    .map((c) => `<button class="pill ${c === "All" ? "is-active" : ""}" data-cat="${c}">${c}</button>`).join("");
+
+  $("cats").addEventListener("click", (e) => {
+    const b = e.target.closest(".pill");
+    if (!b) return;
+    active = b.dataset.cat;
+    $("cats").querySelectorAll(".pill").forEach((p) => p.classList.toggle("is-active", p === b));
+    render();
+  });
+  $("search").addEventListener("input", render);
+
+  function render() {
+    const q = $("search").value.toLowerCase().trim();
+    let html = "", found = 0;
+
+    for (const [cat, list] of Object.entries(D)) {
+      if (active !== "All" && active !== cat) continue;
+      const a = list.filter((x) => x[0].toLowerCase().includes(q));
+      if (!a.length) continue;
+      found += a.length;
+      html += `<section class="tk-section"><h3 class="tk-cat">${cat}<span>${a.length}</span></h3><div class="tk-grid">` +
+        a.map((x) => `<button class="tk-card" data-t="${x[2]}" data-n="${esc(x[0])}"><span class="tk-ico">${esc(x[1])}</span><strong>${esc(x[0])}</strong><span class="tk-go">Open →</span></button>`).join("") +
+        `</div></section>`;
+    }
+
+    if (active === "All") {
+      const f = FEATURED.filter((x) => x[0].toLowerCase().includes(q));
+      if (f.length) {
+        found += f.length;
+        html += `<section class="tk-section tk-featured"><h3 class="tk-cat">Portfolio Tools<span>${f.length}</span></h3><div class="tk-grid">` +
+          f.map((x) => `<a class="tk-card" href="${x[2]}"><span class="tk-ico">${esc(x[1])}</span><strong>${esc(x[0])}</strong><span class="tk-go">${esc(x[3])}</span></a>`).join("") +
+          `</div></section>`;
+      }
+    }
+
+    $("main").innerHTML = html || '<div class="tk-empty">No matching tool found.</div>';
+    $("main").querySelectorAll(".tk-card[data-t]").forEach((c) => {
+      c.addEventListener("click", () => openTool(c.dataset.t, c.dataset.n));
+    });
+  }
+
+  /* ─────────── MODAL ─────────── */
+  function openTool(t, n) {
+    $("title").textContent = n;
+    $("body").innerHTML = UI(t);
+    if (window.ToolsUI) window.ToolsUI.openModal("overlay");
+    bind(t);
+  }
+  // Closing is handled only by [data-modal-close] in assets/js/tools.js.
+
+  /* ─────────── UI BUILDERS ─────────── */
+  const N = (id, l) => `<div class="field"><label>${l}</label><input id="${id}" type="number" step="any"></div>`;
+  const F = (l, id = "input") => `<div class="field"><label>${l}</label><textarea id="${id}" spellcheck="false"></textarea></div>`;
+  const R = () => `<div class="result" id="result"></div>`;
+  const A = (txt = "Calculate") => `<div class="actions"><button class="btn btn-primary" id="run">${txt}</button><button class="btn btn-soft" id="clear">Clear</button></div>`;
+
+  function UI(t) {
+    const finance = {
+      emi: N("p", "Loan amount") + N("r", "Annual interest %") + N("n", "Months"),
+      mortgage: N("p", "Mortgage amount") + N("r", "Annual interest %") + N("n", "Term (years)"),
+      interest: N("p", "Principal") + N("r", "Rate %") + N("y", "Years"),
+      salary: N("s", "Gross monthly salary") + N("tax", "Tax / deductions %"),
+      vat: N("a", "Amount") + N("v", "VAT %"),
+      discount: N("p", "Original price") + N("d", "Discount %"),
+      margin: N("rev", "Revenue") + N("cost", "Cost"),
+      investment: N("p", "Initial investment") + N("a", "Monthly contribution") + N("r", "Annual return %") + N("y", "Years"),
+      compound: N("p", "Principal") + N("r", "Annual rate %") + N("y", "Years") + N("n", "Compounds / year"),
+      dps: N("dps_p", "Monthly deposit (৳)") + N("dps_y", "Tenure (years)") + N("dps_r", "Annual interest rate (%)"),
+      fdr: N("fdr_p", "Principal (৳)") + N("fdr_r", "Annual interest rate (%)") + N("fdr_m", "Tenure (months)") +
+        `<div class="field"><label>Compounding</label><select id="fdr_f"><option value="1">Yearly</option><option value="2">Half-yearly</option><option value="4" selected>Quarterly</option><option value="12">Monthly</option></select></div>`
+    };
+    if (finance[t]) return `<div class="fields">${finance[t]}</div>${A()}${R()}`;
+
+    if (t === "percentage") return `<div class="fields">${N("v", "Value") + N("p", "Percentage %")}</div>${A()}${R()}`;
+    if (t === "age") return `<div class="fields"><div class="field"><label>Date of birth</label><input id="dob" type="date"></div><div class="field"><label>Calculate as of</label><input id="asof" type="date" value="${new Date().toISOString().slice(0, 10)}"></div></div>${A()}${R()}`;
+    if (t === "datediff") return `<div class="fields"><div class="field"><label>Start date</label><input id="d1" type="date"></div><div class="field"><label>End date</label><input id="d2" type="date"></div></div>${A()}${R()}`;
+    if (t === "timestamp") return `<div class="fields">${N("ts", "Unix timestamp (seconds)")}</div>${A("Convert")}${R()}`;
+    if (t === "uuid") return A("Generate UUID") + R();
+    if (t === "unit") return `<div class="fields">${N("uv", "Value")}<div class="field"><label>Conversion</label><select id="conv"><option>km-mi</option><option>mi-km</option><option>kg-lb</option><option>lb-kg</option><option>c-f</option><option>f-c</option><option>m-ft</option><option>ft-m</option></select></div></div>${A("Convert")}${R()}`;
+    if (t === "time") return `<div class="fields">${N("h", "Hours") + N("m", "Minutes") + N("ah", "Add hours") + N("am", "Add minutes")}</div>${A()}${R()}`;
+    if (t === "words") return `<div class="fields">${N("wn", "Number")}</div>${A("Convert to words")}${R()}`;
+    if (t === "timezone") return `<div class="fields"><div class="field"><label>Date / time</label><input id="dt" type="datetime-local"></div><div class="field"><label>Timezone</label><select id="tz">${(Intl.supportedValuesOf ? Intl.supportedValuesOf("timeZone") : ["UTC"]).map((x) => `<option>${x}</option>`).join("")}</select></div></div>${A("Convert")}${R()}`;
+    if (t === "regex") return `<div class="fields"><div class="field"><label>Regex pattern</label><input id="pattern" placeholder="\\d+"></div><div class="field"><label>Flags</label><input id="flags" value="g"></div></div>${F("Test text", "text")}${A("Test Regex")}${R()}`;
+    if (t === "base64" || t === "url") return F("Input") + `<div class="actions"><button class="btn btn-primary" id="enc">Encode</button><button class="btn btn-soft" id="dec">Decode</button></div>${R()}`;
+    if (["json", "jsonv", "csharp", "sql", "html", "css", "js", "jwt", "cron", "csvjson", "jsoncsv"].includes(t)) return F("Input") + A("Process") + R();
+    if (["resize", "compress", "jpgpng", "pngjpg", "webp"].includes(t)) return `<div class="drop"><div class="drop-ico">🖼</div><h3>Select an image</h3><p>Everything happens locally in your browser.</p><input id="img" type="file" accept="image/*"></div><div class="fields" style="margin-top:1rem">${N("iw", "Width (optional)") + N("ih", "Height (optional)")}</div>${A("Process Image")}${R()}`;
+    if (t === "pdfmerge") return `<div class="drop"><div class="drop-ico">📄</div><h3>Select 2+ PDF files</h3><input id="pdfs" type="file" accept="application/pdf" multiple></div>${A("Merge PDFs")}${R()}`;
+    if (t === "pdfsplit") return `<div class="drop"><div class="drop-ico">✂</div><h3>Select one PDF</h3><input id="pdf" type="file" accept="application/pdf"><div style="margin-top:.9rem"><input id="pages" class="input" placeholder="Pages: 1,3-5"></div></div>${A("Split / Extract")}${R()}`;
+    return F("Input") + A("Run") + R();
+  }
+
+  /* ─────────── HELPERS ─────────── */
+  const v = (id) => Number(($(id) && $(id).value) || 0);
+  const fmt = (n) => Number(n).toLocaleString("en-US", { maximumFractionDigits: 2 });
+  const money = (n) => "৳ " + fmt(n);
+  function set(x, good = true) {
+    const r = $("result"); if (!r) return;
+    r.innerHTML = `<pre class="${good ? "good" : "bad"}">${esc(x)}</pre>`;
+  }
+
+  function bind(t) {
+    const runBtn = $("run"); if (runBtn) runBtn.addEventListener("click", () => run(t));
+    const clr = $("clear");
+    if (clr) clr.addEventListener("click", () => {
+      document.querySelectorAll("#body input, #body textarea").forEach((x) => { if (x.type !== "file") x.value = ""; });
+      const r = $("result"); if (r) r.innerHTML = "";
+      const fi = $("fileInfo"); if (fi) fi.textContent = "";
+    });
+    const enc = $("enc"), dec = $("dec");
+    if (enc) enc.addEventListener("click", () => { try { set(t === "base64" ? btoa(unescape(encodeURIComponent($("input").value))) : encodeURIComponent($("input").value)); } catch (e) { set(e.message, false); } });
+    if (dec) dec.addEventListener("click", () => { try { set(t === "base64" ? decodeURIComponent(escape(atob($("input").value))) : decodeURIComponent($("input").value)); } catch (e) { set("Invalid input: " + e.message, false); } });
+  }
+
+  /* ─────────── RUN ─────────── */
+  async function run(t) {
+    try {
+      let r = "";
+
+      if (t === "emi" || t === "mortgage") {
+        let p = v("p"), m = v("r") / 1200, n = t === "emi" ? v("n") : v("n") * 12;
+        let pay = m ? p * m * Math.pow(1 + m, n) / (Math.pow(1 + m, n) - 1) : (n ? p / n : 0);
+        r = `Monthly payment: ${money(pay)}\nTotal payable: ${money(pay * n)}\nTotal interest: ${money(pay * n - p)}`;
+      } else if (t === "interest") {
+        let si = v("p") * v("r") / 100 * v("y");
+        r = `Simple interest: ${money(si)}\nTotal: ${money(v("p") + si)}`;
+      } else if (t === "salary") {
+        r = `Net salary: ${money(v("s") * (1 - v("tax") / 100))}\nDeductions: ${money(v("s") * v("tax") / 100)}`;
+      } else if (t === "vat") {
+        let vat = v("a") * v("v") / 100;
+        r = `VAT: ${money(vat)}\nTotal: ${money(v("a") + vat)}`;
+      } else if (t === "discount") {
+        let save = v("p") * v("d") / 100;
+        r = `Savings: ${money(save)}\nFinal price: ${money(v("p") - save)}`;
+      } else if (t === "margin") {
+        let prof = v("rev") - v("cost");
+        r = `Profit: ${money(prof)}\nMargin: ${(v("rev") ? (prof / v("rev") * 100) : 0).toFixed(2)}%`;
+      } else if (t === "investment") {
+        let m = v("r") / 1200, n = v("y") * 12;
+        let fv = m ? v("p") * Math.pow(1 + m, n) + v("a") * (Math.pow(1 + m, n) - 1) / m : v("p") + v("a") * n;
+        r = `Future value: ${money(fv)}\nTotal invested: ${money(v("p") + v("a") * n)}\nGrowth: ${money(fv - v("p") - v("a") * n)}`;
+      } else if (t === "compound") {
+        let n = v("n") || 1;
+        let fv = v("p") * Math.pow(1 + v("r") / 100 / n, n * v("y"));
+        r = `Future value: ${money(fv)}\nInterest earned: ${money(fv - v("p"))}`;
+      } else if (t === "dps") {
+        let p = v("dps_p"), y = v("dps_y"), i = v("dps_r") / 1200, n = Math.round(y * 12);
+        let fv = i ? p * (Math.pow(1 + i, n) - 1) / i * (1 + i) : p * n; // deposits at start of month
+        let dep = p * n;
+        r = `Installments: ${n} months\nTotal deposited: ${money(dep)}\nInterest earned: ${money(fv - dep)}\nMaturity value: ${money(fv)}`;
+      } else if (t === "fdr") {
+        let p = v("fdr_p"), rate = v("fdr_r"), months = v("fdr_m"), f = Number($("fdr_f").value) || 1;
+        let years = months / 12;
+        let mat = p * Math.pow(1 + rate / 100 / f, f * years);
+        let eff = p > 0 ? (Math.pow(mat / p, 1 / (years || 1)) - 1) * 100 : 0;
+        r = `Tenure: ${months} months\nPrincipal: ${money(p)}\nInterest earned: ${money(mat - p)}\nMaturity value: ${money(mat)}\nEffective annual yield: ${eff.toFixed(2)}%`;
+      } else if (t === "bmi") {
+        let b = v("w") / Math.pow(v("h"), 2);
+        r = `BMI: ${b.toFixed(2)} — ${b < 18.5 ? "Underweight" : b < 25 ? "Normal" : b < 30 ? "Overweight" : "Obesity"}`;
+      } else if (t === "gpa") {
+        r = `Grade points: ${fmt(v("g"))}\nCredits: ${fmt(v("c"))}\nGPA: ${(v("g")).toFixed(2)}`;
+      } else if (t === "percentage") {
+        r = `Result: ${fmt(v("v") * v("p") / 100)}`;
+      } else if (t === "age") {
+        let a = new Date($("dob").value), b = new Date($("asof").value);
+        if (isNaN(a)) throw Error("Choose date of birth");
+        let y = b.getFullYear() - a.getFullYear();
+        if (b < new Date(b.getFullYear(), a.getMonth(), a.getDate())) y--;
+        r = `Age: ${y} years`;
+      } else if (t === "datediff") {
+        r = `Difference: ${fmt(Math.abs(new Date($("d2").value) - new Date($("d1").value)) / 86400000)} days`;
+      } else if (t === "timestamp") {
+        r = new Date(v("ts") * 1000).toString();
+      } else if (t === "uuid") {
+        r = crypto.randomUUID();
+      } else if (t === "unit") {
+        let x = v("uv"), c = $("conv").value;
+        const m = { "km-mi": x * .621371, "mi-km": x * 1.609344, "kg-lb": x * 2.20462262, "lb-kg": x * .45359237, "c-f": x * 9 / 5 + 32, "f-c": (x - 32) * 5 / 9, "m-ft": x * 3.28084, "ft-m": x * .3048 };
+        r = m[c].toFixed(5);
+      } else if (t === "time") {
+        let z = v("h") * 60 + v("m") + v("ah") * 60 + v("am");
+        r = `${Math.floor(z / 60)} hours ${z % 60} minutes`;
+      } else if (t === "words") {
+        r = numberWords(v("wn"));
+      } else if (t === "timezone") {
+        r = new Intl.DateTimeFormat(undefined, { dateStyle: "full", timeStyle: "long", timeZone: $("tz").value }).format(new Date($("dt").value));
+      } else if (t === "regex") {
+        let re = new RegExp($("pattern").value, $("flags").value), m = [...$("text").value.matchAll(re)];
+        r = m.length ? m.map((x) => x[0]).join("\n") : "No matches";
+      } else if (t === "json" || t === "jsonv") {
+        let x = JSON.parse($("input").value);
+        r = t === "json" ? JSON.stringify(x, null, 2) : "✓ Valid JSON";
+      } else if (t === "csharp") {
+        r = csharp(JSON.parse($("input").value));
+      } else if (t === "sql") {
+        r = formatSQL($("input").value);
+      } else if (t === "html") {
+        r = $("input").value.replace(/></g, ">\n<");
+      } else if (t === "css" || t === "js") {
+        r = $("input").value.replace(/\/\*[\s\S]*?\*\//g, "").replace(/\/\/.*$/gm, "").replace(/\s+/g, " ").trim();
+      } else if (t === "jwt") {
+        let p = $("input").value.split(".")[1];
+        r = JSON.stringify(JSON.parse(atob(p.replace(/-/g, "+").replace(/_/g, "/"))), null, 2);
+      } else if (t === "cron") {
+        r = "Cron expression: " + $("input").value;
+      } else if (t === "csvjson") {
+        let a = $("input").value.trim().split(/\r?\n/), h = a.shift().split(",");
+        r = JSON.stringify(a.map((l) => { let x = l.split(","); return Object.fromEntries(h.map((k, i) => [k, x[i] ?? ""])); }), null, 2);
+      } else if (t === "jsoncsv") {
+        let a = JSON.parse($("input").value), h = [...new Set(a.flatMap((o) => Object.keys(o)))];
+        r = [h.join(","), ...a.map((o) => h.map((k) => JSON.stringify(o[k] ?? "")).join(","))].join("\n");
+      } else if (["resize", "compress", "jpgpng", "pngjpg", "webp"].includes(t)) {
+        await imageTool(t); return;
+      } else if (t === "pdfmerge") {
+        await mergePDF(); return;
+      } else if (t === "pdfsplit") {
+        await splitPDF(); return;
+      } else {
+        r = $("input").value;
+      }
+
+      if (r !== undefined) set(r);
+    } catch (e) {
+      set("Error: " + e.message, false);
+    }
+  }
+
+  /* ─────────── GENERATORS ─────────── */
+  function csharp(x, name = "Root") {
+    if (Array.isArray(x)) x = x[0];
+    let s = `public class ${name}\n{\n`;
+    for (let [k, z] of Object.entries(x || {})) {
+      let q = Array.isArray(z) ? "List<object>" : z === null ? "object" : typeof z === "number" ? (Number.isInteger(z) ? "int" : "double") : typeof z === "boolean" ? "bool" : "string";
+      s += `    public ${q} ${k} { get; set; }\n`;
+    }
+    return s + "}";
+  }
+  function formatSQL(s) { return s.replace(/\s+/g, " ").replace(/\b(SELECT|FROM|WHERE|GROUP BY|ORDER BY|HAVING|LIMIT|JOIN|LEFT JOIN|RIGHT JOIN|INNER JOIN|SET|VALUES|AND|OR)\b/gi, "\n$1").trim(); }
+  function numberWords(n) {
+    if (n === 0) return "zero";
+    if (n < 0) return "minus " + numberWords(-n);
+    const o = ["", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen"];
+    const t = ["", "", "twenty", "thirty", "forty", "fifty", "sixty", "seventy", "eighty", "ninety"];
+    function w(x) {
+      if (x < 20) return o[x];
+      if (x < 100) return t[Math.floor(x / 10)] + (x % 10 ? "-" + o[x % 10] : "");
+      if (x < 1000) return o[Math.floor(x / 100)] + " hundred" + (x % 100 ? " " + w(x % 100) : "");
+      if (x < 1000000) return w(Math.floor(x / 1000)) + " thousand" + (x % 1000 ? " " + w(x % 1000) : "");
+      if (x < 1000000000) return w(Math.floor(x / 1000000)) + " million" + (x % 1000000 ? " " + w(x % 1000000) : "");
+      return x.toLocaleString();
+    }
+    return w(Math.floor(n));
+  }
+
+  /* ─────────── IMAGE ─────────── */
+  async function imageTool(t) {
+    const f = $("img").files[0];
+    if (!f) throw Error("Select an image");
+    const im = new Image(), url = URL.createObjectURL(f);
+    await new Promise((res, rej) => { im.onload = res; im.onerror = rej; im.src = url; });
+    const w = v("iw") || im.width, h = v("ih") || im.height;
+    const cv = document.createElement("canvas"); cv.width = w; cv.height = h;
+    cv.getContext("2d").drawImage(im, 0, 0, w, h);
+    const mime = t === "webp" ? "image/webp" : t === "jpgpng" ? "image/png" : "image/jpeg";
+    const q = t === "compress" ? .65 : .92;
+    const blob = await new Promise((r) => cv.toBlob(r, mime, q));
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = `toolnest-${t}.${mime === "image/png" ? "png" : mime === "image/webp" ? "webp" : "jpg"}`;
+    a.textContent = `Download processed image (${Math.round(blob.size / 1024)} KB)`;
+    a.className = "btn btn-primary";
+    const r = $("result"); r.innerHTML = "";
+    r.append(a);
+    const p = document.createElement("img"); p.src = cv.toDataURL(mime, q); p.className = "preview";
+    r.append(p);
+  }
+
+  /* ─────────── PDF ─────────── */
+  async function mergePDF() {
+    const fs = [...$("pdfs").files];
+    if (fs.length < 2) throw Error("Select at least 2 PDFs");
+    const out = await PDFLib.PDFDocument.create();
+    for (const f of fs) {
+      const doc = await PDFLib.PDFDocument.load(await f.arrayBuffer());
+      const pages = await out.copyPages(doc, doc.getPageIndices());
+      pages.forEach((p) => out.addPage(p));
+    }
+    download(new Blob([await out.save()], { type: "application/pdf" }), "merged.pdf");
+    set("✓ Merged " + fs.length + " PDFs — download started.");
+  }
+  async function splitPDF() {
+    const f = $("pdf").files[0];
+    if (!f) throw Error("Select a PDF");
+    const doc = await PDFLib.PDFDocument.load(await f.arrayBuffer());
+    const p = $("pages").value.trim();
+    let idx = [];
+    (p || "1").split(",").forEach((x) => {
+      if (x.includes("-")) { const [a, b] = x.split("-").map(Number); for (let i = a; i <= b; i++) idx.push(i - 1); }
+      else idx.push(Number(x) - 1);
+    });
+    idx = idx.filter((i) => i >= 0 && i < doc.getPageCount());
+    if (!idx.length) throw Error("Invalid page range");
+    const out = await PDFLib.PDFDocument.create();
+    const pages = await out.copyPages(doc, idx);
+    pages.forEach((x) => out.addPage(x));
+    download(new Blob([await out.save()], { type: "application/pdf" }), "split.pdf");
+    set("✓ Extracted " + idx.length + " page(s) — download started.");
+  }
+  function download(blob, name) {
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob); a.download = name; a.click();
+    setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+  }
+
+  render();
+})();
+</script>
+<script src="../assets/js/tools.js"></script>
+</body>
 </html>

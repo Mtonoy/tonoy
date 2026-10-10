@@ -1,597 +1,353 @@
 <!DOCTYPE html>
-<html lang="bn">
+<html lang="bn" data-theme="dark" class="no-js">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <title>NBR অডিট তালিকা চেকার  (23-24)   | TIN যাচাই পোর্টাল</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#070a18">
+
+  <title>NBR অডিট তালিকা চেকার (TIN Audit Checker) · TONOY.dev</title>
+  <meta name="description" content="জাতীয় রাজস্ব বোর্ড (NBR) এর ২৩-২৪ অডিট তালিকায় আপনার ১২ ডিজিটের TIN যাচাই করুন — সম্পূর্ণ ব্রাউজারে, লোকাল JSON ডাটাবেস থেকে।">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+  <link rel="stylesheet" href="../assets/css/tools.css">
+
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
+    /* ---------- stats banner ---------- */
+    .stats-banner{
+      margin:0 0 1.2rem;padding:.72rem 1rem;border-radius:var(--r-sm);
+      text-align:center;font-size:.85rem;font-weight:500;
+      color:var(--good);
+      border:1px solid rgba(52,211,153,.35);
+      background:rgba(52,211,153,.12);
+      transition:background .3s var(--ease),border-color .3s var(--ease),color .3s var(--ease);
+    }
+    .stats-banner strong{font-family:'JetBrains Mono',ui-monospace,monospace}
+
+    /* ---------- TIN field ---------- */
+    .tin-input{
+      font-family:'JetBrains Mono',ui-monospace,monospace;
+      letter-spacing:2px;font-size:1rem;text-align:center;
     }
 
-    body {
-      background: linear-gradient(145deg, #0B1120 0%, #111827 100%);
-      font-family: 'Inter', sans-serif;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 1.5rem;
-      position: relative;
+    /* ---------- empty / loading states ---------- */
+    .empty-state{
+      text-align:center;padding:1.8rem 1rem;border-radius:var(--r);
+      border:1px solid var(--border);background:var(--surface-2);color:var(--txt-dim);
     }
+    .empty-state .big-ico{font-size:2rem;display:block;margin-bottom:.55rem;opacity:.75;line-height:1}
 
-    body::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background-image: 
-        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
-      background-size: 40px 40px;
-      pointer-events: none;
+    /* ---------- audit result cards ---------- */
+    .audit-card{margin-top:.2rem;border-left:5px solid var(--border)}
+    .audit-card.is-bad{border-left-color:var(--bad);background:linear-gradient(115deg,rgba(251,113,133,.12),transparent 70%)}
+    .audit-card.is-good{border-left-color:var(--good);background:linear-gradient(115deg,rgba(52,211,153,.12),transparent 70%)}
+    .audit-head{
+      display:flex;align-items:center;gap:.7rem;flex-wrap:wrap;
+      font-family:'Sora',sans-serif;font-weight:700;font-size:1.12rem;margin-bottom:.55rem;
     }
+    .audit-head .badge{margin-left:auto}
+    .audit-note{color:var(--txt-dim);font-size:.86rem;margin-top:.85rem}
 
-    .glass-panel {
-      background: rgba(15, 23, 42, 0.6);
-      backdrop-filter: blur(16px);
-      border-radius: 2rem;
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      box-shadow: 0 30px 50px rgba(0, 0, 0, 0.4), 0 0 0 0.5px rgba(255, 255, 255, 0.05);
-      width: 100%;
-      max-width: 700px;
-      transition: all 0.3s ease;
+    /* ---------- footer ---------- */
+    .foot-badges{display:flex;justify-content:center;gap:1.3rem;flex-wrap:wrap;margin-top:1.7rem}
+    .dev-credit{
+      margin-top:1.5rem;padding-top:1.1rem;border-top:1px solid var(--border);
+      text-align:center;font-size:.78rem;color:var(--txt-mute);
     }
-
-    .container {
-      padding: 2rem 2rem 2.2rem;
-    }
-
-    .brand {
-      text-align: center;
-      margin-bottom: 2rem;
-    }
-
-    .nbr-badge {
-      background: rgba(250, 204, 21, 0.2);
-      backdrop-filter: blur(4px);
-      display: inline-flex;
-      align-items: center;
-      gap: 0.6rem;
-      padding: 0.4rem 1.3rem;
-      border-radius: 60px;
-      font-weight: 700;
-      font-size: 0.8rem;
-      letter-spacing: 0.3px;
-      color: #facc15;
-      border: 1px solid rgba(250, 204, 21, 0.4);
-      margin-bottom: 1.2rem;
-    }
-
-    h1 {
-      font-size: 2rem;
-      font-weight: 800;
-      background: linear-gradient(120deg, #FFFFFF, #c9d5ff);
-      background-clip: text;
-      -webkit-background-clip: text;
-      color: transparent;
-      letter-spacing: -0.3px;
-    }
-
-    .subhead {
-      color: #94a3b8;
-      font-weight: 500;
-      margin-top: 0.5rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
-      font-size: 0.9rem;
-    }
-
-    .stats-banner {
-      background: rgba(16, 185, 129, 0.15);
-      border: 1px solid rgba(16, 185, 129, 0.3);
-      border-radius: 12px;
-      padding: 0.6rem 1rem;
-      margin: 1rem 0 1.5rem;
-      text-align: center;
-      font-size: 0.8rem;
-      color: #a7f3d0;
-    }
-
-    .stats-banner i {
-      color: #10b981;
-      margin-right: 0.3rem;
-    }
-
-    .tin-field {
-      background: #0f172a80;
-      border-radius: 2rem;
-      padding: 0.3rem;
-      margin: 1rem 0 1.5rem;
-      border: 1px solid rgba(255,255,255,0.1);
-      transition: all 0.2s;
-    }
-
-    .input-wrapper {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.8rem;
-      align-items: center;
-    }
-
-    .tin-icon {
-      flex: 1;
-      position: relative;
-      display: flex;
-      align-items: center;
-    }
-
-    .tin-icon i {
-      position: absolute;
-      left: 1.2rem;
-      color: #facc15;
-      font-size: 1.2rem;
-    }
-
-    #tinInput {
-      width: 100%;
-      padding: 1rem 1rem 1rem 3rem;
-      background: #0c111f;
-      border: none;
-      border-radius: 2rem;
-      font-size: 1rem;
-      font-weight: 500;
-      color: #f8fafc;
-      font-family: 'Inter', monospace;
-      letter-spacing: 0.5px;
-      outline: none;
-      transition: 0.2s;
-    }
-
-    #tinInput:focus {
-      background: #111827;
-      box-shadow: 0 0 0 2px #facc1566;
-    }
-
-    .check-btn {
-      background: linear-gradient(95deg, #facc15, #eab308);
-      border: none;
-      padding: 0.9rem 2rem;
-      border-radius: 2.5rem;
-      font-weight: 700;
-      font-size: 0.95rem;
-      color: #0f172a;
-      cursor: pointer;
-      transition: 0.2s;
-      display: flex;
-      align-items: center;
-      gap: 0.7rem;
-      box-shadow: 0 6px 14px rgba(250, 204, 21, 0.25);
-    }
-
-    .check-btn:hover {
-      transform: scale(0.97);
-      background: linear-gradient(95deg, #eab308, #ca8a04);
-    }
-
-    .result-card {
-      margin-top: 1.2rem;
-      border-radius: 1.5rem;
-      transition: all 0.3s ease;
-    }
-
-    .info-card {
-      background: rgba(0, 0, 0, 0.45);
-      backdrop-filter: blur(8px);
-      border-radius: 1.5rem;
-      padding: 1.5rem;
-      border-left: 6px solid;
-      transition: all 0.2s;
-    }
-
-    .status-head {
-      display: flex;
-      align-items: center;
-      gap: 0.8rem;
-      font-size: 1.3rem;
-      font-weight: 700;
-      margin-bottom: 1rem;
-      flex-wrap: wrap;
-    }
-
-    .details-grid {
-      margin-top: 1rem;
-      border-top: 1px dashed rgba(255,255,255,0.2);
-      padding-top: 1rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.9rem;
-    }
-
-    .detail-row {
-      display: flex;
-      align-items: baseline;
-      gap: 1rem;
-      flex-wrap: wrap;
-    }
-
-    .detail-label {
-      font-weight: 600;
-      min-width: 110px;
-      color: #a0afc3;
-      font-size: 0.85rem;
-      text-transform: uppercase;
-      letter-spacing: 0.3px;
-    }
-
-    .detail-value {
-      color: #f1f5f9;
-      font-weight: 500;
-      word-break: break-word;
-      background: rgba(255,255,255,0.05);
-      padding: 0.2rem 0.8rem;
-      border-radius: 30px;
-      font-size: 0.9rem;
-    }
-
-    .empty-message {
-      text-align: center;
-      padding: 2rem;
-      background: rgba(0,0,0,0.35);
-      border-radius: 1.5rem;
-      color: #94a3b8;
-    }
-
-    .loader {
-      display: inline-block;
-      width: 24px;
-      height: 24px;
-      border: 3px solid rgba(15,23,42,0.3);
-      border-radius: 50%;
-      border-top-color: #facc15;
-      animation: spin 0.8s linear infinite;
-      margin-right: 0.5rem;
-    }
-
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-
-    .footer-note {
-      margin-top: 2rem;
-      text-align: center;
-      font-size: 0.7rem;
-      color: #4b5563;
-      display: flex;
-      justify-content: center;
-      gap: 1rem;
-      flex-wrap: wrap;
-    }
-
-      /* Developer Credit Style */
-      .developer-credit {
-      margin-top: 1.5rem;
-      padding-top: 1rem;
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
-      text-align: center;
-      font-size: 0.75rem;
-    }
-
-    .developer-credit a {
-      color: #facc15;
-      text-decoration: none;
-      font-weight: 600;
-      transition: all 0.3s ease;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    .developer-credit a:hover {
-      color: #eab308;
-      text-decoration: underline;
-      text-underline-offset: 3px;
-    }
-
-    .developer-credit i {
-      font-size: 0.85rem;
-    }
-
-    @media (max-width: 550px) {
-      .container { padding: 1.5rem; }
-      .input-wrapper { flex-direction: column; }
-      .check-btn { width: 100%; justify-content: center; }
-    }
+    .dev-credit a{color:var(--c1);font-weight:600;text-decoration:none;transition:color .3s var(--ease)}
+    .dev-credit a:hover{color:var(--c3);text-decoration:underline;text-underline-offset:3px}
   </style>
 </head>
 <body>
-<div class="glass-panel">
-  <div class="container">
-    <div class="brand">
-      <div class="nbr-badge">
-        <i class="fas fa-landmark"></i>  
-        <span>জাতীয় রাজস্ব বোর্ড (NBR) | অডিট তালিকা  (23-24) </span>
-      </div>
-      <h1><i class="fas fa-magnifying-glass-chart"></i> TIN অডিট চেকার</h1>
-      <div class="subhead">
-        <i class="fas fa-id-card"></i>  ১২ ডিজিটের TIN নম্বর দিয়ে যাচাই করুন
-      </div>
+
+  <header class="tools-header">
+    <div class="tools-bar">
+      <a class="brand" href="../"><span class="brand-mark">&lt;/&gt;</span><span class="brand-text">TONOY<em>.dev</em></span></a>
+      <nav class="tools-crumb" aria-label="Breadcrumb"><a href="../#tools">Tools</a><span class="sep">/</span><span>NBR Audit</span></nav>
+      <button class="icon-btn theme-toggle" data-theme-toggle aria-label="Toggle colour theme">
+        <svg class="ico" viewBox="0 0 24 24" fill="currentColor"><path d="M12 17a5 5 0 1 0-5-5 5 5 0 0 0 5 5zm0-2a3 3 0 1 1 3-3 3 3 0 0 1-3 3zM11 1h2v3h-2zm0 19h2v3h-2zM1 11h3v2H1zm19 0h3v2h-3zM4.2 5.6 5.6 4.2l2.1 2.1-1.4 1.4zM16.3 17.7l1.4-1.4 2.1 2.1-1.4 1.4zM19.8 4.2l-2.1 2.1 1.4 1.4 2.1-2.1zM5.6 19.8l2.1-2.1 1.4 1.4-2.1 2.1z"/></svg>
+        <svg class="ico ico-alt" viewBox="0 0 24 24" fill="currentColor"><path d="M21 13.5A9 9 0 0 1 10.5 3 9 9 0 1 0 21 13.5z"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <div class="wrap tool-page">
+
+    <div class="tool-head center">
+      <span class="eyebrow">NBR / 23-24</span>
+      <h1 class="tool-title">TIN অডিট <span class="grad-text">চেকার</span></h1>
+      <p class="tool-sub">জাতীয় রাজস্ব বোর্ড (NBR) এর অডিট তালিকায় আপনার ১২ ডিজিটের TIN নম্বর দিয়ে যাচাই করুন — সম্পূর্ণ ব্রাউজারে, অফলাইন সাপোর্টেড।</p>
     </div>
 
-    <div class="stats-banner" id="statsBanner">
-      <i class="fas fa-database"></i> লোড হচ্ছে...
-    </div>
+    <div class="card">
 
-    <div class="tin-field">
-      <div class="input-wrapper">
-        <div class="tin-icon">
-          <i class="fas fa-hashtag"></i>
-          <input type="text" id="tinInput" placeholder="যেমন: 448038788647 (১২ সংখ্যা)" maxlength="12" autocomplete="off" inputmode="numeric">
+      <!-- Stats banner -->
+      <div class="stats-banner" id="statsBanner">🗄️ লোড হচ্ছে...</div>
+
+      <!-- TIN input + Verify button -->
+      <div class="field" style="margin-bottom:.5rem">
+        <label for="tinInput">🎫 ১২ ডিজিটের TIN নম্বর</label>
+        <div class="inline">
+          <input type="text" id="tinInput" class="tin-input" placeholder="যেমন: 448038788647 (১২ সংখ্যা)" maxlength="12" autocomplete="off" inputmode="numeric" style="flex:1;min-width:210px" aria-label="১২ ডিজিটের TIN নম্বর">
+          <button class="btn btn-primary" id="searchBtn" type="button">
+            <svg class="ico-sm" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>
+            যাচাই করুন
+          </button>
         </div>
-        <button class="check-btn" id="searchBtn">
-          <i class="fas fa-check-double"></i> যাচাই করুন
-        </button>
       </div>
-    </div>
+      <p class="hint" style="margin-bottom:1.1rem">শুধুমাত্র সংখ্যা গৃহীত হবে — সর্বোচ্চ ১২ ডিজিট।</p>
 
-    <div id="resultArea" class="result-card">
-      <div class="empty-message">
-        <i class="fas fa-file-signature" style="font-size: 2.2rem; margin-bottom: 0.6rem; opacity: 0.6;"></i>
-        <p>অডিট তালিকা validation — ১২ ডিজিটের TIN প্রবেশ করান</p>
-        <p style="font-size: 0.75rem; margin-top: 0.3rem;">✨ JSON ডাটাবেস থেকে সরাসরি যাচাই করা হবে (অফলাইন সাপোর্টেড)</p>
+      <!-- Result area -->
+      <div id="resultArea" aria-live="polite">
+        <div class="empty-state">
+          <span class="big-ico" aria-hidden="true">📝</span>
+          <p>অডিট তালিকা validation — ১২ ডিজিটের TIN প্রবেশ করান</p>
+          <p class="small" style="margin-top:.3rem;color:var(--txt-mute)">✨ JSON ডাটাবেস থেকে সরাসরি যাচাই করা হবে (অফলাইন সাপোর্টেড)</p>
+        </div>
       </div>
-    </div>
-    <div class="footer-note">
-      <span><i class="fas fa-database"></i> লোকাল JSON ডাটাবেস</span>
-      <span><i class="fas fa-user-tie"></i> TIN তথ্য সুরক্ষিত</span>
-      <span><i class="fas fa-bolt"></i> অফলাইন সাপোর্টেড</span>
-    </div>
 
-    <!-- Developer Credit Section -->
-    <div class="developer-credit">
-      <a href="https://mtonoy.github.io/tonoy/" target="_blank" rel="noopener noreferrer">
-        <i class="fas fa-code"></i> Design and Developed by Md Mahamudul Hasan Tonoy
-        <i class="fas fa-external-link-alt" style="font-size: 0.35rem;"></i>
-      </a>
+      <!-- Footer notes -->
+      <div class="foot-badges muted small">
+        <span>🗄️ লোকাল JSON ডাটাবেস</span>
+        <span>👤 TIN তথ্য সুরক্ষিত</span>
+        <span>⚡ অফলাইন সাপোর্টেড</span>
+      </div>
+
+      <!-- Developer credit -->
+      <div class="dev-credit">
+        <a href="https://mtonoy.github.io/tonoy/" target="_blank" rel="noopener noreferrer">
+          💻 Design and Developed by Md Mahamudul Hasan Tonoy
+        </a>
+      </div>
+
     </div>
 
   </div>
-</div>
 
-<script>
-  const tinInput = document.getElementById('tinInput');
-  const searchBtn = document.getElementById('searchBtn');
-  const resultArea = document.getElementById('resultArea');
-  const statsBanner = document.getElementById('statsBanner');
-  
-  // JSON ডাটা স্টোর করার জন্য ভেরিয়েবল
-  let tinDatabase = [];
-  let isDataLoaded = false;
-  let totalRecords = 0;
-  
-  // ======================= ধাপ ১: JSON ফাইল লোড করা =======================
-  async function loadJSONData() {
-    //showLoadingMessage('📥 JSON ডাটাবেস লোড হচ্ছে...', 'loading');
-    
-    try {
-      // IMPORTANT: JSON ফাইলটি ওয়েব সার্ভারে একই ফোল্ডারে রাখতে হবে
-      // ফাইলের নাম: tin_data.json
-      const response = await fetch('./tin_data.json');
-      
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.status}: JSON ফাইল পাওয়া যায়নি`);
-      }
-      
-      const data = await response.json();
-      
-      if (Array.isArray(data) && data.length > 0) {
-        tinDatabase = data;
-        totalRecords = data.length;
-        isDataLoaded = true;
-        
-        // স্ট্যাটাস আপডেট
+  <script src="../assets/js/tools.js"></script>
+  <script>
+    // ======================= DOM রেফারেন্স =======================
+    const tinInput     = document.getElementById('tinInput');
+    const searchBtn    = document.getElementById('searchBtn');
+    const resultArea   = document.getElementById('resultArea');
+    const statsBanner  = document.getElementById('statsBanner');
+
+    // JSON ডাটা স্টোর করার জন্য ভেরিয়েবল
+    let tinDatabase  = [];
+    let isDataLoaded = false;
+    let totalRecords = 0;
+
+    // ======================= ধাপ ১: JSON ফাইল লোড করা =======================
+    async function loadJSONData() {
+      try {
+        // IMPORTANT: JSON ফাইলটি ওয়েব সার্ভারে একই ফোল্ডারে রাখতে হবে
+        // ফাইলের নাম: tin_data.json
+        const response = await fetch('./tin_data.json');
+
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}: JSON ফাইল পাওয়া যায়নি`);
+        }
+
+        const data = await response.json();
+
+        if (Array.isArray(data) && data.length > 0) {
+          tinDatabase  = data;
+          totalRecords = data.length;
+          isDataLoaded = true;
+
+          // স্ট্যাটাস আপডেট
+          statsBanner.innerHTML = `
+            ✅ ডাটাবেস লোড সফল!
+            <strong>${totalRecords.toLocaleString()}</strong> টি TIN রেকর্ড প্রস্তুত
+          `;
+          statsBanner.style.background  = 'rgba(16, 185, 129, 0.2)';
+          statsBanner.style.borderColor = 'rgba(16, 185, 129, 0.4)';
+
+          console.log(`✅ JSON লোড সফল! মোট ${totalRecords} টি রেকর্ড`);
+        } else {
+          throw new Error('JSON ফাইলটি সঠিক ফরম্যাটে নেই (অ্যারে নয়)');
+        }
+
+      } catch (error) {
+        console.error('JSON লোড করতে ব্যর্থ:', error);
         statsBanner.innerHTML = `
-          <i class="fas fa-check-circle"></i> ✅ ডাটাবেস লোড সফল! 
-          <strong>${totalRecords.toLocaleString()}</strong> টি TIN রেকর্ড প্রস্তুত
+          ⚠️ ডাটাবেস লোড ব্যর্থ!
+          <span style="color: #f87171;">${error.message}</span>
         `;
-        statsBanner.style.background = 'rgba(16, 185, 129, 0.2)';
-        statsBanner.style.borderColor = 'rgba(16, 185, 129, 0.4)';
-        
-        console.log(`✅ JSON লোড সফল! মোট ${totalRecords} টি রেকর্ড`);
-      } else {
-        throw new Error('JSON ফাইলটি সঠিক ফরম্যাটে নেই (অ্যারে নয়)');
+        statsBanner.style.background  = 'rgba(239, 68, 68, 0.2)';
+        statsBanner.style.borderColor = 'rgba(239, 68, 68, 0.4)';
+        isDataLoaded = false;
       }
-      
-    } catch (error) {
-      console.error('JSON লোড করতে ব্যর্থ:', error);
-      statsBanner.innerHTML = `
-        <i class="fas fa-exclamation-triangle"></i> ⚠️ ডাটাবেস লোড ব্যর্থ! 
-        <span style="color: #f87171;">${error.message}</span>
+    }
+
+    function showLoadingMessage(msg) {
+      resultArea.innerHTML = `
+        <div class="empty-state">
+          <div class="spinner" style="margin-bottom:.7rem"></div>
+          <p class="warn">${msg}</p>
+        </div>
       `;
-      statsBanner.style.background = 'rgba(239, 68, 68, 0.2)';
-      statsBanner.style.borderColor = 'rgba(239, 68, 68, 0.4)';
-      isDataLoaded = false;
     }
-  }
-  
-  function showLoadingMessage(msg, type = 'loading') {
-    resultArea.innerHTML = `
-      <div class="empty-message" style="padding: 1.8rem;">
-        <div class="loader" style="margin-bottom: 10px;"></div>
-        <p style="color: #facc15;">${msg}</p>
-      </div>
-    `;
-  }
-  
-  function showError(message) {
-    resultArea.innerHTML = `
-      <div class="empty-message" style="border-left: 3px solid #ef4444;">
-        <i class="fas fa-circle-exclamation" style="font-size: 2rem; color: #f97316; margin-bottom: 0.5rem; display: inline-block;"></i>
-        <p style="color: #facc15; font-weight: 600;">${message}</p>
-      </div>
-    `;
-  }
-  
-  function isValidTIN(tin) {
-    const tinStr = String(tin).trim();
-    if (tinStr.length !== 12) return false;
-    return /^\d{12}$/.test(tinStr);
-  }
-  
-  function escapeHtml(str) {
-    if (!str) return '';
-    return str.replace(/[&<>]/g, function(m) {
-      if (m === '&') return '&amp;';
-      if (m === '<') return '&lt;';
-      if (m === '>') return '&gt;';
-      return m;
-    }).replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, function(c) {
-      return c;
-    });
-  }
-  
-  // ======================= ধাপ ২: JSON ডাটাবেসে TIN সার্চ করা =======================
-  function searchTINInDatabase(tinNumber) {
-    if (!isDataLoaded) {
-      showError('❌ ডাটাবেস এখনও লোড হয়নি। একটু পরে আবার চেষ্টা করুন।');
-      return false;
-    }
-    
-    const cleanTin = String(tinNumber).trim();
-    
-    // Array find method ব্যবহার করে খোঁজা
-    const found = tinDatabase.find(item => String(item.tin).trim() === cleanTin);
-    
-    if (found) {
-      return found;
-    }
-    
-    return null;
-  }
-  
-  // ======================= ধাপ ৩: রেজাল্ট দেখানো =======================
-  function renderFoundResult(matchData) {
-    const { tin, zone, circle, submission_type: submissionType, assessment_year: assessmentYear } = matchData;
-    
-    resultArea.innerHTML = `
-      <div class="info-card" style="border-left-color: #ef4444; background: linear-gradient(115deg, rgba(239,68,68,0.1), rgba(0,0,0,0.3));">
-        <div class="status-head">
-          <i class="fas fa-exclamation-triangle" style="color: #ef4444;"></i>
-          <span style="color: #ef4444;">⚠️ অডিট তালিকায় পাওয়া গেছে</span>
-          <span style="background: #ef444420; color: #facc15; padding: 0.2rem 0.8rem; border-radius: 30px; font-size: 0.8rem; margin-left: auto;">
-            <i class="fas fa-qrcode"></i> TIN: ${escapeHtml(tin)}
-          </span>
+
+    function showError(message) {
+      resultArea.innerHTML = `
+        <div class="empty-state" style="border-left:3px solid var(--bad)">
+          <span class="big-ico" style="color:var(--warn)" aria-hidden="true">⚠️</span>
+          <p class="warn" style="font-weight:600">${message}</p>
         </div>
-        <div class="details-grid">
-          <div class="detail-row">
-            <div class="detail-label"><i class="fas fa-map-marker-alt"></i> জোন</div>
-            <div class="detail-value">${escapeHtml(zone) || '—'}</div>
-          </div>
-          <div class="detail-row">
-            <div class="detail-label"><i class="fas fa-chart-line"></i> সার্কেল</div>
-            <div class="detail-value">${escapeHtml(circle) || '—'}</div>
-          </div>
-          <div class="detail-row">
-            <div class="detail-label"><i class="fas fa-user-tie"></i> জমা ধরন</div>
-            <div class="detail-value">${escapeHtml(submissionType) || '—'}</div>
-          </div>
-          <div class="detail-row">
-            <div class="detail-label"><i class="fas fa-calendar-alt"></i> মূল্যায়ন বছর</div>
-            <div class="detail-value">${escapeHtml(assessmentYear) || '—'}</div>
-          </div>
-        </div>
-      </div>
-    `;
-  }
-  
-  function renderNotFoundResult(tinNumber) {
-    resultArea.innerHTML = `
-      <div class="info-card" style="border-left-color: #10b981; background: linear-gradient(115deg, rgba(16,185,129,0.1), rgba(0,0,0,0.3));">
-        <div class="status-head">
-          <i class="fas fa-check-circle" style="color: #10b981; font-size: 1.8rem;"></i>
-          <span style="color: #fff; font-weight: 700;">🎉 অভিনন্দন!</span>
-        </div>
-        <div style="margin: 0.5rem 0 0.5rem 0;">
-          <p style="color: #cbd5e6; font-size: 1.1rem;">আপনার TIN <strong style="background: #0f172a; padding: 0.3rem 0.8rem; border-radius: 20px; color: #facc15;">${escapeHtml(tinNumber)}</strong> অডিট তালিকাভুক্ত <span style="color: #10b981;">নয়</span>।</p>
-          <p style="color: #94a3b8; margin-top: 0.8rem; font-size: 0.85rem;"><i class="fas fa-shield-alt"></i> এটি একটি ইতিবাচক ফলাফল, আপনার কর সংক্রান্ত কোনো জটিলতা নেই।</p>
-        </div>
-      </div>
-    `;
-  }
-  
-  function showSearchingStatus() {
-    resultArea.innerHTML = `
-      <div class="empty-message" style="padding: 1.8rem;">
-        <div class="loader" style="margin-bottom: 10px;"></div>
-        <p style="color: #facc15;"><i class="fas fa-spinner fa-pulse"></i> ${totalRecords.toLocaleString()} টি রেকর্ডে অনুসন্ধান করা হচ্ছে...</p>
-      </div>
-    `;
-  }
-  
-  // ======================= ধাপ ৪: মেইন ফাংশন (JSON ফাইল থেকে সার্চ) =======================
-  function checkTINInAuditList(tinNumber) {
-    const cleanTin = tinNumber.trim();
-    
-    // ভ্যালিডেশন
-    if (!isValidTIN(cleanTin)) {
-      showError('❌ TIN নম্বরটি অবশ্যই ১২ ডিজিটের সংখ্যা হতে হবে!');
-      return;
+      `;
     }
-    
-    // ডাটাবেস লোড না হলে
-    if (!isDataLoaded) {
-      showError('📂 ডাটাবেস লোড হয়নি। পেজ রিফ্রেশ করে আবার চেষ্টা করুন।');
-      return;
+
+    function isValidTIN(tin) {
+      const tinStr = String(tin).trim();
+      if (tinStr.length !== 12) return false;
+      return /^\d{12}$/.test(tinStr);
     }
-    
-    showSearchingStatus();
-    
-    // সামান্য ডেলি (UI আপডেটের জন্য)
-    setTimeout(() => {
-      const result = searchTINInDatabase(cleanTin);
-      
-      if (result) {
-        // পাওয়া গেছে - অডিট তালিকায় আছে
-        renderFoundResult(result);
-      } else {
-        // পাওয়া যায়নি - অডিট তালিকায় নেই
-        renderNotFoundResult(cleanTin);
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str).replace(/[&<>]/g, function(m) {
+        if (m === '&') return '&amp;';
+        if (m === '<') return '&lt;';
+        if (m === '>') return '&gt;';
+        return m;
+      });
+    }
+
+    // ======================= ধাপ ২: JSON ডাটাবেসে TIN সার্চ করা =======================
+    function searchTINInDatabase(tinNumber) {
+      if (!isDataLoaded) {
+        showError('❌ ডাটাবেস এখনও লোড হয়নি। একটু পরে আবার চেষ্টা করুন।');
+        return false;
       }
-    }, 50);
-  }
-  
-  // ======================= ইভেন্ট হ্যান্ডলার =======================
-  searchBtn.addEventListener('click', () => {
-    const tinValue = tinInput.value.trim();
-    if (tinValue === '') {
-      showError('দয়া করে আপনার ১২ ডিজিটের TIN নম্বর লিখুন।');
-      tinInput.focus();
-      return;
+
+      const cleanTin = String(tinNumber).trim();
+
+      // Array find method ব্যবহার করে খোঁজা
+      const found = tinDatabase.find(item => String(item.tin).trim() === cleanTin);
+
+      if (found) {
+        return found;
+      }
+
+      return null;
     }
-    checkTINInAuditList(tinValue);
-  });
-  
-  tinInput.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') {
-      e.preventDefault();
-      searchBtn.click();
+
+    // ======================= ধাপ ৩: রেজাল্ট দেখানো =======================
+    function renderFoundResult(matchData) {
+      const { tin, zone, circle, submission_type: submissionType, assessment_year: assessmentYear } = matchData;
+
+      resultArea.innerHTML = `
+        <div class="result audit-card is-bad">
+          <div class="audit-head">
+            <span class="bad">⚠️ অডিট তালিকায় পাওয়া গেছে</span>
+            <span class="badge">TIN: ${escapeHtml(tin)}</span>
+          </div>
+          <div class="kv">
+            <span>📍 জোন</span>
+            <span>${escapeHtml(zone) || '—'}</span>
+          </div>
+          <div class="kv">
+            <span>📈 সার্কেল</span>
+            <span>${escapeHtml(circle) || '—'}</span>
+          </div>
+          <div class="kv">
+            <span>👤 জমা ধরন</span>
+            <span>${escapeHtml(submissionType) || '—'}</span>
+          </div>
+          <div class="kv">
+            <span>📅 মূল্যায়ন বছর</span>
+            <span>${escapeHtml(assessmentYear) || '—'}</span>
+          </div>
+        </div>
+      `;
     }
-  });
-  
-  tinInput.addEventListener('input', function(e) {
-    let raw = this.value.replace(/\D/g, '');
-    if (raw.length > 12) raw = raw.slice(0,12);
-    this.value = raw;
-  });
-  
-  // ======================= পেজ লোড হলে JSON ফাইল লোড করা =======================
-  loadJSONData();
-  tinInput.focus();
-</script>
+
+    function renderNotFoundResult(tinNumber) {
+      resultArea.innerHTML = `
+        <div class="result audit-card is-good">
+          <div class="audit-head">
+            <span class="good">🎉 অভিনন্দন!</span>
+          </div>
+          <p style="color:var(--txt-dim);font-size:1.02rem">
+            আপনার TIN
+            <strong class="mono" style="color:var(--c4)">${escapeHtml(tinNumber)}</strong>
+            অডিট তালিকাভুক্ত <span class="good">নয়</span>।
+          </p>
+          <p class="audit-note">🛡️ এটি একটি ইতিবাচক ফলাফল, আপনার কর সংক্রান্ত কোনো জটিলতা নেই।</p>
+        </div>
+      `;
+    }
+
+    function showSearchingStatus() {
+      resultArea.innerHTML = `
+        <div class="empty-state">
+          <div class="spinner" style="margin-bottom:.7rem"></div>
+          <p class="warn">${totalRecords.toLocaleString()} টি রেকর্ডে অনুসন্ধান করা হচ্ছে...</p>
+        </div>
+      `;
+    }
+
+    // ======================= ধাপ ৪: মেইন ফাংশন (JSON ফাইল থেকে সার্চ) =======================
+    function checkTINInAuditList(tinNumber) {
+      const cleanTin = tinNumber.trim();
+
+      // ভ্যালিডেশন
+      if (!isValidTIN(cleanTin)) {
+        showError('❌ TIN নম্বরটি অবশ্যই ১২ ডিজিটের সংখ্যা হতে হবে!');
+        return;
+      }
+
+      // ডাটাবেস লোড না হলে
+      if (!isDataLoaded) {
+        showError('📂 ডাটাবেস লোড হয়নি। পেজ রিফ্রেশ করে আবার চেষ্টা করুন।');
+        return;
+      }
+
+      showSearchingStatus();
+
+      // সামান্য ডেলি (UI আপডেটের জন্য)
+      setTimeout(() => {
+        const result = searchTINInDatabase(cleanTin);
+
+        if (result) {
+          // পাওয়া গেছে - অডিট তালিকায় আছে
+          renderFoundResult(result);
+        } else {
+          // পাওয়া যায়নি - অডিট তালিকায় নেই
+          renderNotFoundResult(cleanTin);
+        }
+      }, 50);
+    }
+
+    // ======================= ইভেন্ট হ্যান্ডলার =======================
+    searchBtn.addEventListener('click', () => {
+      const tinValue = tinInput.value.trim();
+      if (tinValue === '') {
+        showError('দয়া করে আপনার ১২ ডিজিটের TIN নম্বর লিখুন।');
+        tinInput.focus();
+        return;
+      }
+      checkTINInAuditList(tinValue);
+    });
+
+    tinInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        searchBtn.click();
+      }
+    });
+
+    tinInput.addEventListener('input', function () {
+      let raw = this.value.replace(/\D/g, '');
+      if (raw.length > 12) raw = raw.slice(0, 12);
+      this.value = raw;
+    });
+
+    // ======================= পেজ লোড হলে JSON ফাইল লোড করা =======================
+    loadJSONData();
+    tinInput.focus();
+  </script>
 </body>
 </html>
