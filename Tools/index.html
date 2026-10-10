@@ -37,7 +37,17 @@
   .fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.9rem 1rem}
   .preview{max-width:100%;max-height:330px;margin-top:.9rem;border-radius:var(--r-sm);border:1px solid var(--border)}
   .result a.btn{margin-right:.5rem;margin-top:.5rem}
-  @media(max-width:680px){.fields{grid-template-columns:1fr}}
+  /* BMI + GPA calculator */
+  .gpa-head,.gpa-row{display:grid;grid-template-columns:1fr 150px 110px 40px;gap:.55rem;align-items:center}
+  .gpa-head{margin-bottom:.5rem;font-size:.72rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--txt-mute)}
+  .gpa-head span:last-child{visibility:hidden}
+  .gpa-row{margin-bottom:.55rem}
+  .gpa-row input,.gpa-row select{width:100%;padding:.6rem .75rem;border-radius:var(--r-sm);border:1px solid var(--border-str);background:var(--field);color:var(--txt);outline:none;transition:border-color .25s,box-shadow .25s}
+  .gpa-row input:focus,.gpa-row select:focus{border-color:var(--c2);box-shadow:0 0 0 3px color-mix(in srgb,var(--c2) 28%,transparent)}
+  .gpa-del{display:grid;place-items:center;width:38px;height:38px;border-radius:10px;border:1px solid var(--border);background:var(--surface);color:var(--txt-mute);transition:all .3s var(--ease)}
+  .gpa-del:hover{color:var(--bad);border-color:rgba(251,113,133,.5);background:rgba(251,113,133,.1)}
+  #gpaAdd{margin-top:.2rem}
+  @media(max-width:680px){.fields{grid-template-columns:1fr}.gpa-head{display:none}.gpa-row{grid-template-columns:1fr 1fr 40px;gap:.5rem}.gpa-name{grid-column:1/-1}}
 </style>
 </head>
 <body>
@@ -210,6 +220,11 @@
   const F = (l, id = "input") => `<div class="field"><label>${l}</label><textarea id="${id}" spellcheck="false"></textarea></div>`;
   const R = () => `<div class="result" id="result"></div>`;
   const A = (txt = "Calculate") => `<div class="actions"><button class="btn btn-primary" id="run">${txt}</button><button class="btn btn-soft" id="clear">Clear</button></div>`;
+  const GRADES = [["A+", 4], ["A", 3.75], ["A-", 3.5], ["B+", 3.25], ["B", 3], ["B-", 2.75], ["C+", 2.5], ["C", 2.25], ["D", 2], ["F", 0]];
+  function gpaRow() {
+    const opts = GRADES.map(([g, p]) => `<option value="${p}">${g} · ${p.toFixed(2)}</option>`).join("");
+    return `<div class="gpa-row"><input class="gpa-name" type="text" placeholder="Course name (optional)"><select class="gpa-grade">${opts}</select><input class="gpa-credit" type="number" min="0" step="any" placeholder="Credits"><button type="button" class="gpa-del" aria-label="Remove course">✕</button></div>`;
+  }
 
   function UI(t) {
     const finance = {
@@ -236,6 +251,8 @@
     if (t === "unit") return `<div class="fields">${N("uv", "Value")}<div class="field"><label>Conversion</label><select id="conv"><option>km-mi</option><option>mi-km</option><option>kg-lb</option><option>lb-kg</option><option>c-f</option><option>f-c</option><option>m-ft</option><option>ft-m</option></select></div></div>${A("Convert")}${R()}`;
     if (t === "time") return `<div class="fields">${N("h", "Hours") + N("m", "Minutes") + N("ah", "Add hours") + N("am", "Add minutes")}</div>${A()}${R()}`;
     if (t === "words") return `<div class="fields">${N("wn", "Number")}</div>${A("Convert to words")}${R()}`;
+    if (t === "bmi") return `<div class="fields"><div class="field"><label>Units</label><select id="bmi_unit"><option value="metric">Metric (kg / cm)</option><option value="imperial">Imperial (lb / in)</option></select></div><div class="field"><label id="bmi_wl">Weight (kg)</label><input id="w" type="number" step="any" placeholder="e.g. 70"></div><div class="field"><label id="bmi_hl">Height (cm)</label><input id="h" type="number" step="any" placeholder="e.g. 175"></div></div>${A("Calculate BMI")}${R()}`;
+    if (t === "gpa") return `<div class="gpa-head"><span>Course</span><span>Grade</span><span>Credits</span><span></span></div><div id="gpaRows"></div><button type="button" class="btn btn-soft btn-sm" id="gpaAdd">+ Add course</button><p class="hint" style="margin-top:.7rem">Uses the 4.00 letter-grade scale (A+ = 4.00 … F = 0.00). Rows without credits are ignored.</p>${A("Calculate GPA")}${R()}`;
     if (t === "timezone") return `<div class="fields"><div class="field"><label>Date / time</label><input id="dt" type="datetime-local"></div><div class="field"><label>Timezone</label><select id="tz">${(Intl.supportedValuesOf ? Intl.supportedValuesOf("timeZone") : ["UTC"]).map((x) => `<option>${x}</option>`).join("")}</select></div></div>${A("Convert")}${R()}`;
     if (t === "regex") return `<div class="fields"><div class="field"><label>Regex pattern</label><input id="pattern" placeholder="\\d+"></div><div class="field"><label>Flags</label><input id="flags" value="g"></div></div>${F("Test text", "text")}${A("Test Regex")}${R()}`;
     if (t === "base64" || t === "url") return F("Input") + `<div class="actions"><button class="btn btn-primary" id="enc">Encode</button><button class="btn btn-soft" id="dec">Decode</button></div>${R()}`;
@@ -263,6 +280,26 @@
       const r = $("result"); if (r) r.innerHTML = "";
       const fi = $("fileInfo"); if (fi) fi.textContent = "";
     });
+    if (t === "bmi") {
+      const u = $("bmi_unit");
+      const sync = () => {
+        const imp = u.value === "imperial";
+        $("bmi_wl").textContent = imp ? "Weight (lb)" : "Weight (kg)";
+        $("bmi_hl").textContent = imp ? "Height (in)" : "Height (cm)";
+        $("w").placeholder = imp ? "e.g. 154" : "e.g. 70";
+        $("h").placeholder = imp ? "e.g. 69" : "e.g. 175";
+      };
+      u.addEventListener("change", sync); sync();
+    }
+    if (t === "gpa") {
+      const rows = $("gpaRows");
+      for (let i = 0; i < 3; i++) rows.insertAdjacentHTML("beforeend", gpaRow());
+      $("gpaAdd").addEventListener("click", () => rows.insertAdjacentHTML("beforeend", gpaRow()));
+      rows.addEventListener("click", (e) => {
+        const del = e.target.closest(".gpa-del");
+        if (del && rows.children.length > 1) del.closest(".gpa-row").remove();
+      });
+    }
     const enc = $("enc"), dec = $("dec");
     if (enc) enc.addEventListener("click", () => { try { set(t === "base64" ? btoa(unescape(encodeURIComponent($("input").value))) : encodeURIComponent($("input").value)); } catch (e) { set(e.message, false); } });
     if (dec) dec.addEventListener("click", () => { try { set(t === "base64" ? decodeURIComponent(escape(atob($("input").value))) : decodeURIComponent($("input").value)); } catch (e) { set("Invalid input: " + e.message, false); } });
@@ -311,10 +348,25 @@
         let eff = p > 0 ? (Math.pow(mat / p, 1 / (years || 1)) - 1) * 100 : 0;
         r = `Tenure: ${months} months\nPrincipal: ${money(p)}\nInterest earned: ${money(mat - p)}\nMaturity value: ${money(mat)}\nEffective annual yield: ${eff.toFixed(2)}%`;
       } else if (t === "bmi") {
-        let b = v("w") / Math.pow(v("h"), 2);
-        r = `BMI: ${b.toFixed(2)} — ${b < 18.5 ? "Underweight" : b < 25 ? "Normal" : b < 30 ? "Overweight" : "Obesity"}`;
+        let w = v("w"), h = v("h");
+        if (w <= 0 || h <= 0) throw Error("Enter a valid weight and height");
+        const imp = $("bmi_unit") && $("bmi_unit").value === "imperial";
+        let kg = imp ? w * 0.45359237 : w;
+        let m = imp ? h * 0.0254 : h / 100;
+        let b = kg / (m * m);
+        const cat = b < 16 ? "Severe thinness" : b < 18.5 ? "Underweight" : b < 25 ? "Normal weight" : b < 30 ? "Overweight" : b < 35 ? "Obesity class I" : b < 40 ? "Obesity class II" : "Obesity class III";
+        let lo = 18.5 * m * m, hi = 24.9 * m * m;
+        if (imp) { lo /= 0.45359237; hi /= 0.45359237; }
+        r = `BMI: ${b.toFixed(1)}\nCategory: ${cat}\nHealthy weight range: ${lo.toFixed(1)} – ${hi.toFixed(1)} ${imp ? "lb" : "kg"}`;
       } else if (t === "gpa") {
-        r = `Grade points: ${fmt(v("g"))}\nCredits: ${fmt(v("c"))}\nGPA: ${(v("g")).toFixed(2)}`;
+        let pts = 0, cr = 0, n = 0;
+        document.querySelectorAll("#gpaRows .gpa-row").forEach((row) => {
+          const c = Number(row.querySelector(".gpa-credit").value);
+          const g = Number(row.querySelector(".gpa-grade").value);
+          if (c > 0) { pts += g * c; cr += c; n++; }
+        });
+        if (!cr) throw Error("Add at least one course with credit hours");
+        r = `Courses counted: ${n}\nTotal credits: ${fmt(cr)}\nWeighted grade points: ${fmt(pts)}\n\nGPA: ${(pts / cr).toFixed(2)} / 4.00`;
       } else if (t === "percentage") {
         r = `Result: ${fmt(v("v") * v("p") / 100)}`;
       } else if (t === "age") {
