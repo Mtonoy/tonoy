@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>TOTP Generator & Tester</title>
+<style>
+:root{color-scheme:dark;--bg:#0b1220;--panel:#121d2e;--line:#26364d;--muted:#9aabc1;--text:#edf4ff;--accent:#55c2b5;--bad:#ff7272;--good:#54d69a}
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(140deg,#0b1220,#101c2e);color:var(--text);font:15px/1.5 system-ui,Segoe UI,Arial}
+main{max-width:900px;margin:36px auto;padding:0 18px}.head{margin-bottom:22px}.head h1{margin:0 0 6px;font-size:28px}.muted{color:var(--muted)}.grid{display:grid;grid-template-columns:1.15fr .85fr;gap:16px}
+.card{background:rgba(18,29,46,.96);border:1px solid var(--line);border-radius:16px;padding:20px;box-shadow:0 14px 35px #0003}
+h2{font-size:17px;margin:0 0 16px}label{display:block;color:#c5d2e3;font-size:13px;margin:13px 0 6px}
+input,select{width:100%;background:#0b1524;color:var(--text);border:1px solid #344760;border-radius:9px;padding:11px 12px;font:inherit;outline:none}
+input:focus,select:focus{border-color:var(--accent)}button{border:0;border-radius:9px;padding:10px 14px;background:var(--accent);color:#06201e;font-weight:700;cursor:pointer}
+button.secondary{background:#26384f;color:var(--text);border:1px solid #3a506c}button:disabled{opacity:.5;cursor:not-allowed}
+.row{display:flex;gap:9px;align-items:center}.row>*{flex:1}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.actions button{flex:1}
+.code{font-size:42px;letter-spacing:9px;font-weight:800;text-align:center;padding:15px 0 4px;font-variant-numeric:tabular-nums}
+.center{text-align:center}.timer{height:7px;background:#26364d;border-radius:99px;overflow:hidden;margin:10px 0}.bar{height:100%;background:var(--accent);width:100%;transition:width .2s linear}
+.meta{display:flex;justify-content:space-between;color:var(--muted);font-size:13px}.status{margin-top:12px;padding:10px;border-radius:9px;background:#0b1524;color:var(--muted);min-height:42px}
+.status.good{color:var(--good)}.status.bad{color:var(--bad)}.small{font-size:12px;color:var(--muted);margin-top:12px}.pill{display:inline-block;border:1px solid var(--line);border-radius:99px;padding:3px 9px;color:var(--muted);font-size:12px}
+@media(max-width:700px){.grid{grid-template-columns:1fr}main{margin:22px auto}.code{font-size:36px}}
+</style></head>
+<body><main>
+<div class="head"><span class="pill">Browser-only · No backend</span><h1>TOTP Generator &amp; Tester</h1><div class="muted">Generate time-based one-time passwords and verify codes using RFC 6238 settings.</div></div>
+<div class="grid">
+<section class="card">
+<h2>1. Secret &amp; authenticator settings</h2>
+<label for="secret">Base32 Secret or otpauth:// URL</label>
+<input id="secret" autocomplete="off" spellcheck="false" placeholder="Paste Base32 secret here">
+<div class="actions"><button id="newSecret">Generate new secret</button><button class="secondary" id="copySecret">Copy secret</button></div>
+<div class="row">
+<div><label for="algorithm">Algorithm</label><select id="algorithm"><option>SHA-1</option><option>SHA-256</option><option>SHA-512</option></select></div>
+<div><label for="digits">Digits</label><select id="digits"><option>6</option><option>8</option></select></div>
+<div><label for="period">Period (seconds)</label><select id="period"><option>30</option><option>60</option><option>90</option><option>120</option></select></div>
+</div>
+<div class="small">Use the exact same secret, algorithm, digit count and period in your .NET API/client.</div>
+</section>
+<section class="card">
+<h2>2. Current one-time code</h2>
+<div class="center muted">CURRENT CODE</div>
+<div class="code" id="currentCode">------</div>
+<div class="timer"><div class="bar" id="bar"></div></div>
+<div class="meta"><span id="countdown">Waiting for secret</span><span id="periodLabel">30-second period</span></div>
+<div class="actions"><button id="copyCode">Copy current code</button></div>
+<div class="row" style="margin-top:14px">
+<div class="status center"><div class="muted">Previous</div><strong id="previousCode">------</strong></div>
+<div class="status center"><div class="muted">Next</div><strong id="nextCode">------</strong></div>
+</div>
+</section>
+<section class="card" style="grid-column:1/-1">
+<h2>3. Test a code</h2>
+<div class="row">
+<div><label for="testCode">Code to validate</label><input id="testCode" inputmode="numeric" maxlength="8" placeholder="Enter 6 or 8 digit code"></div>
+<div><label for="drift">Drift allowance</label><select id="drift"><option value="0">Current step only</option><option value="1" selected>± 1 step</option><option value="2">± 2 steps</option></select></div>
+</div>
+<div class="actions"><button id="verify">Verify code</button><button class="secondary" id="useCurrent">Use current code</button></div>
+<div id="result" class="status" role="status">Enter a code and select Verify.</div>
+</section>
+</div>
+<p class="small">Privacy: all calculations run locally in this browser using Web Crypto. No secret or code is sent to a server. Do not paste production secrets into a device or browser you do not trust.</p>
+</main>
+<script>
+const $=id=>document.getElementById(id);
+const alphabet='ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
+function base32Encode(bytes){let bits=0,value=0,out='';for(const b of bytes){value=(value<<8)|b;bits+=8;while(bits>=5){out+=alphabet[(value>>>(bits-5))&31];bits-=5;}}if(bits)out+=alphabet[(value<<(5-bits))&31];return out;}
+function base32Decode(s){s=s.toUpperCase().replace(/[\s=-]/g,'');let bits=0,value=0,out=[];for(const c of s){const v=alphabet.indexOf(c);if(v<0)throw Error('Secret must be valid Base32 (A-Z, 2-7).');value=(value<<5)|v;bits+=5;if(bits>=8){out.push((value>>>(bits-8))&255);bits-=8;}}if(!out.length)throw Error('Enter a Base32 secret.');return new Uint8Array(out);}
+function parseSecret(){let s=$('secret').value.trim();if(s.toLowerCase().startsWith('otpauth://')){const u=new URL(s);s=u.searchParams.get('secret')||'';if(u.searchParams.has('algorithm'))$('algorithm').value=u.searchParams.get('algorithm').toUpperCase().replace(/^SHA(1|256|512)$/, 'SHA-$1');if(u.searchParams.has('digits'))$('digits').value=u.searchParams.get('digits');if(u.searchParams.has('period'))$('period').value=u.searchParams.get('period');$('secret').value=s;}return base32Decode(s);}
+async function hotp(key,counter){const buf=new ArrayBuffer(8),view=new DataView(buf);view.setBigUint64(0,BigInt(counter),false);const alg=$('algorithm').value;const cryptoKey=await crypto.subtle.importKey('raw',key,{name:'HMAC',hash:{name:alg}},false,['sign']);const mac=new Uint8Array(await crypto.subtle.sign('HMAC',cryptoKey,buf));const offset=mac[mac.length-1]&15;const binary=((mac[offset]&127)<<24)|((mac[offset+1]&255)<<16)|((mac[offset+2]&255)<<8)|(mac[offset+3]&255);return String(binary%(10**Number($('digits').value))).padStart(Number($('digits').value),'0');}
+async function codeAt(key,step){return hotp(key,step);}
+function settings(){return {period:Number($('period').value),digits:Number($('digits').value)}}
+async function refresh(){try{if(!globalThis.crypto?.subtle)throw Error('Web Crypto unavailable. Open this page in a modern browser using HTTPS or localhost.');const key=parseSecret(),{period}=settings(),now=Math.floor(Date.now()/1000),step=Math.floor(now/period),remain=period-(now%period);$('currentCode').textContent=await codeAt(key,step);$('previousCode').textContent=step>0?await codeAt(key,step-1):'------';$('nextCode').textContent=await codeAt(key,step+1);$('countdown').textContent=`Next code in ${remain}s`;$('periodLabel').textContent=`${period}-second period`;$('bar').style.width=(remain/period*100)+'%';}catch(e){$('currentCode').textContent='------';$('previousCode').textContent='------';$('nextCode').textContent='------';$('countdown').textContent=e.message;$('bar').style.width='0%';}}
+async function verify(){const result=$('result');try{const code=$('testCode').value.trim(),digits=Number($('digits').value);if(!new RegExp(`^\\d{${digits}}$`).test(code))throw Error(`Enter exactly ${digits} digits.`);const key=parseSecret(),period=Number($('period').value),step=Math.floor(Date.now()/1000/period),drift=Number($('drift').value);for(let d=-drift;d<=drift;d++){if(step+d>=0&&(await codeAt(key,step+d))===code){result.className='status good';result.textContent=`VALID — matched ${d===0?'current':d<0?Math.abs(d)+' step(s) previous':d+' step(s) ahead'} time window.`;return;}}result.className='status bad';result.textContent='NOT VALID — code does not match the allowed time window.';}catch(e){result.className='status bad';result.textContent=e.message;}}
+$('newSecret').onclick=()=>{const bytes=crypto.getRandomValues(new Uint8Array(20));$('secret').value=base32Encode(bytes);$('result').className='status';$('result').textContent='New test secret generated in this browser.';refresh();};
+$('copySecret').onclick=async()=>{try{await navigator.clipboard.writeText($('secret').value);$('result').textContent='Secret copied.';}catch{$('result').textContent='Clipboard access unavailable; select and copy the secret manually.';}};
+$('copyCode').onclick=async()=>{try{await navigator.clipboard.writeText($('currentCode').textContent);}catch{}};
+$('verify').onclick=verify;
+$('useCurrent').onclick=()=>{$('testCode').value=$('currentCode').textContent;verify();};
+['secret','algorithm','digits','period'].forEach(id=>$(id).addEventListener('input',refresh));
+setInterval(refresh,250);refresh();
+</script></body></html>
